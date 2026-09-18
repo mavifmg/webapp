@@ -95,7 +95,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             </form>
 
             <div style="text-align: center;">
-                <a href="Cadastro.html">
+                <a href="Cadastro.php">
                     <button type="button">Cadastro</button>
                 </a>
             </div>
@@ -105,4 +105,3 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
 </body>
 </html>
-´´´

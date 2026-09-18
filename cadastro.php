@@ -32,8 +32,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     }
 
-    $sql = "INSERT INTO cadastro (CPF, DataNascimento, EMAIL, Celular, CEP, Indigena, Comorbidades, Autorizacao_Loc)
-            VALUES ($1, $2, $3, $4, $5, $6, $7, $8)";
+        $sql = "INSERT INTO cadastro (\"CPF\", \"DataNascimento\", \"EMAIL\", \"Celular\", \"CEP\", \"Indigena\", \"Comorbidades\", \"Autorizacao_Loc\")
+                VALUES ($1, $2, $3, $4, $5, $6, $7, $8)";
 
     $resultado = pg_query_params(
         $conn,
@@ -41,7 +41,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         [$CPF, $DataNascimento, $EMAIL, $Celular, $CEP, $Indigena, $Comorbidades, $Autorizacao_Loc]
     );
     
-    if (pg_num_rows($resultado) > 0) {
+    if ($resultado !== false) {
         
         $_SESSION['cadastro'] = "Cadastro realizado";
 
@@ -95,14 +95,14 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 <label id="cep">CEP</label>
                 <input placeholder="Digite seu CEP" type="text" name="CEP"> 
 
-                <label id="indigena">Indígena</label>
-                <input type="checkbox" name="Indigena" value="true">
-
                 <label id="comorbidades">Comorbidades</label>
                 <input placeholder="Digite suas comorbidades" type="text" name="Comorbidades">
 
+                <label id="indigena">Indígena</label>
+                <input type="checkbox" name="Indigena" value="true">
+
                 <label id="autorizacao">Autorização Local</label>
-                <input type="checkbox" name="Autorizacao_Local" value="true">
+                <input type="checkbox" name="Autorizacao_Loc" value="true">
                 <br>
                 
  
