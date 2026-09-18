@@ -6,7 +6,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     $CPF = $_POST["CPF"];
     $DataNascimento = $_POST["DataNascimento"];
-    $EMAIL = $_POST["Email"];
+    $EMAIL = $_POST["EMAIL"];
     $Celular = $_POST["Celular"];
     $CEP = $_POST["CEP"];
     $Indigena =  isset($_POST["Indigena"]) ? 'true' : 'false';
@@ -25,18 +25,11 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         empty($Autorizacao_Loc) 
         
     ) {
+        $aceito = isset($_POST["Autorizacao_Loc"]) ? 'true' : 'false';
 
-        $_SESSION['erro_cadastro'] = "Campos vazios, preencha todos";
-        header ("location: Cadastro.php");
-        exit();
+        if (!$aceito) { $_SESSION['erro_cadastro'] = "Preencha todos os campos e aceite a autorização local para prosseguir com o cadastro."; 
+        header("Location: Cadastro.php"); exit(); }
 
-    }
-
-    if ($Senha !== $ConfirmeSenha) {
-        $_SESSION["erro_cadastro"] = "As senhas informadas não são iguais";
-        header ("location: Cadastro.php");
-        exit();
-        
     }
 
     $sql = "INSERT INTO cadastro (CPF, DataNascimento, EMAIL, Celular, CEP, Indigena, Comorbidades, Autorizacao_Loc)
@@ -96,9 +89,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 <label id="email">Email</label>
                 <input placeholder="Digite seu email" type="email" name="EMAIL">
 
-                <label id="telefone">Telefone</label>
-                <input placeholder="Digite seu telefone" type="text" name="Telefone">
-
                 <label id="celular">Celular</label>
                 <input placeholder="Digite seu celular" type="text" name="Celular"> 
 
@@ -106,21 +96,14 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 <input placeholder="Digite seu CEP" type="text" name="CEP"> 
 
                 <label id="indigena">Indígena</label>
-                <select name="Indigena">
-                    <option value="">Selecione</option>
-                    <option value="Sim">Sim</option>
-                    <option value="Não">Não</option>
-                </select>
+                <input type="checkbox" name="Indigena" value="true">
 
                 <label id="comorbidades">Comorbidades</label>
                 <input placeholder="Digite suas comorbidades" type="text" name="Comorbidades">
 
                 <label id="autorizacao">Autorização Local</label>
-                <select name="Autorizacao_Loc">   
-                    <option value="">Selecione</option>
-                    <option value="Sim">Sim</option>
-                    <option value="Não">Não</option>    
-                </select>
+                <input type="checkbox" name="Autorizacao_Local" value="true">
+                <br>
                 
  
                 <?php
