@@ -1,12 +1,14 @@
 <?php
     session_start();
     require_once "Conexao.php";
+
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
     
     $CPF = $_POST["CPF"];
-    $DataNascimento = $_POST["DataNascimento"];
+    $DataNascimento = $_POST["DataNascimento"]; 
     
     $sql = "SELECT * FROM cadastro
-            WHERE CPF = $1 AND DataNascimento = $2";
+            WHERE \"CPF\" = $1 AND \"DataNascimento\" = $2";
 
     $resultado = pg_query_params(
         $conn,
@@ -22,11 +24,13 @@
     } else {
 
         $_SESSION['erro_login'] = "Campos vazios ou informações incorretas";
+        header("Location: Login.php"); 
+        exit();
 
         }
 
     pg_close($conn);
-
+}
 ?>
 
 <!DOCTYPE html>
