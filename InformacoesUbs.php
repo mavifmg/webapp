@@ -13,8 +13,8 @@ $sql = 'SELECT
 
 $result = pg_query($conn, $sql);
 
-if($result === false){
-    die ("Erro na consulta: " . pg_last_error($conn));
+if ($result === false) {
+    die("Erro na consulta: " . pg_last_error($conn));
 }
 
 ?>
@@ -27,13 +27,11 @@ if($result === false){
 
     <meta charset="UTF-8">
 
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>AquiVacina | Dados DA UBS</title>
 
-    <link rel="stylesheet"
-          href="AquiVacina.css">
+    <link rel="stylesheet" href="AquiVacina.css">
 
 </head>
 
@@ -45,7 +43,7 @@ if($result === false){
 
         <div class="LocInformacoesUbs">
 
-        <?php
+            <?php
             $usuario = ($usuario = pg_fetch_assoc($result))
                 ? $usuario
                 : [
@@ -53,10 +51,10 @@ if($result === false){
                     "endereco" => "Não encontrado",
                     "horariofuncio" => "Não encontrado",
                     "infoextra" => "Não encontrado"
-                ];?>
+                ]; ?>
 
             <h1>
-                Dados DA UBS: <?php echo $usuario["nomeubs"]; ?><? echo $usuario["nomeubs"];?>
+                Dados da UBS: <?php echo $usuario["nomeubs"]; ?>
             </h1>
 
 
@@ -79,6 +77,20 @@ if($result === false){
                     <?php echo $usuario["infoextra"]; ?>
                 </p>
 
+                <a href="VacinasDisp.php">
+                    <button type="button">Vacinas Disponíveis</button>
+                </a>
+                <a href="LocUbs.php">
+                    <button type="button">Localização da UBS: <?php echo $usuario["nomeubs"]; ?></button>
+                </a>
+
+                <a href="Menu.php">
+                    <button type="button">Voltar</button>
+                </a>
+
+                <a href="ProfissionaisUbs.php"></a>
+                <button type="button">Profissionais disponíveis nesta UBS</button>
+                </a>
 
             </div>
 
