@@ -24,7 +24,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     if (pg_num_rows($resultado) > 0) {
 
-        header("Location: Menu.html");
+        $_SESSION['CPF'] = $CPF;
+        $_SESSION['DataNascimento'] = $DataNascimento;
+        header("Location: Menu.php");
         exit();
 
     } else {

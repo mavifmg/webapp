@@ -11,7 +11,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $CEP = $_POST["CEP"];
     $Indigena =  isset($_POST["Indigena"]) ? 'true' : 'false';
     $Comorbidades = $_POST["Comorbidades"];
-    $Autorizacao_Loc = isset($_POST["Autorizacao_Local"]) ? 'true' : 'false';
+    $Autorizacao_Loc = isset($_POST["Autorizacao_Loc"]) ? 'true' : 'false';
 
     if(
 
@@ -20,16 +20,14 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         empty($DataNascimento) ||
         empty($Celular) ||
         empty($CEP) ||
-        empty($Indigena) ||
         empty($Comorbidades) ||
-        empty($Autorizacao_Loc) 
+        $Autorizacao_Loc === 'false'
         
     ) {
-        $aceito = isset($_POST["Autorizacao_Loc"]) ? 'true' : 'false';
-
-        if (!$aceito) { $_SESSION['erro_cadastro'] = "Preencha todos os campos e aceite a autorização local para prosseguir com o cadastro."; 
-        header("Location: Cadastro.php"); exit(); }
-
+       $_SESSION['erro_cadastro'] = "Preencha todos os campos obrigatórios e aceite a autorização local para prosseguir com o cadastro.";
+    header("Location: Cadastro.php");
+    exit();
+    
     }
 
         $sql = "INSERT INTO cadastro (\"CPF\", \"DataNascimento\", \"EMAIL\", \"Celular\", \"CEP\", \"Indigena\", \"Comorbidades\", \"Autorizacao_Loc\")
@@ -42,16 +40,20 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     );
     
     if ($resultado !== false) {
-        
-        $_SESSION['cadastro'] = "Cadastro realizado";
+
+    $_SESSION['CPF'] = $CPF;
+    $_SESSION['DataNascimento'] = $DataNascimento;
+
+    header("location: Menu.php");
+        exit();
 
     } else {
 
         $_SESSION['erro_cadastro'] = "Erro ao cadastrar!";
-    }
 
-        header("location: Cadastro.php");
-        exit();
+        header("Location: Cadastro.php");
+        exit(); 
+    }
 
 }
 
