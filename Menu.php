@@ -38,7 +38,7 @@ $DataNascimento = $_SESSION['DataNascimento'];
             <a href="DadosUser.php">
                 <button type="button">Meus Dados</button>
             </a>
-            <a href="Informações da UBS.php">
+            <a href="InformacoesUbs.php">
                 <button type="button">Informações da UBS</button>
             </a>
                 </div>

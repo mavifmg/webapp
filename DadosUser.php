@@ -3,22 +3,12 @@
 session_start();
 require_once "Conexao.php";
 
-
-// ======================================================
-// VERIFICA SE O USUÁRIO ESTÁ LOGADO
-// ======================================================
-
 if (!isset($_SESSION['CPF'])) {
     header("Location: Login.php");
     exit();
 }
 
 $CPF = $_SESSION['CPF'];
-
-
-// ======================================================
-// EDIÇÃO DOS DADOS DO USUÁRIO
-// ======================================================
 
 if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["editar"])) {
 
@@ -92,11 +82,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["editar"])) {
     exit();
 }
 
-
-// ======================================================
-// EXCLUSÃO DO PERFIL DO USUÁRIO
-// ======================================================
-
 if (isset($_POST["excluir"])) {
 
     // Verifica se o usuário existe
@@ -123,9 +108,6 @@ if (isset($_POST["excluir"])) {
         header("Location: DadosUser.php");
         exit();
     }
-
-
-    // Exclui o usuário
 
     $sql = 'DELETE FROM cadastro
             WHERE "CPF" = $1';
@@ -154,10 +136,6 @@ if (isset($_POST["excluir"])) {
     }
 }
 
-
-// ======================================================
-// BUSCA OS DADOS DO USUÁRIO
-// ======================================================
 
 $sql = 'SELECT
             "CPF",
@@ -231,12 +209,6 @@ if (!$usuario) {
 
 
             <div class="Dados">
-
-                <p>
-                    <strong>CPF:</strong>
-                    <?php echo $usuario["CPF"]; ?>
-                </p>
-
 
                 <p>
                     <strong>Data de Nascimento:</strong>
