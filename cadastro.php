@@ -73,9 +73,12 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 </head>
 <body class="Cadastro">
     
-    <a href="Login.html">
+    <a href="Login.php">
         <button id="Posicao"><i class="fa-solid fa-arrow-left"></i></button>
     </a>
+    
+    <h2> Usuário não cadastrado</h2>
+
 
     <div class="LocCad">
         <div class="FundoCad">

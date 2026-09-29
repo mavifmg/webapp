@@ -32,7 +32,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     } else {
 
         $_SESSION['erro_login'] = "informações incorretas";
-        header("Location: Login.php");
+        header("Location: Cadastro.php");
         exit();
     }
 
@@ -48,6 +48,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     <title>AquiVacina | Site Para Usuarios</title>
     <link rel="stylesheet" href="AquiVacina.css">
 </head>
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <body class="Login">
 

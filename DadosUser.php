@@ -12,6 +12,8 @@ $CPF = $_SESSION['CPF'];
 
 if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["editar"])) {
 
+
+    $CPF = $_POST["CPF"] ?? ""; 
     $DataNascimento = $_POST["DataNascimento"] ?? "";
     $EMAIL = $_POST["EMAIL"] ?? "";
     $Celular = $_POST["Celular"] ?? "";
@@ -20,10 +22,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["editar"])) {
 
     $Indigena = isset($_POST["Indigena"]) ? 'true' : 'false';
 
-
-    // Verificação dos campos obrigatórios
-
     if (
+        empty($CPF) ||
         empty($DataNascimento) ||
         empty($EMAIL) ||
         empty($Celular) ||
@@ -38,30 +38,28 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["editar"])) {
         exit();
     }
 
-
-    // Atualiza os dados do próprio usuário
-
     $sql = 'UPDATE cadastro
-            SET "DataNascimento" = $1,
-                "EMAIL" = $2,
-                "Celular" = $3,
-                "CEP" = $4,
-                "Indigena" = $5,
-                "Comorbidades" = $6
-            WHERE "CPF" = $7';
+            SET "CPF" = $1,
+                "DataNascimento" = $2,
+                "EMAIL" = $3,
+                "Celular" = $4,
+                "CEP" = $5,
+                "Indigena" = $6,
+                "Comorbidades" = $7
+            WHERE "CPF" = $8';
 
 
     $resultado = pg_query_params(
         $conn,
         $sql,
         [
+            $CPF,
             $DataNascimento,
             $EMAIL,
             $Celular,
             $CEP,
             $Indigena,
-            $Comorbidades,
-            $CPF
+            $Comorbidades
         ]
     );
 
@@ -83,8 +81,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["editar"])) {
 }
 
 if (isset($_POST["excluir"])) {
-
-    // Verifica se o usuário existe
 
     $sql = 'SELECT "CPF"
             FROM cadastro
@@ -123,7 +119,7 @@ if (isset($_POST["excluir"])) {
 
         session_destroy();
 
-        header("Location: Login.php");
+        header("Location: Cadastro.php");
         exit();
 
     } else {
@@ -184,13 +180,11 @@ if (!$usuario) {
 
     <meta charset="UTF-8">
 
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>AquiVacina | Dados do Usuário</title>
 
-    <link rel="stylesheet"
-          href="AquiVacina.css">
+    <link rel="stylesheet" href="AquiVacina.css">
 
 </head>
 
@@ -202,290 +196,222 @@ if (!$usuario) {
 
         <div class="FundoDadosUser">
 
-            <h1>
-                Dados do CPF:
-                <?php echo $usuario["CPF"]; ?>
-            </h1>
+            <div class="LocInformacoesUbs">
+                <a href="Menu.php">
+                    <button type="button">Voltar</button>
+                </a>
+
+                <h1>
+                    Dados do CPF:
+                    <?php echo $usuario["CPF"]; ?>
+                </h1>
 
 
-            <div class="Dados">
+                <div class="Dados">
 
-                <p>
-                    <strong>Data de Nascimento:</strong>
-                    <?php echo $usuario["DataNascimento"]; ?>
-                </p>
-
-
-                <p>
-                    <strong>Email:</strong>
-                    <?php echo $usuario["EMAIL"]; ?>
-                </p>
+                    <p>
+                        <strong>Data de Nascimento:</strong>
+                        <?php echo $usuario["DataNascimento"]; ?>
+                    </p>
 
 
-                <p>
-                    <strong>Celular:</strong>
-                    <?php echo $usuario["Celular"]; ?>
-                </p>
+                    <p>
+                        <strong>Email:</strong>
+                        <?php echo $usuario["EMAIL"]; ?>
+                    </p>
 
 
-                <p>
-                    <strong>CEP:</strong>
-                    <?php echo $usuario["CEP"]; ?>
-                </p>
+                    <p>
+                        <strong>Celular:</strong>
+                        <?php echo $usuario["Celular"]; ?>
+                    </p>
 
 
-                <p>
-                    <strong>Indígena:</strong>
-
-                    <?php
-                    echo $usuario["Indigena"] === "t"
-                        ? "Sim"
-                        : "Não";
-                    ?>
-
-                </p>
+                    <p>
+                        <strong>CEP:</strong>
+                        <?php echo $usuario["CEP"]; ?>
+                    </p>
 
 
-                <p>
-                    <strong>Comorbidades:</strong>
-                    <?php echo $usuario["Comorbidades"]; ?>
-                </p>
+                    <p>
+                        <strong>Indígena:</strong>
+
+                        <?php
+                        echo $usuario["Indigena"] === "t"
+                            ? "Sim"
+                            : "Não";
+                        ?>
+
+                    </p>
 
 
-                <p>
-                    <strong>Autorização Local:</strong>
+                    <p>
+                        <strong>Comorbidades:</strong>
+                        <?php echo $usuario["Comorbidades"]; ?>
+                    </p>
 
-                    <?php
-                    echo $usuario["Autorizacao_Loc"] === "t"
-                        ? "Sim"
-                        : "Não";
-                    ?>
 
-                </p>
+                    <p>
+                        <strong>Autorização Local:</strong>
+
+                        <?php
+                        echo $usuario["Autorizacao_Loc"] === "t"
+                            ? "Sim"
+                            : "Não";
+                        ?>
+
+                    </p>
+
+                </div>
 
             </div>
 
         </div>
+        
 
-    </div>
+        <div class="DadosUsuario">
 
-
-    <!-- ==================================================
-         FORMULÁRIO DE EDIÇÃO
-         ================================================== -->
-
-    <div class="DadosUsuario">
-
-        <h1>Dados do Usuário</h1>
+            <h1>Dados do Usuário</h1>
 
 
-        <form
-            action="DadosUser.php"
-            method="POST"
-            id="formUsuario"
-        >
+            <form action="DadosUser.php" method="POST" id="formUsuario">
 
 
-            <label for="CPF">
-                CPF
-            </label>
+                <label for="CPF">
+                    CPF
+                </label>
 
-            <input
-                type="text"
-                name="CPF"
-                id="CPF"
-                value="<?php echo $usuario["CPF"]; ?>"
-                readonly
-            >
+                <input type="text" name="CPF" id="CPF" 
+                value="<?php echo $usuario["CPF"]; ?>" readonly>
 
 
-            <label for="DataNascimento">
-                Data de Nascimento
-            </label>
+                <label for="DataNascimento">
+                    Data de Nascimento
+                </label>
 
-            <input
-                type="date"
-                name="DataNascimento"
-                id="DataNascimento"
-                value="<?php echo $usuario["DataNascimento"]; ?>"
-                readonly
-            >
+                <input type="date" name="DataNascimento" id="DataNascimento"
+                    value="<?php echo $usuario["DataNascimento"]; ?>" readonly>
 
 
-            <label for="EMAIL">
-                Email
-            </label>
+                <label for="EMAIL">
+                    Email
+                </label>
 
-            <input
-                type="email"
-                name="EMAIL"
-                id="EMAIL"
-                value="<?php echo $usuario["EMAIL"]; ?>"
-                readonly
-            >
+                <input type="email" name="EMAIL" id="EMAIL" value="<?php echo $usuario["EMAIL"]; ?>" readonly>
 
 
-            <label for="Celular">
-                Celular
-            </label>
+                <label for="Celular">
+                    Celular
+                </label>
 
-            <input
-                type="text"
-                name="Celular"
-                id="Celular"
-                value="<?php echo $usuario["Celular"]; ?>"
-                readonly
-            >
+                <input type="text" name="Celular" id="Celular" value="<?php echo $usuario["Celular"]; ?>" readonly>
 
 
-            <label for="CEP">
-                CEP
-            </label>
+                <label for="CEP">
+                    CEP
+                </label>
 
-            <input
-                type="text"
-                name="CEP"
-                id="CEP"
-                value="<?php echo $usuario["CEP"]; ?>"
-                readonly
-            >
+                <input type="text" name="CEP" id="CEP" value="<?php echo $usuario["CEP"]; ?>" readonly>
 
 
-            <label for="Comorbidades">
-                Comorbidades
-            </label>
+                <label for="Comorbidades">
+                    Comorbidades
+                </label>
 
-            <input
-                type="text"
-                name="Comorbidades"
-                id="Comorbidades"
-                value="<?php echo $usuario["Comorbidades"]; ?>"
-                readonly
-            >
+                <input type="text" name="Comorbidades" id="Comorbidades" value="<?php echo $usuario["Comorbidades"]; ?>"
+                    readonly>
 
 
-            <label for="Indigena">
-                Indígena
-            </label>
+                <label for="Indigena">
+                    Indígena
+                </label>
 
-            <input
-                type="checkbox"
-                name="Indigena"
-                id="Indigena"
-                value="true"
-                disabled
-                <?php
+                <input type="checkbox" name="Indigena" id="Indigena" value="true" disabled <?php
                 if ($usuario["Indigena"] === "t") {
                     echo "checked";
                 }
-                ?>
-            >
+                ?>>
 
 
-            <br>
-            <br>
+                <br>
+                <br>
 
 
-            <button
-                type="button"
-                id="BEditar"
-            >
-                Editar
-            </button>
+                <button type="button" id="BEditar">
+                    Editar
+                </button>
+
+                    <button type="submit" name="editar" id="BSalvar" style="display: none;">
+                        Salvar alteração
+                    </button>
+
+                <form action="DadosUser.php" method="POST"
+                    onsubmit="return confirm('Tem certeza que deseja excluir sua conta?');">
+
+                    <button type="submit" name="excluir">
+                        Excluir conta
+                    </button>
+
+                </form>
+
+        </div>
+
+        <script>
+
+            document.addEventListener("DOMContentLoaded", function () {
+
+                const botaoEditar =
+                    document.getElementById("BEditar");
+
+                const botaoSalvar =
+                    document.getElementById("BSalvar");
 
 
-            <button
-                type="submit"
-                name="editar"
-                id="BSalvar"
-                style="display: none;"
-            >
-                Salvar alteração
-            </button>
+                const campos = [
 
-        </form>
+                    document.getElementById("CPF"),
 
+                    document.getElementById("DataNascimento"),
 
-        <!-- ==================================================
-             EXCLUSÃO
-             ================================================== -->
+                    document.getElementById("EMAIL"),
 
-        <form
-            action="DadosUser.php"
-            method="POST"
-            onsubmit="return confirm('Tem certeza que deseja excluir sua conta?');"
-        >
+                    document.getElementById("Celular"),
 
-            <button
-                type="submit"
-                name="excluir"
-            >
-                Excluir conta
-            </button>
+                    document.getElementById("CEP"),
 
-        </form>
+                    document.getElementById("Comorbidades"),
 
-    </div>
+                    document.getElementById("Indigena")
+
+                ];
 
 
-    <!-- ==================================================
-         JAVASCRIPT - BOTÃO EDITAR
-         ================================================== -->
+                botaoEditar.addEventListener("click", function () {
 
-    <script>
+                    campos.forEach(function (campo) {
 
-        document.addEventListener("DOMContentLoaded", function () {
+                        if (campo.type === "checkbox") {
 
-            const botaoEditar =
-                document.getElementById("BEditar");
+                            campo.disabled = false;
 
-            const botaoSalvar =
-                document.getElementById("BSalvar");
+                        } else {
 
+                            campo.removeAttribute("readonly");
 
-            const campos = [
+                        }
 
-                document.getElementById("DataNascimento"),
-
-                document.getElementById("EMAIL"),
-
-                document.getElementById("Celular"),
-
-                document.getElementById("CEP"),
-
-                document.getElementById("Comorbidades"),
-
-                document.getElementById("Indigena")
-
-            ];
+                    });
 
 
-            botaoEditar.addEventListener("click", function () {
+                    botaoEditar.style.display = "none";
 
-                campos.forEach(function (campo) {
-
-                    if (campo.type === "checkbox") {
-
-                        campo.disabled = false;
-
-                    } else {
-
-                        campo.removeAttribute("readonly");
-
-                    }
+                    botaoSalvar.style.display = "inline-block";
 
                 });
 
-
-                botaoEditar.style.display = "none";
-
-                botaoSalvar.style.display = "inline-block";
-
             });
 
-        });
-
-    </script>
+        </script>
 
 
 </body>
