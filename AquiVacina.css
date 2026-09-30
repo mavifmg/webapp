@@ -1,0 +1,638 @@
+/* =========================================================
+   CONFIGURAÇÕES UNIVERSAIS
+   ========================================================= */
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    background: #eef8ff;
+    color: #24445c;
+    padding: 20px;
+}
+
+a {
+    text-decoration: none;
+}
+
+label {
+    font-weight: bold;
+    margin-top: 8px;
+    color: #36596d;
+}
+
+
+/* =========================================================
+   CAMPOS DE FORMULÁRIO - UNIVERSAL
+   ========================================================= */
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+input,
+select,
+textarea {
+    width: 100%;
+    padding: 13px;
+    border: 1px solid #c8dfe9;
+    border-radius: 12px;
+    outline: none;
+    font-size: 15px;
+    background: white;
+    color: #24445c;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+    border-color: #5baed3;
+    box-shadow: 0 0 0 2px rgba(91, 174, 211, 0.15);
+}
+
+textarea {
+    min-height: 90px;
+    resize: vertical;
+}
+
+
+/* =========================================================
+   CHECKBOX - UNIVERSAL
+   ========================================================= */
+
+input[type="checkbox"] {
+    width: auto;
+    margin: 0 8px 0 0;
+}
+
+label:has(input[type="checkbox"]) {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    text-align: left;
+}
+
+
+/* =========================================================
+   BOTÃO PRINCIPAL - UNIVERSAL
+   ========================================================= */
+
+.BotaoCadastrar {
+    display: block;
+    width: 50%;
+    margin: 20px auto 0;
+    padding: 14px;
+    border: none;
+    border-radius: 14px;
+    background: #4da8d1;
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.BotaoCadastrar:hover {
+    background: #378fb8;
+}
+
+
+/* =========================================================
+   BOTÃO DE VOLTAR - UNIVERSAL
+   ========================================================= */
+
+.Voltar {
+    display: inline-block;
+    margin-bottom: 15px;
+    text-decoration: none;
+    color: #287cae;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.Voltar:hover {
+    color: #245b78;
+}
+
+
+/* =========================================================
+   CARTÃO BRANCO - UNIVERSAL
+   ========================================================= */
+
+.CadastroCard {
+    background: white;
+    padding: 25px;
+    border-radius: 25px;
+    box-shadow: 0 5px 20px rgba(70, 130, 160, 0.15);
+}
+
+
+/* =========================================================
+   LOGO - UNIVERSAL
+   ========================================================= */
+
+.Logo {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.Logo img {
+    width: 150px;
+    max-width: 100%;
+    height: auto;
+}
+
+
+/* =========================================================
+   TÍTULOS - UNIVERSAL
+   ========================================================= */
+
+.TituloArea {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 25px;
+}
+
+.TituloTexto h2 {
+    color: #245b78;
+    margin-bottom: 8px;
+}
+
+.TituloTexto p {
+    color: #6b8291;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+
+/* =========================================================
+   ILUSTRAÇÃO - UNIVERSAL
+   ========================================================= */
+
+.Ilustracao img {
+    width: 130px;
+    height: 110px;
+    object-fit: contain;
+}
+
+
+/* =========================================================
+   MENSAGENS - UNIVERSAL
+   ========================================================= */
+
+.Mensagem {
+    padding: 12px;
+    margin-bottom: 20px;
+    border-radius: 12px;
+    background: #e4f7e9;
+    color: #287044;
+    text-align: center;
+    font-weight: bold;
+}
+
+
+/* =========================================================
+   DESCRIÇÕES - UNIVERSAL
+   ========================================================= */
+
+.Descricao {
+    color: #6b8291;
+    font-size: 14px;
+    line-height: 1.6;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+
+/* =========================================================
+   RESULTADO DA LOCALIZAÇÃO - UNIVERSAL
+   ========================================================= */
+
+#resultado {
+    width: 100%;
+    margin-top: 15px;
+    color: #36596d;
+    font-size: 14px;
+    line-height: 1.6;
+    text-align: center;
+    overflow-wrap: anywhere;
+}
+
+
+/* =========================================================
+   CARTÃO DA LOCALIZAÇÃO - UNIVERSAL
+   ========================================================= */
+
+.CartaoLocalizacao {
+    width: 100%;
+    max-width: 400px;
+    margin: 25px auto 0;
+    padding: 20px;
+    background: #f4fbff;
+    border: 1px solid #c8dfe9;
+    border-radius: 18px;
+    box-shadow: 0 3px 10px rgba(70, 130, 160, 0.10);
+    text-align: center;
+}
+
+.CartaoLocalizacao h3 {
+    color: #245b78;
+    font-size: 18px;
+    margin-bottom: 12px;
+}
+
+.CartaoLocalizacao #resultado {
+    margin-top: 0;
+    color: #36596d;
+    font-size: 14px;
+    line-height: 1.8;
+    overflow-wrap: anywhere;
+    text-align: center;
+}
+
+
+/* =========================================================
+   LISTA DE CRIANÇAS - UNIVERSAL
+   ========================================================= */
+
+.ListaCriancas {
+    margin-top: 35px;
+}
+
+.ListaCriancas h2 {
+    color: #245b78;
+    margin-bottom: 5px;
+}
+
+.DescricaoLista {
+    color: #718693;
+    margin-bottom: 15px;
+    font-size: 14px;
+}
+
+.CriancaCard {
+    background: #f4fbff;
+    border: 1px solid #d6ebf4;
+    border-radius: 18px;
+    padding: 18px;
+    margin-top: 15px;
+}
+
+.CriancaCard h3 {
+    color: #286985;
+    margin-bottom: 10px;
+}
+
+.CriancaCard p {
+    margin: 6px 0;
+    font-size: 14px;
+}
+
+
+/* =========================================================
+   AÇÕES DAS CRIANÇAS - UNIVERSAL
+   ========================================================= */
+
+.AcoesCrianca {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.BotaoEditar,
+.BotaoRemover {
+    padding: 9px 15px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.BotaoEditar {
+    background: #d8f0fc;
+    color: #287cae;
+}
+
+.BotaoEditar:hover {
+    background: #c5e8f8;
+}
+
+.BotaoRemover {
+    background: #ffe1e1;
+    color: #c34f4f;
+}
+
+.BotaoRemover:hover {
+    background: #ffd0d0;
+}
+
+
+/* =========================================================
+   CADASTRO - CONFIGURAÇÕES ESPECÍFICAS
+   ========================================================= */
+
+.ContainerCadastro {
+    width: 100%;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+
+/* CEP + NÚMERO */
+
+.CepNumero {
+    display: flex;
+    gap: 10px;
+    width: 100%;
+    align-items: flex-end;
+}
+
+.CepNumero > div:first-child {
+    flex: 1;
+}
+
+.CepNumero > div:last-child {
+    width: 120px;
+    flex-shrink: 0;
+}
+
+.CepNumero label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.CepNumero input {
+    width: 100%;
+}
+
+
+/* CHECKBOX INDÍGENA */
+
+.CampoIndigena {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 10px;
+}
+
+.CampoIndigena input[type="checkbox"] {
+    width: auto;
+    margin: 0;
+}
+
+
+/* =========================================================
+   LOGIN - CONFIGURAÇÕES ESPECÍFICAS
+   ========================================================= */
+
+.Login .LocLogin {
+    width: 100%;
+    max-width: 450px;
+    margin: 40px auto;
+}
+
+.Login .FundoLog {
+    background: white;
+    padding: 30px;
+    border-radius: 25px;
+    box-shadow: 0 5px 20px rgba(70, 130, 160, 0.15);
+}
+
+.Login .BotoesLogin {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    width: 100%;
+    margin-top: 20px;
+}
+
+.Login .BotoesLogin .BotaoCadastrar {
+    width: 100%;
+    max-width: 400px;
+    margin-top: 0;
+}
+
+
+/* =========================================================
+   MENU PRINCIPAL - CONFIGURAÇÕES ESPECÍFICAS
+   ========================================================= */
+
+.Menu .LocMenu {
+    width: 100%;
+    max-width: 600px;
+    margin: 30px auto;
+}
+
+.Menu .FundoLog {
+    width: 100%;
+    background: white;
+    padding: 30px;
+    border-radius: 25px;
+    box-shadow: 0 5px 20px rgba(70, 130, 160, 0.15);
+}
+
+
+/* BOTÕES DO MENU */
+
+.Menu .BotoesMenu {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    width: 100%;
+    margin-top: 10px;
+}
+
+.Menu .BotoesMenu a {
+    display: block;
+    width: 100%;
+    max-width: 400px;
+    text-decoration: none;
+}
+
+.Menu .BotoesMenu button {
+    display: block;
+    width: 100%;
+    padding: 14px;
+    border: none;
+    border-radius: 14px;
+    background: #4da8d1;
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.Menu .BotoesMenu button:hover {
+    background: #378fb8;
+}
+
+
+/* COMPATIBILIDADE COM CLASSE ANTIGA */
+
+.Menu .LocInformacoesUbs {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+}
+
+.Menu .LocInformacoesUbs a {
+    display: block;
+    width: 100%;
+    max-width: 400px;
+    text-decoration: none;
+}
+
+.Menu .LocInformacoesUbs button {
+    display: block;
+    width: 100%;
+    padding: 14px;
+    border: none;
+    border-radius: 14px;
+    background: #4da8d1;
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.Menu .LocInformacoesUbs button:hover {
+    background: #378fb8;
+}
+
+
+/* =========================================================
+   INFORMAÇÕES DA UBS - CONFIGURAÇÕES ESPECÍFICAS
+   ========================================================= */
+
+.InformacoesUbs .LocInformacoesUbs {
+    width: 100%;
+    max-width: 450px;
+    margin: 40px auto;
+}
+
+.InformacoesUbs .FundoLog {
+    background: white;
+    padding: 30px;
+    border-radius: 25px;
+    box-shadow: 0 5px 20px rgba(70, 130, 160, 0.15);
+}
+
+
+/* TÍTULO E INFORMAÇÕES DA UBS */
+
+.InformacoesUbs h1 {
+    color: #245b78;
+    margin: 15px 0 25px;
+    overflow-wrap: anywhere;
+}
+
+.InformacoesUbs .Dados p {
+    margin-bottom: 18px;
+    color: #36596d;
+    line-height: 1.6;
+    overflow-wrap: anywhere;
+}
+
+
+/* BOTÕES DA UBS */
+
+.InformacoesUbs .Dados a {
+    display: block;
+    width: 100%;
+    text-decoration: none;
+}
+
+.InformacoesUbs .Dados .BotaoCadastrar {
+    margin-top: 10px;
+}
+
+
+/* RESULTADO DA UBS */
+
+.InformacoesUbs #resultado {
+    margin-top: 15px;
+    text-align: center;
+    line-height: 1.8;
+    overflow-wrap: anywhere;
+}
+
+
+/* =========================================================
+   RESPONSIVIDADE - CELULARES
+   ========================================================= */
+
+@media (max-width: 600px) {
+
+    body {
+        padding: 10px;
+    }
+
+    .CadastroCard {
+        padding: 15px;
+        border-radius: 18px;
+    }
+
+    .Menu .FundoLog {
+        padding: 15px;
+        border-radius: 18px;
+    }
+
+    .Login .FundoLog {
+        padding: 20px;
+        border-radius: 18px;
+    }
+
+    .InformacoesUbs .FundoLog {
+        padding: 15px;
+        border-radius: 18px;
+    }
+
+    .TituloArea {
+        align-items: flex-start;
+    }
+
+    .Ilustracao img {
+        width: 90px;
+        height: 80px;
+    }
+
+    .AcoesCrianca {
+        flex-direction: column;
+    }
+
+    .AcoesCrianca button {
+        width: 100%;
+    }
+
+    .Menu .BotoesMenu {
+        gap: 12px;
+    }
+
+    .Menu .BotoesMenu a {
+        max-width: 100%;
+    }
+
+    .CepNumero div:last-child {
+        width: 100px;
+    }
+
+    .InformacoesUbs h1 {
+        font-size: 23px;
+    }
+}

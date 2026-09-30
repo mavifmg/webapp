@@ -30,6 +30,7 @@ $DataNascimento = $_SESSION['DataNascimento'];
 
     <link rel="stylesheet" href="AquiVacina.css">
 
+
 </head>
 
 <body class="Menu">
@@ -40,34 +41,36 @@ $DataNascimento = $_SESSION['DataNascimento'];
 
             <br>
 
-            <div class="LocInformacoesUbs">
+            <div class="InformacoesUbs">
 
-                <a href="Login.php">
-                    <button type="button">Sair</button>
+                <a href="javascript:history.back()" class"Voltar">
+                    ←
                 </a>
 
                 <form action="Menu.php">
 
-                    <div style="text-align: center;">
-
+                    <div>
                         <a href="Cadastrocriancas.php">
-                            <button type="button">Cadastro de Crianças</button>
+                            <button type="button"  class="BotaoCadastrar">Cadastro de Crianças</button>
                         </a>
 
                         <a href="DadosUser.php">
-                            <button type="button">Meus Dados</button>
+                            <button type="button" class="BotaoCadastrar">Meus Dados</button>
                         </a>
 
                         <a href="InformacoesUbs.php">
-                            <button type="button">Informações da UBS</button>
+                            <button type="button" class="BotaoCadastrar">Informações da UBS</button>
                         </a>
-
                     </div>
 
                 </form>
 
-                <!-- Resultado da localização -->
-                <div id="resultado"></div>
+                <div class="CartaoLocalizacao" style="text-align: center;">
+                    <h3>Sua localização</h3>
+                    <div id="resultado">
+                        Obtendo sua localização...
+                    </div>
+                </div>
 
                 <script>
 
@@ -111,7 +114,7 @@ $DataNascimento = $_SESSION['DataNascimento'];
                     }
 
                     // Executa automaticamente quando o Menu abrir
-                    window.onload = function() {
+                    window.onload = function () {
                         pegarLocalizacao();
                     };
 

@@ -1,6 +1,6 @@
 <?php
-    session_start();
-    require_once "Conexao.php";
+session_start();
+require_once "Conexao.php";
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
@@ -9,42 +9,44 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $EMAIL = $_POST["EMAIL"];
     $Celular = $_POST["Celular"];
     $CEP = $_POST["CEP"];
-    $Indigena =  isset($_POST["Indigena"]) ? 'true' : 'false';
+    $NumCasa = $_POST["NumCasa"];
+    $Indigena = isset($_POST["Indigena"]) ? 'true' : 'false';
     $Comorbidades = $_POST["Comorbidades"];
     $Autorizacao_Loc = isset($_POST["Autorizacao_Loc"]) ? 'true' : 'false';
 
-    if(
+    if (
 
         empty($CPF) ||
         empty($EMAIL) ||
         empty($DataNascimento) ||
         empty($Celular) ||
         empty($CEP) ||
+        empty($NumCasa) ||
         empty($Comorbidades) ||
         $Autorizacao_Loc === 'false'
-        
+
     ) {
-       $_SESSION['erro_cadastro'] = "Preencha todos os campos obrigatórios e aceite a autorização local para prosseguir com o cadastro.";
-    header("Location: Cadastro.php");
-    exit();
-    
+        $_SESSION['erro_cadastro'] = "Preencha todos os campos obrigatórios e aceite a autorização local para prosseguir com o cadastro.";
+        header("Location: Cadastro.php");
+        exit();
+
     }
 
-        $sql = "INSERT INTO cadastro (\"CPF\", \"DataNascimento\", \"EMAIL\", \"Celular\", \"CEP\", \"Indigena\", \"Comorbidades\", \"Autorizacao_Loc\")
-                VALUES ($1, $2, $3, $4, $5, $6, $7, $8)";
+    $sql = "INSERT INTO cadastro (\"CPF\", \"DataNascimento\", \"EMAIL\", \"Celular\", \"CEP\", \"NumCasa\", \"Indigena\", \"Comorbidades\", \"Autorizacao_Loc\")
+                VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)";
 
     $resultado = pg_query_params(
         $conn,
         $sql,
-        [$CPF, $DataNascimento, $EMAIL, $Celular, $CEP, $Indigena, $Comorbidades, $Autorizacao_Loc]
+        [$CPF, $DataNascimento, $EMAIL, $Celular, $CEP, $NumCasa, $Indigena, $Comorbidades, $Autorizacao_Loc]
     );
-    
+
     if ($resultado !== false) {
 
-    $_SESSION['CPF'] = $CPF;
-    $_SESSION['DataNascimento'] = $DataNascimento;
+        $_SESSION['CPF'] = $CPF;
+        $_SESSION['DataNascimento'] = $DataNascimento;
 
-    header("location: Menu.php");
+        header("location: Menu.php");
         exit();
 
     } else {
@@ -52,31 +54,33 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $_SESSION['erro_cadastro'] = "Erro ao cadastrar!";
 
         header("Location: Cadastro.php");
-        exit(); 
+        exit();
     }
 
 }
 
-    pg_close($conn);
+pg_close($conn);
 
 ?>
 
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AquiVacina | Cadastro</title>
     <link rel="stylesheet" href="AquiVacina.css">
     <script src="https://kit.fontawesome.com/cc9bf1d657.js" crossorigin="anonymous"></script>
-    
+
 </head>
+
 <body class="Cadastro">
-    
+
     <a href="Login.php">
         <button id="Posicao"><i class="fa-solid fa-arrow-left"></i></button>
     </a>
-    
+
     <h2> Usuário não cadastrado</h2>
 
 
@@ -84,52 +88,68 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         <div class="FundoCad">
             <br>
             <form action="Cadastro.php" method="POST">
-                
+
                 <label id="cpf">CPF</label>
                 <input placeholder="Digite seu CPF" type="text" name="CPF">
 
                 <label id="senha">Data de Nascimento</label>
                 <input placeholder="Digite sua data de nascimento" type="date" name="DataNascimento">
-                
+
                 <label id="email">Email</label>
                 <input placeholder="Digite seu email" type="email" name="EMAIL">
 
                 <label id="celular">Celular</label>
-                <input placeholder="Digite seu celular" type="text" name="Celular"> 
+                <input placeholder="Digite seu celular" type="text" name="Celular">
 
-                <label id="cep">CEP</label>
-                <input placeholder="Digite seu CEP" type="text" name="CEP"> 
+                <div class="CepNumero">
+
+                    <div>
+                        <label for="cep">CEP</label>
+                        <input id="cep" placeholder="Digite seu CEP" type="text" name="CEP" required>
+                    </div>
+
+                    <div>
+                        <label for="numero">Número</label>
+                        <input id="numero" placeholder="Nº" type="text" name="Numero" required>
+                    </div>
+
+                </div>
 
                 <label id="comorbidades">Comorbidades</label>
                 <input placeholder="Digite suas comorbidades" type="text" name="Comorbidades">
 
-                <label id="indigena">Indígena</label>
-                <input type="checkbox" name="Indigena" value="true">
+                <label id="indigena">
+                    <input type="checkbox" name="Indigena" value="true">
+                    Sou indígena
+                </label>
 
-                <label id="autorizacao">Autorização Local</label>
-                <input type="checkbox" name="Autorizacao_Loc" value="true">
+                <label id="autorizacao">
+                    <input type="checkbox" name="Autorizacao_Loc" value="true">
+                    Autorizo meu local atual
+                </label>
                 <br>
-                
- 
+
+
                 <?php
-                    if(isset($_SESSION['erro_cadastro'])) {
-                        echo "<p class='text-danger'>" . $_SESSION['erro_cadastro'] . "</p>";
-                        unset($_SESSION['erro_cadastro']);
-                    }
+                if (isset($_SESSION['erro_cadastro'])) {
+                    echo "<p class='text-danger'>" . $_SESSION['erro_cadastro'] . "</p>";
+                    unset($_SESSION['erro_cadastro']);
+                }
                 ?>
 
                 <?php
-                    if(isset($_SESSION['cadastro'])) {
-                        echo "<p class='text-sucess'>" . $_SESSION['cadastro'] . "</p>";
-                        unset($_SESSION['cadastro']);
-                    }
+                if (isset($_SESSION['cadastro'])) {
+                    echo "<p class='text-sucess'>" . $_SESSION['cadastro'] . "</p>";
+                    unset($_SESSION['cadastro']);
+                }
                 ?>
 
-                <button type="submit">Completar cadastro</button>
-                
+                <button type="submit" class="BotaoCadastrar">Completar cadastro</button>
+
             </form>
-            
+
         </div>
     </div>
 </body>
+
 </html>

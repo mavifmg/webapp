@@ -31,58 +31,61 @@ if ($result === false) {
 <body class="InformacoesUbs">
 
     <div class="LocInformacoesUbs">
-        <a href="Menu.php">
-            <button type="button">Voltar</button>
-        </a>
+        <div class="FundoLog">
 
-        <?php
-        $usuario = ($usuario = pg_fetch_assoc($result))
-            ? $usuario
-            : [
-                "nomeubs" => "Não encontrado",
-                "endereco" => "Não encontrado",
-                "horariofuncio" => "Não encontrado",
-                "infoextra" => "Não encontrado",
-                "latitude" => "Não encontrado",
-                "longitude" => "Não encontrado"
-            ];
-        ?>
-
-        <h1>
-            Dados da UBS: <?php echo $usuario["nomeubs"]; ?>
-        </h1>
-
-        <div class="Dados">
-            <p>
-                <strong>Endereço:</strong>
-                <?php echo $usuario["endereco"]; ?>
-            </p>
-
-            <p>
-                <strong>Horário de Funcionamento:</strong>
-                <?php echo $usuario["horariofuncio"]; ?>
-            </p>
-
-            <p>
-                <strong>Informações Extras:</strong>
-                <?php echo $usuario["infoextra"]; ?>
-            </p>
-
-            <a href="VacinasDisp.php">
-                <button type="button">Vacinas Disponíveis</button>
+            <a href="javascript:history.back()" class"Voltar">
+                ←
             </a>
 
-            <a href="ProfissionaisUbs.php">
-                <button type="button">Profissionais disponíveis nesta UBS</button>
-            </a>
+            <?php
+            $usuario = ($usuario = pg_fetch_assoc($result))
+                ? $usuario
+                : [
+                    "nomeubs" => "Não encontrado",
+                    "endereco" => "Não encontrado",
+                    "horariofuncio" => "Não encontrado",
+                    "infoextra" => "Não encontrado",
+                    "latitude" => "Não encontrado",
+                    "longitude" => "Não encontrado"
+                ];
+            ?>
 
-            <!-- Botão que aciona a geolocalização do navegador do usuário (se ainda quiser usar) -->
-            <button type="button" onclick="pegarLocalizacao()">
-                Obter minha localização atual
-            </button>
+            <h1>
+                Dados da UBS mais próxima: <?php echo $usuario["nomeubs"]; ?>
+            </h1>
 
-            <!-- Onde a mensagem do GPS do usuário vai aparecer -->
-            <p id="resultado"></p>
+            <div class="Dados">
+                <p>
+                    <strong>Endereço:</strong>
+                    <?php echo $usuario["endereco"]; ?>
+                </p>
+
+                <p>
+                    <strong>Horário de Funcionamento:</strong>
+                    <?php echo $usuario["horariofuncio"]; ?>
+                </p>
+
+                <p>
+                    <strong>Informações Extras:</strong>
+                    <?php echo $usuario["infoextra"]; ?>
+                </p>
+
+                <a href="VacinasDisp.php">
+                    <button type="button" class="BotaoCadastrar">Vacinas Disponíveis</button>
+                </a>
+
+                <a href="ProfissionaisUbs.php">
+                    <button type="button" class="BotaoCadastrar">Profissionais disponíveis nesta UBS</button>
+                </a>
+
+                <!-- Botão que aciona a geolocalização do navegador do usuário (se ainda quiser usar) -->
+                <button type="button" class="BotaoCadastrar" onclick="pegarLocalizacao()">
+                    Obter minha localização atual
+                </button>
+
+                <!-- Onde a mensagem do GPS do usuário vai aparecer -->
+                <p id="resultado"></p>
+            </div>
         </div>
     </div>
 

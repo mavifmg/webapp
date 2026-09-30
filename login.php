@@ -93,14 +93,14 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                     }
                     ?>
 
-                    <button type="submit">Login</button>
+                    <button type="submit" class="BotaoCadastrar">Login</button>
 
                 </div>
             </form>
 
             <div style="text-align: center;">
                 <a href="Cadastro.php">
-                    <button type="button">Cadastro</button>
+                    <button type="button" class="BotaoCadastrar">Cadastro</button>
                 </a>
             </div>
 

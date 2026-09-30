@@ -322,33 +322,28 @@ if (!$usuario) {
                     readonly>
 
 
-                <label for="Indigena">
-                    Indígena
+                <label id="indigena">
+                    <input type="checkbox" name="Indigena" value="true">
+                    Sou indígena
                 </label>
 
-                <input type="checkbox" name="Indigena" id="Indigena" value="true" disabled <?php
-                if ($usuario["Indigena"] === "t") {
-                    echo "checked";
-                }
-                ?>>
-
 
                 <br>
                 <br>
 
 
-                <button type="button" id="BEditar">
+                <button class="BotaoCadastrar" type="button" id="BEditar" >
                     Editar
                 </button>
 
-                    <button type="submit" name="editar" id="BSalvar" style="display: none;">
+                    <button class="BotaoCadastrar" type="submit" name="editar" id="BSalvar" style="display: none;">
                         Salvar alteração
                     </button>
 
                 <form action="DadosUser.php" method="POST"
                     onsubmit="return confirm('Tem certeza que deseja excluir sua conta?');">
 
-                    <button type="submit" name="excluir">
+                    <button class="BotaoCadastrar" type="submit" name="excluir">
                         Excluir conta
                     </button>
 
