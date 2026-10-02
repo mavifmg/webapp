@@ -2,12 +2,14 @@
 session_start();
 require_once "Conexao.php";
 
-// Adicionado "latitude" e "longitude" na consulta SQL
 $sql = 'SELECT 
-        "nomeubs",
-        "endereco",
-        "horariofuncio",
-        "infoextra"
+            "nomeubs",
+            "endereco",
+            "horariofuncio",
+            "infoextra",
+            "NumUBS",
+            "latitudeubs",
+            "longitudeubs"
         FROM cadastroubs
         ORDER BY "nomeubs"';
 
@@ -16,16 +18,28 @@ $result = pg_query($conn, $sql);
 if ($result === false) {
     die("Erro na consulta: " . pg_last_error($conn));
 }
+
+// Transforma o resultado do banco em um array PHP
+$ubs = [];
+
+while ($row = pg_fetch_assoc($result)) {
+    $ubs[] = $row;
+}
+
+// Transforma o array PHP em JSON para o JavaScript
+$ubsJson = json_encode($ubs, JSON_UNESCAPED_UNICODE);
 ?>
+
 
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
-    <title>Mapa Simples</title>
+    <title>Mapa das UBS</title>
 
     <!-- CSS do Leaflet -->
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 
     <style>
         #mapa {
@@ -34,70 +48,66 @@ if ($result === false) {
         }
     </style>
 </head>
+
 <body>
+
+    <a href="Menu.php">
+        <button type="button">Voltar</button>
+    </a>
 
     <div id="mapa"></div>
 
     <!-- JS do Leaflet -->
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
-<?php
-$dadosUBS = [
-    "nome" => $usuario["nomeubs"] ?? "UBS",
-    "endereco" => $usuario["endereco"] ?? "Endereço não informado",
-    "horario" => $usuario["horariofuncio"] ?? "Horário não informado",
-    "informacoes" => $usuario["infoextra"] ?? "",
-    "latitude" => is_numeric($usuario["latitude"] ?? null)
-        ? (float) $usuario["latitude"] : null,
-    "longitude" => is_numeric($usuario["longitude"] ?? null)
-        ? (float) $usuario["longitude"] : null
-];
-?>
+    <script>
 
-<script>
-    const ubs = <?= json_encode(
-        $dadosUBS,
-        JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT
-    ) ?>;
+        // 4. Cria o mapa
+        const map = L.map("mapa").setView(
+            [-20.5131, -43.7130],
+            15
+        );
 
-    // Cria o mapa
-    const map = L.map("mapa");
+        // 5. Adiciona o mapa OpenStreetMap
+        L.tileLayer(
+            "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+            {
+                maxZoom: 19,
+                attribution: "&copy; OpenStreetMap contributors"
+            }
+        ).addTo(map);
 
-    // Adiciona as imagens do OpenStreetMap
-    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-        maxZoom: 19,
-        attribution: "&copy; OpenStreetMap contributors"
-    }).addTo(map);
 
-    // Verifica se a UBS possui coordenadas cadastradas
-    if (ubs.latitude !== null && ubs.longitude !== null) {
+        // 6. Recebe as UBS que vieram do PHP
+        const ubs = <?php echo $ubsJson; ?>;
 
-        // Centraliza o mapa na UBS
-        map.setView([ubs.latitude, ubs.longitude], 16);
 
-        // Cria o marcador da UBS
-        L.marker([ubs.latitude, ubs.longitude])
-            .addTo(map)
-            .bindPopup(`
-                <strong>${ubs.nome}</strong><br>
-                <strong>Endereço:</strong> ${ubs.endereco}<br>
-                <strong>Horário:</strong> ${ubs.horario}<br>
-                <strong>Informações:</strong> ${ubs.informacoes}
-            `)
-            .openPopup();
+        // 7. Cria automaticamente um marcador para cada UBS
+        ubs.forEach(function (ubs) {
 
-    } else {
-        // Sem coordenadas cadastradas, mostra Ouro Branco como referência
-        map.setView([-20.5197, -43.6905], 14);
+            const latitude = parseFloat(ubs.latitudeubs);
+            const longitude = parseFloat(ubs.longitudeubs);
 
-        L.popup()
-            .setLatLng([-20.5197, -43.6905])
-            .setContent(
-                "A UBS ainda não possui latitude e longitude cadastradas."
-            )
-            .openOn(map);
-    }
-</script>
+            // Verifica se a UBS possui coordenadas válidas
+            if (isNaN(latitude) || isNaN(longitude)) {
+                return;
+            }
+
+            // Cria o marcador
+            L.marker([latitude, longitude])
+                .addTo(map)
+
+                // Informações que aparecem ao clicar no pino
+                .bindPopup(`
+                    <strong>${ubs.nomeubs}</strong><br>
+                    ${ubs.endereco}<br>
+                    Nº ${ubs.NumUBS}<br>
+                    ${ubs.horariofuncio}
+                `);
+        });
+
+    </script>
 
 </body>
+
 </html>

@@ -43,7 +43,7 @@ $DataNascimento = $_SESSION['DataNascimento'];
 
             <div class="InformacoesUbs">
 
-                <a href="javascript:history.back()" class"Voltar">
+                <a href="javascript:history.back()" class="Voltar">
                     ←
                 </a>
 
@@ -51,14 +51,14 @@ $DataNascimento = $_SESSION['DataNascimento'];
 
                     <div>
                         <a href="Cadastrocriancas.php">
-                            <button type="button"  class="BotaoCadastrar">Cadastro de Crianças</button>
+                            <button type="button" class="BotaoCadastrar">Cadastro de Crianças</button>
                         </a>
 
                         <a href="DadosUser.php">
                             <button type="button" class="BotaoCadastrar">Meus Dados</button>
                         </a>
 
-                        <a href="InformacoesUbs.php">
+                        <a href="Mapa.php">
                             <button type="button" class="BotaoCadastrar">Informações da UBS</button>
                         </a>
                     </div>
