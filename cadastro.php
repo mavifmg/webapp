@@ -15,21 +15,18 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $Autorizacao_Loc = isset($_POST["Autorizacao_Loc"]) ? 'true' : 'false';
 
     if (
-
         empty($CPF) ||
-        empty($EMAIL) ||
         empty($DataNascimento) ||
+        empty($EMAIL) ||
         empty($Celular) ||
         empty($CEP) ||
         empty($NumCasa) ||
         empty($Comorbidades) ||
-        $Autorizacao_Loc === 'false'
-
+        !isset($_POST["Autorizacao_Loc"])
     ) {
         $_SESSION['erro_cadastro'] = "Preencha todos os campos obrigatórios e aceite a autorização local para prosseguir com o cadastro.";
         header("Location: Cadastro.php");
         exit();
-
     }
 
     $sql = "INSERT INTO cadastro (\"CPF\", \"DataNascimento\", \"EMAIL\", \"Celular\", \"CEP\", \"NumCasa\", \"Indigena\", \"Comorbidades\", \"Autorizacao_Loc\")
@@ -85,7 +82,8 @@ pg_close($conn);
 
 
     <div class="LocCad">
-        <div class="FundoCad">
+        <div class="CadastroCard">
+
             <br>
             <form action="Cadastro.php" method="POST">
 
@@ -109,8 +107,8 @@ pg_close($conn);
                     </div>
 
                     <div>
-                        <label for="numero">Número</label>
-                        <input id="numero" placeholder="Nº" type="text" name="Numero" required>
+                        <label for="NumCasa">Número</label>
+                        <input id="NumCasa" placeholder="Nº" type="text" name="NumCasa" required>
                     </div>
 
                 </div>
@@ -147,6 +145,7 @@ pg_close($conn);
                 <button type="submit" class="BotaoCadastrar">Completar cadastro</button>
 
             </form>
+
 
         </div>
     </div>

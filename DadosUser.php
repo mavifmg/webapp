@@ -3,6 +3,11 @@
 session_start();
 require_once "Conexao.php";
 
+
+// ======================================================
+// VERIFICAR SE O USUÁRIO ESTÁ LOGADO
+// ======================================================
+
 if (!isset($_SESSION['CPF'])) {
     header("Location: Login.php");
     exit();
@@ -10,17 +15,30 @@ if (!isset($_SESSION['CPF'])) {
 
 $CPF = $_SESSION['CPF'];
 
+
+// ======================================================
+// EDITAR DADOS
+// ======================================================
+
 if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["editar"])) {
 
+    // CPF antigo, usado no WHERE
+    $CPF_antigo = $_SESSION['CPF'];
 
-    $CPF = $_POST["CPF"] ?? ""; 
+    $CPF = $_POST["CPF"] ?? "";
     $DataNascimento = $_POST["DataNascimento"] ?? "";
     $EMAIL = $_POST["EMAIL"] ?? "";
     $Celular = $_POST["Celular"] ?? "";
     $CEP = $_POST["CEP"] ?? "";
+    $NumCasa = $_POST["NumCasa"] ?? "";
     $Comorbidades = $_POST["Comorbidades"] ?? "";
 
     $Indigena = isset($_POST["Indigena"]) ? 'true' : 'false';
+
+
+    // ==================================================
+    // VERIFICAR CAMPOS OBRIGATÓRIOS
+    // ==================================================
 
     if (
         empty($CPF) ||
@@ -28,6 +46,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["editar"])) {
         empty($EMAIL) ||
         empty($Celular) ||
         empty($CEP) ||
+        empty($NumCasa) ||
         empty($Comorbidades)
     ) {
 
@@ -38,15 +57,21 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["editar"])) {
         exit();
     }
 
+
+    // ==================================================
+    // ATUALIZAR NO BANCO
+    // ==================================================
+
     $sql = 'UPDATE cadastro
             SET "CPF" = $1,
                 "DataNascimento" = $2,
                 "EMAIL" = $3,
                 "Celular" = $4,
                 "CEP" = $5,
-                "Indigena" = $6,
-                "Comorbidades" = $7
-            WHERE "CPF" = $8';
+                "NumCasa" = $6,
+                "Indigena" = $7,
+                "Comorbidades" = $8
+            WHERE "CPF" = $9';
 
 
     $resultado = pg_query_params(
@@ -58,13 +83,22 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["editar"])) {
             $EMAIL,
             $Celular,
             $CEP,
+            $NumCasa,
             $Indigena,
-            $Comorbidades
+            $Comorbidades,
+            $CPF_antigo
         ]
     );
 
 
+    // ==================================================
+    // VERIFICAR RESULTADO
+    // ==================================================
+
     if ($resultado !== false) {
+
+        // Atualizar CPF da sessão
+        $_SESSION['CPF'] = $CPF;
 
         $_SESSION["sucesso_editar"] =
             "Dados atualizados com sucesso!";
@@ -72,7 +106,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["editar"])) {
     } else {
 
         $_SESSION["erro_editar"] =
-            "Erro ao atualizar os dados: " . pg_last_error($conn);
+            "Erro ao atualizar os dados: " .
+            pg_last_error($conn);
     }
 
 
@@ -80,11 +115,17 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["editar"])) {
     exit();
 }
 
-if (isset($_POST["excluir"])) {
+
+// ======================================================
+// EXCLUIR CONTA
+// ======================================================
+
+if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["excluir"])) {
 
     $sql = 'SELECT "CPF"
             FROM cadastro
             WHERE "CPF" = $1';
+
 
     $resultado = pg_query_params(
         $conn,
@@ -105,8 +146,11 @@ if (isset($_POST["excluir"])) {
         exit();
     }
 
+
+    // Excluir usuário
     $sql = 'DELETE FROM cadastro
             WHERE "CPF" = $1';
+
 
     $resultado = pg_query_params(
         $conn,
@@ -125,7 +169,8 @@ if (isset($_POST["excluir"])) {
     } else {
 
         $_SESSION["erro_usuario"] =
-            "Erro ao excluir usuário: " . pg_last_error($conn);
+            "Erro ao excluir usuário: " .
+            pg_last_error($conn);
 
         header("Location: DadosUser.php");
         exit();
@@ -133,12 +178,17 @@ if (isset($_POST["excluir"])) {
 }
 
 
+// ======================================================
+// BUSCAR DADOS DO USUÁRIO
+// ======================================================
+
 $sql = 'SELECT
             "CPF",
             "DataNascimento",
             "EMAIL",
             "Celular",
             "CEP",
+            "NumCasa",
             "Indigena",
             "Comorbidades",
             "Autorizacao_Loc"
@@ -197,67 +247,150 @@ if (!$usuario) {
         <div class="FundoDadosUser">
 
             <div class="LocInformacoesUbs">
+
                 <a href="Menu.php">
-                    <button type="button">Voltar</button>
+
+                    <button type="button">
+                        Voltar
+                    </button>
+
                 </a>
 
+
                 <h1>
+
                     Dados do CPF:
-                    <?php echo $usuario["CPF"]; ?>
+
+                    <?php
+                    echo htmlspecialchars($usuario["CPF"]);
+                    ?>
+
                 </h1>
 
 
                 <div class="Dados">
 
                     <p>
-                        <strong>Data de Nascimento:</strong>
-                        <?php echo $usuario["DataNascimento"]; ?>
-                    </p>
 
-
-                    <p>
-                        <strong>Email:</strong>
-                        <?php echo $usuario["EMAIL"]; ?>
-                    </p>
-
-
-                    <p>
-                        <strong>Celular:</strong>
-                        <?php echo $usuario["Celular"]; ?>
-                    </p>
-
-
-                    <p>
-                        <strong>CEP:</strong>
-                        <?php echo $usuario["CEP"]; ?>
-                    </p>
-
-
-                    <p>
-                        <strong>Indígena:</strong>
+                        <strong>
+                            Data de Nascimento:
+                        </strong>
 
                         <?php
-                        echo $usuario["Indigena"] === "t"
-                            ? "Sim"
-                            : "Não";
+                        echo htmlspecialchars(
+                            $usuario["DataNascimento"]
+                        );
                         ?>
 
                     </p>
 
 
                     <p>
-                        <strong>Comorbidades:</strong>
-                        <?php echo $usuario["Comorbidades"]; ?>
+
+                        <strong>
+                            Email:
+                        </strong>
+
+                        <?php
+                        echo htmlspecialchars(
+                            $usuario["EMAIL"]
+                        );
+                        ?>
+
                     </p>
 
 
                     <p>
-                        <strong>Autorização Local:</strong>
+
+                        <strong>
+                            Celular:
+                        </strong>
 
                         <?php
+                        echo htmlspecialchars(
+                            $usuario["Celular"]
+                        );
+                        ?>
+
+                    </p>
+
+
+                    <p>
+
+                        <strong>
+                            CEP:
+                        </strong>
+
+                        <?php
+                        echo htmlspecialchars(
+                            $usuario["CEP"]
+                        );
+                        ?>
+
+                    </p>
+
+
+                    <p>
+
+                        <strong>
+                            Número:
+                        </strong>
+
+                        <?php
+                        echo htmlspecialchars(
+                            $usuario["NumCasa"]
+                        );
+                        ?>
+
+                    </p>
+
+
+                    <p>
+
+                        <strong>
+                            Indígena:
+                        </strong>
+
+
+                        <?php
+
+                        echo $usuario["Indigena"] === "t"
+                            ? "Sim"
+                            : "Não";
+
+                        ?>
+
+                    </p>
+
+
+                    <p>
+
+                        <strong>
+                            Comorbidades:
+                        </strong>
+
+                        <?php
+                        echo htmlspecialchars(
+                            $usuario["Comorbidades"]
+                        );
+                        ?>
+
+                    </p>
+
+
+                    <p>
+
+                        <strong>
+                            Autorização Local:
+                        </strong>
+
+
+                        <?php
+
                         echo $usuario["Autorizacao_Loc"] === "t"
                             ? "Sim"
                             : "Não";
+
                         ?>
 
                     </p>
@@ -267,64 +400,154 @@ if (!$usuario) {
             </div>
 
         </div>
-        
+
+
+        <!-- ==================================================
+             FORMULÁRIO DE EDIÇÃO
+        =================================================== -->
 
         <div class="DadosUsuario">
 
-            <h1>Dados do Usuário</h1>
+            <h1>
+                Dados do Usuário
+            </h1>
 
 
-            <form action="DadosUser.php" method="POST" id="formUsuario">
+            <form
+                action="DadosUser.php"
+                method="POST"
+                id="formUsuario"
+            >
 
+
+                <!-- CPF -->
 
                 <label for="CPF">
                     CPF
                 </label>
 
-                <input type="text" name="CPF" id="CPF" 
-                value="<?php echo $usuario["CPF"]; ?>" readonly>
+                <input
+                    type="text"
+                    name="CPF"
+                    id="CPF"
+                    value="<?php echo htmlspecialchars($usuario["CPF"]); ?>"
+                    readonly
+                >
 
+
+                <!-- DATA DE NASCIMENTO -->
 
                 <label for="DataNascimento">
                     Data de Nascimento
                 </label>
 
-                <input type="date" name="DataNascimento" id="DataNascimento"
-                    value="<?php echo $usuario["DataNascimento"]; ?>" readonly>
+                <input
+                    type="date"
+                    name="DataNascimento"
+                    id="DataNascimento"
+                    value="<?php echo htmlspecialchars($usuario["DataNascimento"]); ?>"
+                    readonly
+                >
 
+
+                <!-- EMAIL -->
 
                 <label for="EMAIL">
                     Email
                 </label>
 
-                <input type="email" name="EMAIL" id="EMAIL" value="<?php echo $usuario["EMAIL"]; ?>" readonly>
+                <input
+                    type="email"
+                    name="EMAIL"
+                    id="EMAIL"
+                    value="<?php echo htmlspecialchars($usuario["EMAIL"]); ?>"
+                    readonly
+                >
 
+
+                <!-- CELULAR -->
 
                 <label for="Celular">
                     Celular
                 </label>
 
-                <input type="text" name="Celular" id="Celular" value="<?php echo $usuario["Celular"]; ?>" readonly>
+                <input
+                    type="text"
+                    name="Celular"
+                    id="Celular"
+                    value="<?php echo htmlspecialchars($usuario["Celular"]); ?>"
+                    readonly
+                >
 
+
+                <!-- CEP -->
 
                 <label for="CEP">
                     CEP
                 </label>
 
-                <input type="text" name="CEP" id="CEP" value="<?php echo $usuario["CEP"]; ?>" readonly>
+                <input
+                    type="text"
+                    name="CEP"
+                    id="CEP"
+                    value="<?php echo htmlspecialchars($usuario["CEP"]); ?>"
+                    readonly
+                >
 
+
+                <!-- NÚMERO -->
+
+                <label for="NumCasa">
+                    Número
+                </label>
+
+                <input
+                    type="text"
+                    name="NumCasa"
+                    id="NumCasa"
+                    value="<?php echo htmlspecialchars($usuario["NumCasa"]); ?>"
+                    readonly
+                >
+
+
+                <!-- COMORBIDADES -->
 
                 <label for="Comorbidades">
                     Comorbidades
                 </label>
 
-                <input type="text" name="Comorbidades" id="Comorbidades" value="<?php echo $usuario["Comorbidades"]; ?>"
-                    readonly>
+                <input
+                    type="text"
+                    name="Comorbidades"
+                    id="Comorbidades"
+                    value="<?php echo htmlspecialchars($usuario["Comorbidades"]); ?>"
+                    readonly
+                >
 
+
+                <!-- INDÍGENA -->
 
                 <label id="indigena">
-                    <input type="checkbox" name="Indigena" value="true">
+
+                    <input
+                        type="checkbox"
+                        name="Indigena"
+                        id="Indigena"
+                        value="true"
+
+                        <?php
+
+                        if ($usuario["Indigena"] === "t") {
+                            echo "checked";
+                        }
+
+                        ?>
+
+                        disabled
+                    >
+
                     Sou indígena
+
                 </label>
 
 
@@ -332,81 +555,174 @@ if (!$usuario) {
                 <br>
 
 
-                <button class="BotaoCadastrar" type="button" id="BEditar" >
+                <!-- MENSAGEM DE ERRO -->
+
+                <?php
+
+                if (isset($_SESSION["erro_editar"])) {
+
+                    echo "<p class='text-danger'>" .
+                        htmlspecialchars(
+                            $_SESSION["erro_editar"]
+                        ) .
+                        "</p>";
+
+                    unset($_SESSION["erro_editar"]);
+                }
+
+                ?>
+
+
+                <!-- MENSAGEM DE SUCESSO -->
+
+                <?php
+
+                if (isset($_SESSION["sucesso_editar"])) {
+
+                    echo "<p class='text-success'>" .
+                        htmlspecialchars(
+                            $_SESSION["sucesso_editar"]
+                        ) .
+                        "</p>";
+
+                    unset($_SESSION["sucesso_editar"]);
+                }
+
+                ?>
+
+
+                <!-- BOTÃO EDITAR -->
+
+                <button
+                    class="BotaoCadastrar"
+                    type="button"
+                    id="BEditar"
+                >
+
                     Editar
+
                 </button>
 
-                    <button class="BotaoCadastrar" type="submit" name="editar" id="BSalvar" style="display: none;">
-                        Salvar alteração
-                    </button>
 
-                <form action="DadosUser.php" method="POST"
-                    onsubmit="return confirm('Tem certeza que deseja excluir sua conta?');">
+                <!-- BOTÃO SALVAR -->
 
-                    <button class="BotaoCadastrar" type="submit" name="excluir">
-                        Excluir conta
-                    </button>
+                <button
+                    class="BotaoCadastrar"
+                    type="submit"
+                    name="editar"
+                    id="BSalvar"
+                    style="display: none;"
+                >
 
-                </form>
+                    Salvar alteração
+
+                </button>
+
+
+            </form>
+
+
+            <!-- ==================================================
+                 FORMULÁRIO DE EXCLUSÃO
+            =================================================== -->
+
+            <form
+                action="DadosUser.php"
+                method="POST"
+                onsubmit="return confirm('Tem certeza que deseja excluir sua conta?');"
+            >
+
+                <button
+                    class="BotaoCadastrar"
+                    type="submit"
+                    name="excluir"
+                >
+
+                    Excluir conta
+
+                </button>
+
+            </form>
+
 
         </div>
 
-        <script>
 
-            document.addEventListener("DOMContentLoaded", function () {
-
-                const botaoEditar =
-                    document.getElementById("BEditar");
-
-                const botaoSalvar =
-                    document.getElementById("BSalvar");
+    </div>
 
 
-                const campos = [
+    <!-- ======================================================
+         JAVASCRIPT DO BOTÃO EDITAR
+    ======================================================= -->
 
-                    document.getElementById("CPF"),
+    <script>
 
-                    document.getElementById("DataNascimento"),
-
-                    document.getElementById("EMAIL"),
-
-                    document.getElementById("Celular"),
-
-                    document.getElementById("CEP"),
-
-                    document.getElementById("Comorbidades"),
-
-                    document.getElementById("Indigena")
-
-                ];
+        document.addEventListener("DOMContentLoaded", function () {
 
 
-                botaoEditar.addEventListener("click", function () {
-
-                    campos.forEach(function (campo) {
-
-                        if (campo.type === "checkbox") {
-
-                            campo.disabled = false;
-
-                        } else {
-
-                            campo.removeAttribute("readonly");
-
-                        }
-
-                    });
+            const botaoEditar =
+                document.getElementById("BEditar");
 
 
-                    botaoEditar.style.display = "none";
+            const botaoSalvar =
+                document.getElementById("BSalvar");
 
-                    botaoSalvar.style.display = "inline-block";
+
+            const campos = [
+
+                document.getElementById("CPF"),
+
+                document.getElementById("DataNascimento"),
+
+                document.getElementById("EMAIL"),
+
+                document.getElementById("Celular"),
+
+                document.getElementById("CEP"),
+
+                document.getElementById("NumCasa"),
+
+                document.getElementById("Comorbidades"),
+
+                document.getElementById("Indigena")
+
+            ];
+
+
+            botaoEditar.addEventListener("click", function () {
+
+
+                campos.forEach(function (campo) {
+
+
+                    if (campo.type === "checkbox") {
+
+                        campo.disabled = false;
+
+                    } else {
+
+                        campo.removeAttribute("readonly");
+
+                    }
 
                 });
 
+
+                // Esconder botão Editar
+
+                botaoEditar.style.display = "none";
+
+
+                // Mostrar botão Salvar
+
+                botaoSalvar.style.display = "inline-block";
+
+
             });
 
-        </script>
+        });
+
+    </script>
 
 
 </body>

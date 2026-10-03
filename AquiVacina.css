@@ -127,9 +127,9 @@ label:has(input[type="checkbox"]) {
    CARTÃO BRANCO - UNIVERSAL
    ========================================================= */
 
-.CadastroCard {
+.CadastroCard {   
     background: white;
-    padding: 25px;
+    padding: 30px;
     border-radius: 25px;
     box-shadow: 0 5px 20px rgba(70, 130, 160, 0.15);
 }
@@ -343,10 +343,12 @@ label:has(input[type="checkbox"]) {
    ========================================================= */
 
 .ContainerCadastro {
-    width: 100%;
-    max-width: 900px;
-    margin: 0 auto;
+    width: calc(100% - 40px);
+    max-width: 450px;
+    margin: 30px auto;
 }
+
+
 
 
 /* CEP + NÚMERO */
@@ -358,11 +360,11 @@ label:has(input[type="checkbox"]) {
     align-items: flex-end;
 }
 
-.CepNumero > div:first-child {
+.CepNumero>div:first-child {
     flex: 1;
 }
 
-.CepNumero > div:last-child {
+.CepNumero>div:last-child {
     width: 120px;
     flex-shrink: 0;
 }
@@ -586,6 +588,7 @@ label:has(input[type="checkbox"]) {
     .CadastroCard {
         padding: 15px;
         border-radius: 18px;
+        margin: 20px;
     }
 
     .Menu .FundoLog {
