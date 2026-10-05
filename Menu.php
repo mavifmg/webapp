@@ -58,7 +58,7 @@ $DataNascimento = $_SESSION['DataNascimento'];
                             <button type="button" class="BotaoCadastrar">Meus Dados</button>
                         </a>
 
-                        <a href="Informacoesubs.php">
+                        <a href="Mapa.php">
                             <button type="button" class="BotaoCadastrar">Informações da UBS</button>
                         </a>
                     </div>

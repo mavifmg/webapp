@@ -1,6 +1,6 @@
 <?php
 
-    $host = "200.18.128.54";
+    $host = "10.90.24.54";
     $port = "5432";
     $dbname = "AquiVacina";
     $user = "aula";
