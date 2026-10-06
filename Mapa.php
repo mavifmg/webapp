@@ -2,6 +2,11 @@
 session_start();
 require_once "Conexao.php";
 
+if (!isset($_SESSION['CPF'])) {
+    header("Location: Login.php");
+    exit();
+}
+
 $sql = 'SELECT 
             "nomeubs",
             "endereco",
