@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>AquiVacina | Alertas</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #eef8ff;
+            color: #24445c;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        /* CONTAINER PRINCIPAL */
+
+        .ContainerAlertas {
+            max-width: 700px;
+            margin: auto;
+        }
+
+        /* BOTÃO VOLTAR */
+
+        .Voltar {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            background: white;
+            color: #287cae;
+            text-decoration: none;
+            font-size: 25px;
+            box-shadow: 0 4px 12px rgba(70, 130, 160, 0.12);
+            margin-bottom: 15px;
+        }
+
+        /* CARD PRINCIPAL */
+
+        .AlertasCard {
+            background: white;
+            border-radius: 28px;
+            padding: 25px;
+            box-shadow:
+                0 8px 25px
+                rgba(70, 130, 160, 0.15);
+        }
+
+        /* LOGO */
+
+        .Logo {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .Logo img {
+            width: 150px;
+            height: auto;
+        }
+
+        /* CABEÇALHO */
+
+        header {
+            margin-bottom: 25px;
+        }
+
+        header h2 {
+            color: #245b78;
+            font-size: 25px;
+            margin-bottom: 8px;
+        }
+
+        header p {
+            color: #6b8291;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        /* SEÇÕES */
+
+        main {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        section {
+            background: #f8fcff;
+            border: 1px solid #dceef6;
+            border-radius: 20px;
+            padding: 18px;
+            box-shadow:
+                0 3px 12px
+                rgba(70, 130, 160, 0.08);
+        }
+
+        /* TÍTULO DA SEÇÃO */
+
+        section > h2 {
+            color: #286985;
+            font-size: 17px;
+            margin-bottom: 14px;
+        }
+
+        /* CONTEÚDO DO ALERTA */
+
+        .AlertaConteudo {
+            background: white;
+            border-radius: 15px;
+            padding: 16px;
+            border: 1px solid #e4f1f6;
+        }
+
+        .AlertaConteudo h3 {
+            color: #36596d;
+            font-size: 16px;
+            margin-bottom: 8px;
+        }
+
+        .AlertaConteudo p {
+            color: #6b8291;
+            font-size: 14px;
+            line-height: 1.5;
+            margin-bottom: 13px;
+        }
+
+        /* BOTÕES */
+
+        .Botao {
+            display: inline-block;
+            border: none;
+            border-radius: 11px;
+            padding: 10px 17px;
+            background: #4da8d1;
+            color: white;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .Botao:hover {
+            background: #378fb8;
+        }
+
+        /* CORES DOS ALERTAS */
+
+        .Epidemia {
+            border-left: 5px solid #4da8d1;
+        }
+
+        .Vacina {
+            border-left: 5px solid #4da8d1;
+        }
+
+        .Reforco {
+            border-left: 5px solid #4da8d1;
+        }
+
+        .Campanha {
+            border-left: 5px solid #4da8d1;
+        }
+
+        /* RODAPÉ */
+
+        footer {
+            text-align: center;
+            margin-top: 25px;
+            color: #7b929f;
+            font-size: 13px;
+        }
+
+        /* VISUAL DE CELULAR */
+
+        @media (max-width: 600px) {
+
+            body {
+                padding: 12px;
+            }
+
+            .AlertasCard {
+                padding: 20px;
+                border-radius: 24px;
+            }
+
+            .Logo img {
+                width: 135px;
+            }
+
+            header h2 {
+                font-size: 23px;
+            }
+
+            section {
+                padding: 15px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<div class="ContainerAlertas">
+
+    <!-- BOTÃO VOLTAR -->
+
+    <a
+        href="Menu.html"
+        class="Voltar"
+    >
+        ←
+    </a>
+
+    <div class="AlertasCard">
+
+        <!-- LOGO -->
+
+        <div class="Logo">
+
+            <img
+                src="imagens/logo.png"
+                alt="Logo AquiVacina"
+            >
+
+        </div>
+
+        <!-- CABEÇALHO -->
+
+        <header>
+
+            <h2>
+                Alertas
+            </h2>
+
+            <p>
+                Acompanhe avisos importantes sobre a vacinação.
+            </p>
+
+        </header>
+
+        <!-- CONTEÚDO -->
+
+        <main>
+
+            <!-- EPIDEMIAS -->
+
+            <section class="Epidemia">
+
+                <h2>
+                    ⚠️ Alertas de epidemias
+                </h2>
+
+                <div class="AlertaConteudo">
+
+                    <h3>
+                        Aviso de saúde
+                    </h3>
+
+                    <p>
+                        Fique atento aos avisos sobre epidemias
+                        e campanhas de vacinação na sua região.
+                    </p>
+
+                </div>
+
+            </section>
+
+
+            <!-- VACINAS DISPONÍVEIS -->
+
+            <section class="Vacina">
+
+                <h2>
+                    💉 Vacinas disponíveis para a criança
+                </h2>
+
+                <div class="AlertaConteudo">
+
+                    <h3>
+                        Maria Silva
+                    </h3>
+
+                    <p>
+                        Existem vacinas disponíveis para atualização
+                        do calendário de vacinação.
+                    </p>
+
+                    <a
+                        href="VacinasDisponiveis.php"
+                        class="Botao"
+                        target="_blank"
+                    >
+                        Ver vacinas
+                    </a>
+
+                </div>
+
+            </section>
+
+
+            <!-- DOSES E REFORÇOS -->
+
+            <section class="Reforco">
+
+                <h2>
+                    📅 Doses e reforços
+                </h2>
+
+                <div class="AlertaConteudo">
+
+                    <h3>
+                        Próxima dose
+                    </h3>
+
+                    <p>
+                        Consulte as próximas doses e reforços
+                        necessários para cada criança cadastrada.
+                    </p>
+
+                    <a
+                        href="Calendario.php"
+                        class="Botao"
+                        target="_blank"
+                    >
+                        Ver calendário
+                    </a>
+
+                </div>
+
+            </section>
+
+
+            <!-- CAMPANHAS -->
+
+            <section class="Campanha">
+
+                <h2>
+                    📢 Campanhas de vacinação
+                </h2>
+
+                <div class="AlertaConteudo">
+
+                    <h3>
+                        Campanha de vacinação
+                    </h3>
+
+                    <p>
+                        Confira as campanhas de vacinação
+                        disponíveis na unidade de saúde.
+                    </p>
+
+                    <a
+                        href="Campanhas.php"
+                        class="Botao"
+                        target="_blank"
+                    >
+                        Ver campanhas
+                    </a>
+
+                </div>
+
+            </section>
+
+        </main>
+
+        <!-- RODAPÉ -->
+        <footer>
+
+            <p>
+                AquiVacina
+            </p>
+
+        </footer>
+
+    </div>
+
+</div>
+
+</body>
+
+</html>

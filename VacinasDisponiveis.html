@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>AquiVacina | Vacinas Disponíveis</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #eef8ff;
+            color: #24445c;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .ContainerVacinas {
+            max-width: 700px;
+            margin: auto;
+        }
+
+        /* BOTÃO VOLTAR */
+
+        .Voltar {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+
+            width: 42px;
+            height: 42px;
+
+            border-radius: 50%;
+
+            background: white;
+            color: #287cae;
+
+            text-decoration: none;
+            font-size: 25px;
+
+            box-shadow: 0 4px 12px rgba(70, 130, 160, 0.12);
+
+            margin-bottom: 15px;
+        }
+
+        /* CARD PRINCIPAL */
+
+        .VacinasCard {
+            background: white;
+
+            border-radius: 28px;
+
+            padding: 25px;
+
+            box-shadow: 0 8px 25px rgba(70, 130, 160, 0.15);
+        }
+
+        /* LOGO */
+
+        .Logo {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .Logo img {
+            width: 150px;
+            height: auto;
+        }
+
+        /* CABEÇALHO */
+
+        header {
+            margin-bottom: 25px;
+        }
+
+        header h2 {
+            color: #245b78;
+            font-size: 25px;
+            margin-bottom: 8px;
+        }
+
+        header p {
+            color: #6b8291;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        /* CONTEÚDO */
+
+        main {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        section {
+            background: #f8fcff;
+
+            border: 1px solid #dceef6;
+
+            border-radius: 20px;
+
+            padding: 18px;
+
+            box-shadow: 0 3px 12px rgba(70, 130, 160, 0.08);
+        }
+
+        section > h2 {
+            color: #286985;
+            font-size: 18px;
+            margin-bottom: 15px;
+        }
+
+        /* CARD DE CADA VACINA */
+
+        .VacinaItem {
+            background: white;
+
+            border-radius: 15px;
+
+            padding: 15px;
+
+            margin-bottom: 12px;
+
+            border: 1px solid #e4f1f6;
+
+            box-shadow: 0 2px 8px rgba(70, 130, 160, 0.06);
+        }
+
+        .VacinaItem:last-child {
+            margin-bottom: 0;
+        }
+
+        .VacinaItem h3 {
+            color: #36596d;
+
+            font-size: 16px;
+
+            margin-bottom: 10px;
+        }
+
+        .VacinaItem p {
+            color: #6b8291;
+
+            font-size: 14px;
+
+            line-height: 1.5;
+
+            margin-bottom: 4px;
+        }
+
+        .VacinaItem strong {
+            color: #36596d;
+        }
+
+        /* SITUAÇÃO */
+
+        .Disponivel {
+            color: #4a9b7a !important;
+            font-weight: bold;
+        }
+
+        .EstoqueBaixo {
+            color: #d98b55 !important;
+            font-weight: bold;
+        }
+
+        /* INFORMAÇÕES */
+
+        .Informacoes {
+            border-left: 5px solid #4da8d1;
+        }
+
+        .Informacoes p {
+            color: #6b8291;
+
+            font-size: 14px;
+
+            line-height: 1.6;
+
+            margin-bottom: 8px;
+        }
+
+        .Informacoes p:last-child {
+            margin-bottom: 0;
+        }
+
+        /* RODAPÉ */
+
+        footer {
+            text-align: center;
+
+            margin-top: 25px;
+
+            color: #7b929f;
+
+            font-size: 13px;
+        }
+
+        /* CELULAR */
+
+        @media (max-width: 600px) {
+
+            body {
+                padding: 12px;
+            }
+
+            .VacinasCard {
+                padding: 20px;
+                border-radius: 24px;
+            }
+
+            .Logo img {
+                width: 135px;
+            }
+
+            header h2 {
+                font-size: 23px;
+            }
+
+            section {
+                padding: 15px;
+            }
+
+            .VacinaItem {
+                padding: 14px;
+            }
+
+        }
+
+    </style>
+</head>
+
+
+<body>
+
+    <div class="ContainerVacinas">
+
+        <!-- BOTÃO VOLTAR -->
+
+        <a href="Menu.html" class="Voltar">
+            ←
+        </a>
+
+
+        <!-- CARD PRINCIPAL -->
+
+        <div class="VacinasCard">
+
+
+            <!-- LOGO -->
+
+            <div class="Logo">
+
+                <img
+                    src="imagens/logo.png"
+                    alt="Logo AquiVacina"
+                >
+
+            </div>
+
+
+            <!-- CABEÇALHO -->
+
+            <header>
+
+                <h2>
+                    Vacinas Disponíveis
+                </h2>
+
+                <p>
+                    Consulte as vacinas disponíveis na unidade de saúde
+                    e acompanhe a quantidade de doses em estoque.
+                </p>
+
+            </header>
+
+
+            <!-- CONTEÚDO -->
+
+            <main>
+
+
+                <!-- VACINAS -->
+
+                <section>
+
+                    <h2>
+                        💉 Vacinas em estoque
+                    </h2>
+
+
+                    <!-- BCG -->
+
+                    <div class="VacinaItem">
+
+                        <h3>
+                            BCG
+                        </h3>
+
+                        <p>
+                            <strong>Quantidade disponível:</strong>
+                            25 doses
+                        </p>
+
+                        <p>
+                            <strong>Situação:</strong>
+                            <span class="Disponivel">
+                                Disponível
+                            </span>
+                        </p>
+
+                    </div>
+
+
+                    <!-- HEPATITE B -->
+
+                    <div class="VacinaItem">
+
+                        <h3>
+                            Hepatite B
+                        </h3>
+
+                        <p>
+                            <strong>Quantidade disponível:</strong>
+                            18 doses
+                        </p>
+
+                        <p>
+                            <strong>Situação:</strong>
+                            <span class="Disponivel">
+                                Disponível
+                            </span>
+                        </p>
+
+                    </div>
+
+
+                    <!-- POLIOMIELITE -->
+
+                    <div class="VacinaItem">
+
+                        <h3>
+                            Poliomielite
+                        </h3>
+
+                        <p>
+                            <strong>Quantidade disponível:</strong>
+                            30 doses
+                        </p>
+
+                        <p>
+                            <strong>Situação:</strong>
+                            <span class="Disponivel">
+                                Disponível
+                            </span>
+                        </p>
+
+                    </div>
+
+
+                    <!-- PENTAVALENTE -->
+
+                    <div class="VacinaItem">
+
+                        <h3>
+                            Pentavalente
+                        </h3>
+
+                        <p>
+                            <strong>Quantidade disponível:</strong>
+                            20 doses
+                        </p>
+
+                        <p>
+                            <strong>Situação:</strong>
+                            <span class="Disponivel">
+                                Disponível
+                            </span>
+                        </p>
+
+                    </div>
+
+
+                    <!-- TRÍPLICE VIRAL -->
+
+                    <div class="VacinaItem">
+
+                        <h3>
+                            Tríplice Viral
+                        </h3>
+
+                        <p>
+                            <strong>Quantidade disponível:</strong>
+                            12 doses
+                        </p>
+
+                        <p>
+                            <strong>Situação:</strong>
+                            <span class="EstoqueBaixo">
+                                Estoque baixo
+                            </span>
+                        </p>
+
+                    </div>
+
+
+                    <!-- FEBRE AMARELA -->
+
+                    <div class="VacinaItem">
+
+                        <h3>
+                            Febre Amarela
+                        </h3>
+
+                        <p>
+                            <strong>Quantidade disponível:</strong>
+                            15 doses
+                        </p>
+
+                        <p>
+                            <strong>Situação:</strong>
+                            <span class="Disponivel">
+                                Disponível
+                            </span>
+                        </p>
+
+                    </div>
+
+
+                    <!-- ROTAVÍRUS -->
+
+                    <div class="VacinaItem">
+
+                        <h3>
+                            Rotavírus
+                        </h3>
+
+                        <p>
+                            <strong>Quantidade disponível:</strong>
+                            10 doses
+                        </p>
+
+                        <p>
+                            <strong>Situação:</strong>
+                            <span class="EstoqueBaixo">
+                                Estoque baixo
+                            </span>
+                        </p>
+
+                    </div>
+
+
+                    <!-- PNEUMOCÓCICA -->
+
+                    <div class="VacinaItem">
+
+                        <h3>
+                            Pneumocócica
+                        </h3>
+
+                        <p>
+                            <strong>Quantidade disponível:</strong>
+                            22 doses
+                        </p>
+
+                        <p>
+                            <strong>Situação:</strong>
+                            <span class="Disponivel">
+                                Disponível
+                            </span>
+                        </p>
+
+                    </div>
+
+
+                    <!-- MENINGOCÓCICA -->
+
+                    <div class="VacinaItem">
+
+                        <h3>
+                            Meningocócica
+                        </h3>
+
+                        <p>
+                            <strong>Quantidade disponível:</strong>
+                            16 doses
+                        </p>
+
+                        <p>
+                            <strong>Situação:</strong>
+                            <span class="Disponivel">
+                                Disponível
+                            </span>
+                        </p>
+
+                    </div>
+
+
+                    <!-- DTP -->
+
+                    <div class="VacinaItem">
+
+                        <h3>
+                            DTP
+                        </h3>
+
+                        <p>
+                            <strong>Quantidade disponível:</strong>
+                            8 doses
+                        </p>
+
+                        <p>
+                            <strong>Situação:</strong>
+                            <span class="EstoqueBaixo">
+                                Estoque baixo
+                            </span>
+                        </p>
+
+                    </div>
+
+                </section>
+
+
+                <!-- INFORMAÇÕES -->
+
+                <section class="Informacoes">
+
+                    <h2>
+                        Informações do estoque
+                    </h2>
+
+                    <p>
+                        As quantidades apresentadas correspondem às doses
+                        disponíveis na unidade de saúde.
+                    </p>
+
+                    <p>
+                        Consulte esta tela antes do atendimento para verificar
+                        a disponibilidade das vacinas necessárias.
+                    </p>
+
+                </section>
+
+
+            </main>
+
+
+            <!-- RODAPÉ -->
+
+            <footer>
+
+                <p>
+                    AquiVacina
+                </p>
+
+            </footer>
+
+
+        </div>
+
+    </div>
+
+</body>
+
+</html>
