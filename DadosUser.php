@@ -29,8 +29,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["editar"])) {
     $DataNascimento = $_POST["DataNascimento"] ?? "";
     $EMAIL = $_POST["EMAIL"] ?? "";
     $Celular = $_POST["Celular"] ?? "";
-    $CEP = $_POST["CEP"] ?? "";
-    $NumCasa = $_POST["NumCasa"] ?? "";
+    $EnderecoUsuario = $_POST["EnderecoUsuario"] ?? "";
     $Comorbidades = $_POST["Comorbidades"] ?? "";
 
     $Indigena = isset($_POST["Indigena"]) ? 'true' : 'false';
@@ -45,8 +44,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["editar"])) {
         empty($DataNascimento) ||
         empty($EMAIL) ||
         empty($Celular) ||
-        empty($CEP) ||
-        empty($NumCasa) ||
+        empty($EnderecoUsuario) ||
         empty($Comorbidades)
     ) {
 
@@ -67,11 +65,11 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["editar"])) {
                 "DataNascimento" = $2,
                 "EMAIL" = $3,
                 "Celular" = $4,
-                "CEP" = $5,
-                "NumCasa" = $6,
-                "Indigena" = $7,
-                "Comorbidades" = $8
-            WHERE "CPF" = $9';
+                "EnderecoUsuario" = $5,
+                "Indigena" = $6,
+                "Comorbidades" = $7
+            WHERE "CPF" = $8';
+
 
 
     $resultado = pg_query_params(
@@ -82,8 +80,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["editar"])) {
             $DataNascimento,
             $EMAIL,
             $Celular,
-            $CEP,
-            $NumCasa,
+            $EnderecoUsuario,
             $Indigena,
             $Comorbidades,
             $CPF_antigo
@@ -187,8 +184,7 @@ $sql = 'SELECT
             "DataNascimento",
             "EMAIL",
             "Celular",
-            "CEP",
-            "NumCasa",
+            "EnderecoUsuario",
             "Indigena",
             "Comorbidades",
             "Autorizacao_Loc"
@@ -318,31 +314,19 @@ if (!$usuario) {
                     <p>
 
                         <strong>
-                            CEP:
+                            Endereço:
                         </strong>
 
                         <?php
                         echo htmlspecialchars(
-                            $usuario["CEP"]
+                            $usuario["EnderecoUsuario"]
                         );
                         ?>
 
                     </p>
 
 
-                    <p>
 
-                        <strong>
-                            Número:
-                        </strong>
-
-                        <?php
-                        echo htmlspecialchars(
-                            $usuario["NumCasa"]
-                        );
-                        ?>
-
-                    </p>
 
 
                     <p>
@@ -413,11 +397,7 @@ if (!$usuario) {
             </h1>
 
 
-            <form
-                action="DadosUser.php"
-                method="POST"
-                id="formUsuario"
-            >
+            <form action="DadosUser.php" method="POST" id="formUsuario">
 
 
                 <!-- CPF -->
@@ -426,13 +406,8 @@ if (!$usuario) {
                     CPF
                 </label>
 
-                <input
-                    type="text"
-                    name="CPF"
-                    id="CPF"
-                    value="<?php echo htmlspecialchars($usuario["CPF"]); ?>"
-                    readonly
-                >
+                <input type="text" name="CPF" id="CPF" value="<?php echo htmlspecialchars($usuario["CPF"]); ?>"
+                    readonly>
 
 
                 <!-- DATA DE NASCIMENTO -->
@@ -441,13 +416,8 @@ if (!$usuario) {
                     Data de Nascimento
                 </label>
 
-                <input
-                    type="date"
-                    name="DataNascimento"
-                    id="DataNascimento"
-                    value="<?php echo htmlspecialchars($usuario["DataNascimento"]); ?>"
-                    readonly
-                >
+                <input type="date" name="DataNascimento" id="DataNascimento"
+                    value="<?php echo htmlspecialchars($usuario["DataNascimento"]); ?>" readonly>
 
 
                 <!-- EMAIL -->
@@ -456,13 +426,8 @@ if (!$usuario) {
                     Email
                 </label>
 
-                <input
-                    type="email"
-                    name="EMAIL"
-                    id="EMAIL"
-                    value="<?php echo htmlspecialchars($usuario["EMAIL"]); ?>"
-                    readonly
-                >
+                <input type="email" name="EMAIL" id="EMAIL" value="<?php echo htmlspecialchars($usuario["EMAIL"]); ?>"
+                    readonly>
 
 
                 <!-- CELULAR -->
@@ -471,43 +436,18 @@ if (!$usuario) {
                     Celular
                 </label>
 
-                <input
-                    type="text"
-                    name="Celular"
-                    id="Celular"
-                    value="<?php echo htmlspecialchars($usuario["Celular"]); ?>"
-                    readonly
-                >
+                <input type="text" name="Celular" id="Celular"
+                    value="<?php echo htmlspecialchars($usuario["Celular"]); ?>" readonly>
 
 
-                <!-- CEP -->
+                <!-- ENDEREÇO -->
 
-                <label for="CEP">
-                    CEP
+                <label for="EnderecoUsuario">
+                    Endereço
                 </label>
 
-                <input
-                    type="text"
-                    name="CEP"
-                    id="CEP"
-                    value="<?php echo htmlspecialchars($usuario["CEP"]); ?>"
-                    readonly
-                >
-
-
-                <!-- NÚMERO -->
-
-                <label for="NumCasa">
-                    Número
-                </label>
-
-                <input
-                    type="text"
-                    name="NumCasa"
-                    id="NumCasa"
-                    value="<?php echo htmlspecialchars($usuario["NumCasa"]); ?>"
-                    readonly
-                >
+                <input type="text" name="EnderecoUsuario" id="EnderecoUsuario"
+                    value="<?php echo htmlspecialchars($usuario["EnderecoUsuario"]); ?>" readonly>
 
 
                 <!-- COMORBIDADES -->
@@ -516,35 +456,21 @@ if (!$usuario) {
                     Comorbidades
                 </label>
 
-                <input
-                    type="text"
-                    name="Comorbidades"
-                    id="Comorbidades"
-                    value="<?php echo htmlspecialchars($usuario["Comorbidades"]); ?>"
-                    readonly
-                >
+                <input type="text" name="Comorbidades" id="Comorbidades"
+                    value="<?php echo htmlspecialchars($usuario["Comorbidades"]); ?>" readonly>
 
 
                 <!-- INDÍGENA -->
 
                 <label id="indigena">
 
-                    <input
-                        type="checkbox"
-                        name="Indigena"
-                        id="Indigena"
-                        value="true"
+                    <input type="checkbox" name="Indigena" id="Indigena" value="true" <?php
 
-                        <?php
+                    if ($usuario["Indigena"] === "t") {
+                        echo "checked";
+                    }
 
-                        if ($usuario["Indigena"] === "t") {
-                            echo "checked";
-                        }
-
-                        ?>
-
-                        disabled
-                    >
+                    ?> disabled>
 
                     Sou indígena
 
@@ -593,11 +519,7 @@ if (!$usuario) {
 
                 <!-- BOTÃO EDITAR -->
 
-                <button
-                    class="BotaoCadastrar"
-                    type="button"
-                    id="BEditar"
-                >
+                <button class="BotaoCadastrar" type="button" id="BEditar">
 
                     Editar
 
@@ -606,13 +528,7 @@ if (!$usuario) {
 
                 <!-- BOTÃO SALVAR -->
 
-                <button
-                    class="BotaoCadastrar"
-                    type="submit"
-                    name="editar"
-                    id="BSalvar"
-                    style="display: none;"
-                >
+                <button class="BotaoCadastrar" type="submit" name="editar" id="BSalvar" style="display: none;">
 
                     Salvar alteração
 
@@ -626,17 +542,10 @@ if (!$usuario) {
                  FORMULÁRIO DE EXCLUSÃO
             =================================================== -->
 
-            <form
-                action="DadosUser.php"
-                method="POST"
-                onsubmit="return confirm('Tem certeza que deseja excluir sua conta?');"
-            >
+            <form action="DadosUser.php" method="POST"
+                onsubmit="return confirm('Tem certeza que deseja excluir sua conta?');">
 
-                <button
-                    class="BotaoCadastrar"
-                    type="submit"
-                    name="excluir"
-                >
+                <button class="BotaoCadastrar" type="submit" name="excluir">
 
                     Excluir conta
 
@@ -678,9 +587,7 @@ if (!$usuario) {
 
                 document.getElementById("Celular"),
 
-                document.getElementById("CEP"),
-
-                document.getElementById("NumCasa"),
+                document.getElementById("EnderecoUsuario"),
 
                 document.getElementById("Comorbidades"),
 

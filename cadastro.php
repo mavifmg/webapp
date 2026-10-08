@@ -1,6 +1,7 @@
 <?php
 session_start();
 require_once "Conexao.php";
+require_once "Geocodificacao.php";
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
@@ -8,19 +9,25 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $DataNascimento = $_POST["DataNascimento"];
     $EMAIL = $_POST["EMAIL"];
     $Celular = $_POST["Celular"];
-    $CEP = $_POST["CEP"];
-    $NumCasa = $_POST["NumCasa"];
+   // $CEP = $_POST["CEP"];
+    //$NumCasa = $_POST["NumCasa"];
+    $EnderecoUsuario = $_POST["EnderecoUsuario"];
     $Indigena = isset($_POST["Indigena"]) ? 'true' : 'false';
     $Comorbidades = $_POST["Comorbidades"];
     $Autorizacao_Loc = isset($_POST["Autorizacao_Loc"]) ? 'true' : 'false';
+
+   // $endereco = $CEP . ", " . $NumCasa . ", Ouro Branco - MG, Brasil";
+
+    $coordenadas = obterCoordenadas($EnderecoUsuario);
 
     if (
         empty($CPF) ||
         empty($DataNascimento) ||
         empty($EMAIL) ||
         empty($Celular) ||
-        empty($CEP) ||
-        empty($NumCasa) ||
+        empty($EnderecoUsuario) ||
+        //empty($CEP) ||
+        //empty($NumCasa) ||
         empty($Comorbidades) ||
         !isset($_POST["Autorizacao_Loc"])
     ) {
@@ -29,13 +36,22 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         exit();
     }
 
-    $sql = "INSERT INTO cadastro (\"CPF\", \"DataNascimento\", \"EMAIL\", \"Celular\", \"CEP\", \"NumCasa\", \"Indigena\", \"Comorbidades\", \"Autorizacao_Loc\")
-                VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)";
+    if ($coordenadas === false) {
+        $_SESSION['erro_cadastro'] = "Não foi possível obter as coordenadas do endereço fornecido. Por favor, verifique o endereço e tente novamente.";
+        header("Location: Cadastro.php");
+        exit();
+    }
+
+    $LatitudeUsuario = $coordenadas["latitude"];
+    $LongitudeUsuario = $coordenadas["longitude"];
+
+    $sql = "INSERT INTO cadastro (\"CPF\", \"DataNascimento\", \"EMAIL\", \"Celular\", \"EnderecoUsuario\", \"Indigena\", \"Comorbidades\", \"Autorizacao_Loc\", \"latitudeUsuario\", \"longitudeUsuario\")
+                VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)";
 
     $resultado = pg_query_params(
         $conn,
         $sql,
-        [$CPF, $DataNascimento, $EMAIL, $Celular, $CEP, $NumCasa, $Indigena, $Comorbidades, $Autorizacao_Loc]
+        [$CPF, $DataNascimento, $EMAIL, $Celular, $EnderecoUsuario, $Indigena, $Comorbidades, $Autorizacao_Loc, $LatitudeUsuario, $LongitudeUsuario]
     );
 
     if ($resultado !== false) {
@@ -102,13 +118,10 @@ pg_close($conn);
                 <div class="CepNumero">
 
                     <div>
-                        <label for="cep">CEP</label>
-                        <input id="cep" placeholder="Digite seu CEP" type="text" name="CEP" required>
-                    </div>
-
-                    <div>
-                        <label for="NumCasa">Número</label>
-                        <input id="NumCasa" placeholder="Nº" type="text" name="NumCasa" required>
+                        <label for="EnderecoUsuario">Endereço: Modelo -> Rua das Flores, 123, Bairro Catas Altas, Minas
+                            Gerais, Brasil</label>
+                        <input id="EnderecoUsuario" placeholder="Digite seu endereço" type="text" name="EnderecoUsuario"
+                            required>
                     </div>
 
                 </div>
