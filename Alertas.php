@@ -49,7 +49,7 @@ if (!$conn) {
 
     <!-- BOTÃO VOLTAR -->
 
-    <a href="Menu.html">
+    <a href="Menu.php">
 
         <button type="button">
             ←
