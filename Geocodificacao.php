@@ -2,71 +2,83 @@
 
 function obterCoordenadas($enderecoUsuario)
 {
-    // Coloque sua chave da DistanceMatrix.ai aqui
-    $chaveAPI = "3fXbxQhlneld7t4fe8ILwGceGr97bRS4i9VkWFkGe1W6tgWXB5NAPsi8BLL6Hyjq";
+    /*
+     * OpenStreetMap / Nominatim
+     *
+     * O endereço recebido deve ser algo como:
+     * Rua Afonso Sardinha, 90, Ouro Branco, Minas Gerais, Brasil
+     */
 
-    // Monta a URL corretamente
-    $url = "https://api.distancematrix.ai/maps/api/geocode/json?address=1600+Amphitheatre+Parkway,+Mountain+View,+CA&key=3fXbxQhlneld7t4fe8ILwGceGr97bRS4i9VkWFkGe1W6tgWXB5NAPsi8BLL6Hyjq"
-         . "address=" . urlencode($enderecoUsuario)
-         . "&key=" . urlencode($chaveAPI);
+    $endereco = urlencode($enderecoUsuario);
 
-    // Faz a requisição
-    $resposta = file_get_contents($url);
+    $url = "https://nominatim.openstreetmap.org/search?"
+         . "q=" . $endereco
+         . "&format=json"
+         . "&limit=1"
+         . "&countrycodes=br";
 
-    // Verifica se conseguiu acessar a API
+    /*
+     * Nominatim exige um User-Agent.
+     */
+    $opcoes = [
+        "http" => [
+            "method" => "GET",
+            "header" => "User-Agent: AquiVacina/1.0\r\n"
+        ]
+    ];
+
+    $contexto = stream_context_create($opcoes);
+
+    /*
+     * Faz a requisição.
+     */
+    $resposta = @file_get_contents($url, false, $contexto);
+
+    /*
+     * Verifica se conseguiu acessar o Nominatim.
+     */
     if ($resposta === false) {
-
-    die("Erro ao acessar a API de geocodificação.");
-        //return false;
+        return false;
     }
 
-    // Converte a resposta JSON para array
+    /*
+     * Converte o JSON.
+     */
     $dados = json_decode($resposta, true);
 
-    // Verifica se o JSON foi convertido corretamente
-    if ($dados === null) {
-        
-        die("ERRO: A API não retornou um JSON válido.<br><br>"
-            . htmlspecialchars($resposta));
-        return false;
-    }
-
-    // Verifica o status retornado pela API
+    /*
+     * Verifica se encontrou algum resultado.
+     */
     if (
-        isset($dados["status"]) &&
-        $dados["status"] !== "OK"
-    ) {
-        die("ERRO: A API retornou o status: " . htmlspecialchars($dados["status"]));
-    }
-
-    // Verifica se existem resultados
-    if (
-    !isset($dados["results"]) ||
-    empty($dados["results"])
-) {
-    die(
-        "A DistanceMatrix.ai não encontrou o endereço:<br><br>"
-        . htmlspecialchars($enderecoUsuario)
-        . "<br><br>"
-        . "Tente informar o endereço sem o número da residência."
-    );
-}
-
-    // Verifica latitude e longitude
-    if (
-        !isset($dados["results"][0]["geometry"]["location"]["lat"]) ||
-        !isset($dados["results"][0]["geometry"]["location"]["lng"])
+        !is_array($dados) ||
+        empty($dados)
     ) {
         return false;
     }
 
-    // Pega latitude
-    $latitude = $dados["results"][0]["geometry"]["location"]["lat"];
+    /*
+     * Verifica latitude e longitude.
+     */
+    if (
+        !isset($dados[0]["lat"]) ||
+        !isset($dados[0]["lon"])
+    ) {
+        return false;
+    }
 
-    // Pega longitude
-    $longitude = $dados["results"][0]["geometry"]["location"]["lng"];
+    /*
+     * Pega latitude.
+     */
+    $latitude = $dados[0]["lat"];
 
-    // Retorna as coordenadas
+    /*
+     * Pega longitude.
+     */
+    $longitude = $dados[0]["lon"];
+
+    /*
+     * Retorna as coordenadas.
+     */
     return [
         "latitude" => $latitude,
         "longitude" => $longitude

@@ -16,7 +16,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $Comorbidades = $_POST["Comorbidades"];
     $Autorizacao_Loc = isset($_POST["Autorizacao_Loc"]) ? 'true' : 'false';
 
-   // $endereco = $CEP . ", " . $NumCasa . ", Ouro Branco - MG, Brasil";
+    $endereco = $CEP . ", " . $NumCasa . ", Ouro Branco - MG, Brasil";
 
     $coordenadas = obterCoordenadas($EnderecoUsuario);
 
@@ -42,8 +42,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         exit();
     }
 
-    $LatitudeUsuario = $coordenadas["latitude"];
-    $LongitudeUsuario = $coordenadas["longitude"];
+    $LatitudeUser = $coordenadas["latitude"];
+    $LongitudeUser = $coordenadas["longitude"];
 
     $sql = "INSERT INTO cadastro (\"CPF\", \"DataNascimento\", \"EMAIL\", \"Celular\", \"EnderecoUsuario\", \"Indigena\", \"Comorbidades\", \"Autorizacao_Loc\", \"latitudeUsuario\", \"longitudeUsuario\")
                 VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)";
@@ -51,7 +51,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $resultado = pg_query_params(
         $conn,
         $sql,
-        [$CPF, $DataNascimento, $EMAIL, $Celular, $EnderecoUsuario, $Indigena, $Comorbidades, $Autorizacao_Loc, $LatitudeUsuario, $LongitudeUsuario]
+        [$CPF, $DataNascimento, $EMAIL, $Celular, $EnderecoUsuario, $Indigena, $Comorbidades, $Autorizacao_Loc, $LatitudeUser, $LongitudeUser]
     );
 
     if ($resultado !== false) {
