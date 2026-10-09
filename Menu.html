@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>AquiVacina | Menu de boas vindas</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #eef8ff;
+            color: #24445c;
+            padding: 20px;
+        }
+
+        .Voltar {
+            display: inline-block;
+            margin-bottom: 15px;
+            text-decoration: none;
+            color: #287cae;
+            font-size: 28px;
+        }
+
+        .CadastroCard {
+            background: white;
+            padding: 25px;
+            border-radius: 25px;
+            box-shadow: 0 5px 20px rgba(70, 130, 160, 0.15);
+        }
+
+
+        .Logo {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .Logo img {
+            width: 150px;
+            height: auto;
+        }
+
+
+
+        .TituloArea {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .TituloTexto h2 {
+            color: #245b78;
+            margin-bottom: 8px;
+        }
+
+        .TituloTexto p {
+            color: #6b8291;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .Ilustracao img {
+            width: 130px;
+            height: 110px;
+            object-fit: contain;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        label {
+            font-weight: bold;
+            margin-top: 8px;
+            color: #36596d;
+        }
+
+        input,
+        select,
+        textarea {
+            width: 100%;
+            padding: 13px;
+            border: 1px solid #c8dfe9;
+            border-radius: 12px;
+            outline: none;
+            font-size: 15px;
+            background: white;
+        }
+
+        textarea {
+            min-height: 90px;
+            resize: vertical;
+        }
+
+        input:focus,
+        select:focus,
+        textarea:focus {
+            border-color: #5baed3;
+        }
+
+        .BotaoCadastrar {
+            margin-top: 20px;
+            padding: 14px;
+            border: none;
+            border-radius: 14px;
+            background: #4da8d1;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+
+        .BotaoCadastrar:hover {
+            background: #378fb8;
+        }
+
+
+        /* LISTA d*/
+
+        .ListaCriancas {
+            margin-top: 35px;
+        }
+
+        .ListaCriancas h2 {
+            color: #245b78;
+            margin-bottom: 5px;
+        }
+
+        .DescricaoLista {
+            color: #718693;
+            margin-bottom: 15px;
+            font-size: 14px;
+        }
+
+        .CriancaCard {
+            background: #f4fbff;
+            border: 1px solid #d6ebf4;
+            border-radius: 18px;
+            padding: 18px;
+            margin-top: 15px;
+        }
+
+        .CriancaCard h3 {
+            color: #286985;
+            margin-bottom: 10px;
+        }
+
+        .CriancaCard p {
+            margin: 6px 0;
+            font-size: 14px;
+        }
+
+        .AcoesCrianca {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .BotaoEditar,
+        .BotaoRemover {
+            padding: 9px 15px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .BotaoEditar {
+            background: #d8f0fc;
+            color: #287cae;
+        }
+
+        .BotaoRemover {
+            background: #ffe1e1;
+            color: #c34f4f;
+        }
+
+        .BotaoEditar:hover {
+            background: #c5e8f8;
+        }
+
+        .BotaoRemover:hover {
+            background: #ffd0d0;
+        }
+
+        .Mensagem {
+            padding: 12px;
+            margin-bottom: 20px;
+            border-radius: 12px;
+            background: #e4f7e9;
+            color: #287044;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        @media (max-width: 600px) {
+
+            body {
+                padding: 5px;
+            }
+
+            .CadastroCard {
+                padding: 10px;
+            }
+
+            .TituloArea {
+                align-items: flex-start;
+            }
+
+            .Ilustracao img {
+                width: 90px;
+                height: 80px;
+            }
+        }
+    </style>
+</head>
+
+
+<body>
+
+    <div class="ContainerCadastro">
+
+        <a href="Menu.html" class="Voltar">←</a>
+
+        <div class="CadastroCard">
+
+            <div class="Logo">
+                <img src="imagens/logo.png" alt="Logo AquiVacina">
+            </div>
+
+
+
+
+
+
+
+            <!-- BOTÃO -->
+
+            <a type="submit" class="BotaoCadastrar">
+                Cadastro de crianças
+            </a>
+            <a href="MeusDados.php"  class="BotaoCadastrar">
+                Meus dados</a>
+
+            <a href="InformacoesUBS.php" class="BotaoCadastrar">
+                Informações da UBS</a>
+            </form>
+
+
+        </div>
+
+    </div>
+
+</body>
+
+</html>

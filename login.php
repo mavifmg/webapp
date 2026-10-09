@@ -1,14 +1,15 @@
 <?php
-    session_start();
-    require_once "Conexao.php";
+session_start();
+require_once "Conexao.php";
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
-    
+
     $CPF = $_POST["CPF"];
-    $DataNascimento = $_POST["DataNascimento"]; 
-    
-    $sql = "SELECT * FROM cadastro
-            WHERE \"CPF\" = $1 AND \"DataNascimento\" = $2";
+    $DataNascimento = $_POST["DataNascimento"];
+
+    $sql = 'SELECT * FROM cadastro
+            WHERE "CPF" = $1
+            AND "DataNascimento" = $2::date';
 
     $resultado = pg_query_params(
         $conn,
@@ -16,18 +17,24 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         [$CPF, $DataNascimento]
     );
 
+   if ($resultado === false) {
+        die("Erro na consulta: " . pg_last_error($conn));
+    }
+
+
     if (pg_num_rows($resultado) > 0) {
-        
-        header("location: Menu.html");
+
+        $_SESSION['CPF'] = $CPF;
+        $_SESSION['DataNascimento'] = $DataNascimento;
+        header("Location: Menu.php");
         exit();
-        
+
     } else {
 
-        $_SESSION['erro_login'] = "Campos vazios ou informações incorretas";
-        header("Location: Login.php"); 
+        $_SESSION['erro_login'] = "informações incorretas";
+        header("Location: Cadastro.php");
         exit();
-
-        }
+    }
 
     pg_close($conn);
 }
@@ -41,50 +48,64 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     <title>AquiVacina | Site Para Usuarios</title>
     <link rel="stylesheet" href="AquiVacina.css">
 </head>
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <body class="Login">
 
     <div class="LocLogin">
-    <div class="FundoLog">
-                                        
-        <br>
+        <div class="FundoLog">
 
-    <form action="Login.php" method="POST">
-            <label id="LogCPF"> CPF </label>
-
-            <input placeholder="CPF" type="text" name="CPF">
-        
-            <label id="LogDataNascimento"> Data de Nascimento </label>
-            
-            <input placeholder="Data de nascimento" type="date" name="DataNascimento">
-    
-        <div style="text-align: center;">
-            <br>
-        
-                <a class="LetraLogin" href="EsqueciSenha.html">Esqueci a senha</a>
-           
             <br>
 
-            <?php
-                if(isset($_SESSION['erro_login'])) {
-                    echo "<p class='text-danger'>" . $_SESSION['erro_login'] . "</p>";
-                    unset($_SESSION['erro_login']);
-                }
-            ?>
+            <form action="Login.php" method="POST">
 
-            <button type="submit">Login</button>
-            
+                <label id="LogCPF">CPF</label>
+                <input placeholder="CPF" type="text" name="CPF">
+
+                <label id="LogDataNascimento">
+                    Data de Nascimento
+                </label>
+
+                <input
+                    placeholder="Data de nascimento"
+                    type="date"
+                    name="DataNascimento"
+                >
+
+                <div style="text-align: center;">
+
+                    <br>
+
+                    <a class="LetraLogin" href="EsqueciSenha.html">
+                        Esqueci a senha
+                    </a>
+
+                    <br>
+
+                    <?php
+                    if (isset($_SESSION['erro_login'])) {
+                        echo "<p class='text-danger'>"
+                            . $_SESSION['erro_login']
+                            . "</p>";
+
+                        unset($_SESSION['erro_login']);
+                    }
+                    ?>
+
+                    <button type="submit" class="BotaoCadastrar">Login</button>
+
+                </div>
+            </form>
+
+            <div style="text-align: center;">
+                <a href="Cadastro.php">
+                    <button type="button" class="BotaoCadastrar">Cadastro</button>
+                </a>
+            </div>
+
         </div>
-    </form>
-        
-        <div style="text-align: center;"></div>
-            <a href="Cadastro.html">
-                <button type="button">Cadastro</button>
-            </a>
-        </div>
-        
-    </div>
     </div>
 
 </body>
 </html>
-
