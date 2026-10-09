@@ -9,25 +9,26 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $DataNascimento = $_POST["DataNascimento"];
     $EMAIL = $_POST["EMAIL"];
     $Celular = $_POST["Celular"];
-    // $CEP = $_POST["CEP"];
-    //$NumCasa = $_POST["NumCasa"];
-    $EnderecoUsuario = $_POST["EnderecoUsuario"];
+    $CEP = $_POST["CEP"];
+    $NumCasa = $_POST["NumCasa"];
+    //$EnderecoUsuario = $_POST["EnderecoUsuario"];
     $Indigena = isset($_POST["Indigena"]) ? 'true' : 'false';
     $Comorbidades = $_POST["Comorbidades"];
     $Autorizacao_Loc = isset($_POST["Autorizacao_Loc"]) ? 'true' : 'false';
 
-    //$endereco = $CEP . ", " . $NumCasa . ", Ouro Branco - MG, Brasil";
+    //    $EnderecoUsuario = $CEP . ", " . $NumCasa . ", " . $EnderecoUsuario;
 
-    $coordenadas = obterCoordenadas($EnderecoUsuario);
+    $coordenadas = obterCoordenadas($CEP, $NumCasa);
+
 
     if (
         empty($CPF) ||
         empty($DataNascimento) ||
         empty($EMAIL) ||
         empty($Celular) ||
-        empty($EnderecoUsuario) ||
-        //empty($CEP) ||
-        //empty($NumCasa) ||
+        //empty($EnderecoUsuario) ||
+        empty($CEP) ||
+        empty($NumCasa) ||
         empty($Comorbidades) ||
         !isset($_POST["Autorizacao_Loc"])
     ) {
@@ -45,13 +46,21 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $LatitudeUser = $coordenadas["latitude"];
     $LongitudeUser = $coordenadas["longitude"];
 
-    $sql = "INSERT INTO cadastro (\"CPF\", \"DataNascimento\", \"EMAIL\", \"Celular\", \"EnderecoUsuario\", \"Indigena\", \"Comorbidades\", \"Autorizacao_Loc\", \"LatitudeUser\", \"LongitudeUser\")
-                VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)";
+    // PARTE 4: MOSTRAR AS COORDENADAS OBTIDAS PELA API
+    // echo "Endereço: " . htmlspecialchars($CEP) . ", " . htmlspecialchars($NumCasa) . "<br>";
+    //echo "Latitude: " . htmlspecialchars($LatitudeUser) . "<br>";
+    //echo "Longitude: " . htmlspecialchars($LongitudeUser) . "<br>";
+
+    //exit();
+
+    //,/*\"EnderecoUsuario\"*/
+    $sql = "INSERT INTO cadastro (\"CPF\", \"DataNascimento\", \"EMAIL\", \"Celular\",\"CEP\",\"NumCasa\", \"Indigena\", \"Comorbidades\", \"Autorizacao_Loc\", \"LatitudeUser\", \"LongitudeUser\")
+                VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)";
 
     $resultado = pg_query_params(
         $conn,
         $sql,
-        [$CPF, $DataNascimento, $EMAIL, $Celular, $EnderecoUsuario, $Indigena, $Comorbidades, $Autorizacao_Loc, $LatitudeUser, $LongitudeUser]
+        [$CPF, $DataNascimento, $EMAIL, $Celular, $CEP, $NumCasa, $Indigena, $Comorbidades, $Autorizacao_Loc, $LatitudeUser, $LongitudeUser]
     );
 
     if ($resultado !== false) {
@@ -64,13 +73,14 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     } else {
 
-    $erroBanco = pg_last_error($conn);
+        $erroBanco = pg_last_error($conn);
 
-    die(
-        "<h2>Erro ao cadastrar no banco de dados</h2>" .
-        "<p>Mensagem retornada pelo PostgreSQL:</p>" .
-        "<pre>" . htmlspecialchars($erroBanco) . "</pre>"
-    );}
+        die(
+            "<h2>Erro ao cadastrar no banco de dados</h2>" .
+            "<p>Mensagem retornada pelo PostgreSQL:</p>" .
+            "<pre>" . htmlspecialchars($erroBanco) . "</pre>"
+        );
+    }
 
 
 }
@@ -121,10 +131,12 @@ pg_close($conn);
                 <div class="CepNumero">
 
                     <div>
-                        <label for="EnderecoUsuario">Endereço: Modelo -> Rua das Flores, 123, Bairro Catas Altas, Minas
-                            Gerais, Brasil</label>
-                        <input id="EnderecoUsuario" placeholder="Digite seu endereço" type="text" name="EnderecoUsuario"
-                            required>
+                        <label id="cep">CEP</label>
+                        <input placeholder="Digite seu CEP" type="text" name="CEP">
+
+                        <label id="numcasa">Número da Casa</label>
+                        <input placeholder="Digite o número da casa" type="text" name="NumCasa">
+
                     </div>
 
                 </div>
