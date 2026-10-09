@@ -9,14 +9,14 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $DataNascimento = $_POST["DataNascimento"];
     $EMAIL = $_POST["EMAIL"];
     $Celular = $_POST["Celular"];
-   // $CEP = $_POST["CEP"];
+    // $CEP = $_POST["CEP"];
     //$NumCasa = $_POST["NumCasa"];
     $EnderecoUsuario = $_POST["EnderecoUsuario"];
     $Indigena = isset($_POST["Indigena"]) ? 'true' : 'false';
     $Comorbidades = $_POST["Comorbidades"];
     $Autorizacao_Loc = isset($_POST["Autorizacao_Loc"]) ? 'true' : 'false';
 
-    $endereco = $CEP . ", " . $NumCasa . ", Ouro Branco - MG, Brasil";
+    //$endereco = $CEP . ", " . $NumCasa . ", Ouro Branco - MG, Brasil";
 
     $coordenadas = obterCoordenadas($EnderecoUsuario);
 
@@ -45,7 +45,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $LatitudeUser = $coordenadas["latitude"];
     $LongitudeUser = $coordenadas["longitude"];
 
-    $sql = "INSERT INTO cadastro (\"CPF\", \"DataNascimento\", \"EMAIL\", \"Celular\", \"EnderecoUsuario\", \"Indigena\", \"Comorbidades\", \"Autorizacao_Loc\", \"latitudeUsuario\", \"longitudeUsuario\")
+    $sql = "INSERT INTO cadastro (\"CPF\", \"DataNascimento\", \"EMAIL\", \"Celular\", \"EnderecoUsuario\", \"Indigena\", \"Comorbidades\", \"Autorizacao_Loc\", \"LatitudeUser\", \"LongitudeUser\")
                 VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)";
 
     $resultado = pg_query_params(
@@ -64,11 +64,14 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     } else {
 
-        $_SESSION['erro_cadastro'] = "Erro ao cadastrar!";
+    $erroBanco = pg_last_error($conn);
 
-        header("Location: Cadastro.php");
-        exit();
-    }
+    die(
+        "<h2>Erro ao cadastrar no banco de dados</h2>" .
+        "<p>Mensagem retornada pelo PostgreSQL:</p>" .
+        "<pre>" . htmlspecialchars($erroBanco) . "</pre>"
+    );}
+
 
 }
 
