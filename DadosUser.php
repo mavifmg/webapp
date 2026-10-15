@@ -29,7 +29,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["editar"])) {
     $DataNascimento = $_POST["DataNascimento"] ?? "";
     $EMAIL = $_POST["EMAIL"] ?? "";
     $Celular = $_POST["Celular"] ?? "";
-    $EnderecoUsuario = $_POST["EnderecoUsuario"] ?? "";
+    $CEP = $_POST["CEP"] ?? "";
+    $NumCasa = $_POST["NumCasa"] ?? "";
+    //$EnderecoUsuario = $_POST["EnderecoUsuario"] ?? "";
     $Comorbidades = $_POST["Comorbidades"] ?? "";
 
     $Indigena = isset($_POST["Indigena"]) ? 'true' : 'false';
@@ -44,7 +46,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["editar"])) {
         empty($DataNascimento) ||
         empty($EMAIL) ||
         empty($Celular) ||
-        empty($EnderecoUsuario) ||
+        empty($CEP) ||
+        empty($NumCasa) ||
+        //empty($EnderecoUsuario) ||
         empty($Comorbidades)
     ) {
 
@@ -65,10 +69,12 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["editar"])) {
                 "DataNascimento" = $2,
                 "EMAIL" = $3,
                 "Celular" = $4,
-                "EnderecoUsuario" = $5,
-                "Indigena" = $6,
-                "Comorbidades" = $7
-            WHERE "CPF" = $8';
+                "CEP" = $5,
+                "NumCasa" = $6,
+                "Indigena" = $7,
+                "Comorbidades" = $8
+            WHERE "CPF" = $9
+              AND "DataNascimento" = $2';
 
 
 
@@ -80,7 +86,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["editar"])) {
             $DataNascimento,
             $EMAIL,
             $Celular,
-            $EnderecoUsuario,
+            $CEP,
+            $NumCasa,
             $Indigena,
             $Comorbidades,
             $CPF_antigo
@@ -184,7 +191,8 @@ $sql = 'SELECT
             "DataNascimento",
             "EMAIL",
             "Celular",
-            "EnderecoUsuario",
+            "CEP",
+            "NumCasa",
             "Indigena",
             "Comorbidades",
             "Autorizacao_Loc"
@@ -317,11 +325,12 @@ if (!$usuario) {
                             Endereço:
                         </strong>
 
-                        <?php
-                        echo htmlspecialchars(
-                            $usuario["EnderecoUsuario"]
-                        );
-                        ?>
+                        CEP:
+                        <?= htmlspecialchars($usuario['CEP'] ?? '') ?>
+                    
+                          Num:
+                        <?= htmlspecialchars($usuario['NumCasa'] ?? '') ?>
+                    </p>
 
                     </p>
 
