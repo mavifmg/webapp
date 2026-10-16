@@ -2,7 +2,54 @@
 
 session_start();
 require_once "Conexao.php";
+require_once "Geocodificacao.php";
 
+
+function validarCPF($cpf)
+{
+    $cpf = preg_replace('/\D/', '', $cpf);
+
+    if (strlen($cpf) !== 11) {
+        return false;
+    }
+
+    // Impede sequências como 00000000000 e 11111111111
+    if (preg_match('/^(\d)\1{10}$/', $cpf)) {
+        return false;
+    }
+
+    // Calcula o primeiro dígito verificador
+    $soma = 0;
+
+    for ($i = 0; $i < 9; $i++) {
+        $soma += (int) $cpf[$i] * (10 - $i);
+    }
+
+    $resto = ($soma * 10) % 11;
+
+    if ($resto === 10) {
+        $resto = 0;
+    }
+
+    if ($resto !== (int) $cpf[9]) {
+        return false;
+    }
+
+    // Calcula o segundo dígito verificador
+    $soma = 0;
+
+    for ($i = 0; $i < 10; $i++) {
+        $soma += (int) $cpf[$i] * (11 - $i);
+    }
+
+    $resto = ($soma * 10) % 11;
+
+    if ($resto === 10) {
+        $resto = 0;
+    }
+
+    return $resto === (int) $cpf[10];
+}
 
 // ======================================================
 // VERIFICAR SE O USUÁRIO ESTÁ LOGADO
@@ -29,10 +76,12 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["editar"])) {
     $DataNascimento = $_POST["DataNascimento"] ?? "";
     $EMAIL = $_POST["EMAIL"] ?? "";
     $Celular = $_POST["Celular"] ?? "";
-    $EnderecoUsuario = $_POST["EnderecoUsuario"] ?? "";
+    $CEP = $_POST["CEP"] ?? "";
+    $NumCasa = $_POST["NumCasa"] ?? "";
     $Comorbidades = $_POST["Comorbidades"] ?? "";
-
     $Indigena = isset($_POST["Indigena"]) ? 'true' : 'false';
+
+    $coordenadas = obterCoordenadas($CEP, $NumCasa);
 
 
     // ==================================================
@@ -44,7 +93,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["editar"])) {
         empty($DataNascimento) ||
         empty($EMAIL) ||
         empty($Celular) ||
-        empty($EnderecoUsuario) ||
+        empty($CEP) ||
+        empty($NumCasa) ||
         empty($Comorbidades)
     ) {
 
@@ -54,6 +104,30 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["editar"])) {
         header("Location: DadosUser.php");
         exit();
     }
+
+    if (!validarCPF($CPF)) {
+        $_SESSION['erro_editar'] =
+            "CPF inválido. Verifique os números digitados.";
+
+        header("Location: DadosUser.php");
+        exit();
+    }
+
+    if ($coordenadas === false) {
+        $_SESSION['erro_editar'] = "Não foi possível obter as coordenadas do endereço fornecido. Por favor, verifique o endereço e tente novamente.";
+        header("Location: DadosUser.php");
+        exit();
+    }
+
+    $LatitudeUser = $coordenadas["latitude"];
+    $LongitudeUser = $coordenadas["longitude"];
+
+    //PARTE 4: MOSTRAR AS COORDENADAS OBTIDAS PELA API
+    //echo "Endereço: " . htmlspecialchars($CEP) . ", " . htmlspecialchars($NumCasa) . "<br>";
+    //echo "Latitude: " . htmlspecialchars($LatitudeUser) . "<br>";
+//    echo "Longitude: " . htmlspecialchars($LongitudeUser) . "<br>";
+
+    //exit();
 
 
     // ==================================================
@@ -65,10 +139,14 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["editar"])) {
                 "DataNascimento" = $2,
                 "EMAIL" = $3,
                 "Celular" = $4,
-                "EnderecoUsuario" = $5,
-                "Indigena" = $6,
-                "Comorbidades" = $7
-            WHERE "CPF" = $8';
+                "CEP" = $5,
+                "NumCasa" = $6,
+                "Indigena" = $7,
+                "Comorbidades" = $8,
+                "LatitudeUser" = $9,
+                "LongitudeUser" = $10
+            WHERE "CPF" = $11
+              AND "DataNascimento" = $2';
 
 
 
@@ -80,9 +158,12 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["editar"])) {
             $DataNascimento,
             $EMAIL,
             $Celular,
-            $EnderecoUsuario,
+            $CEP,
+            $NumCasa,
             $Indigena,
             $Comorbidades,
+            $LatitudeUser,
+            $LongitudeUser,
             $CPF_antigo
         ]
     );
@@ -184,10 +265,13 @@ $sql = 'SELECT
             "DataNascimento",
             "EMAIL",
             "Celular",
-            "EnderecoUsuario",
+            "CEP",
+            "NumCasa",
             "Indigena",
             "Comorbidades",
-            "Autorizacao_Loc"
+            "Autorizacao_Loc",
+            "LatitudeUser",
+            "LongitudeUser"
         FROM cadastro
         WHERE "CPF" = $1';
 
@@ -246,9 +330,9 @@ if (!$usuario) {
 
                 <a href="Menu.php">
 
-                    <button type="button">
-                        Voltar
-                    </button>
+                    <a href="javascript:history.back()" class="Voltar">
+                        ←
+                    </a>
 
                 </a>
 
@@ -317,11 +401,12 @@ if (!$usuario) {
                             Endereço:
                         </strong>
 
-                        <?php
-                        echo htmlspecialchars(
-                            $usuario["EnderecoUsuario"]
-                        );
-                        ?>
+                        CEP:
+                        <?= htmlspecialchars($usuario['CEP'] ?? '') ?>
+
+                        Num:
+                        <?= htmlspecialchars($usuario['NumCasa'] ?? '') ?>
+                    </p>
 
                     </p>
 
@@ -442,12 +527,17 @@ if (!$usuario) {
 
                 <!-- ENDEREÇO -->
 
-                <label for="EnderecoUsuario">
-                    Endereço
+
+                <label for="CEP">
+                    CEP
                 </label>
 
-                <input type="text" name="EnderecoUsuario" id="EnderecoUsuario"
-                    value="<?php echo htmlspecialchars($usuario["EnderecoUsuario"]); ?>" readonly>
+                <input type="text" name="CEP" id="CEP" value="<?php echo htmlspecialchars($usuario["CEP"]); ?>"
+                    readonly>
+
+                <label for="numcasa">Número da Casa</label>
+                <input type="text" name="NumCasa" id="NumCasa"
+                    value="<?php echo htmlspecialchars($usuario["NumCasa"]); ?>" readonly>
 
 
                 <!-- COMORBIDADES -->
@@ -587,7 +677,9 @@ if (!$usuario) {
 
                 document.getElementById("Celular"),
 
-                document.getElementById("EnderecoUsuario"),
+                document.getElementById("CEP"),
+
+                document.getElementById("NumCasa"),
 
                 document.getElementById("Comorbidades"),
 
@@ -629,6 +721,204 @@ if (!$usuario) {
 
         });
 
+    </script>
+
+    <script>
+        const campoCPF = document.getElementById("CPF");
+        const campoData = document.getElementById("DataNascimento");
+        const erroCPF = document.getElementById("erroCPF");
+
+        let cpfVerificado = "";
+        let cpfEmVerificacao = false;
+        let tentativaVerificacao = 0;
+
+
+        const campoCPF = document.getElementById("CPF");
+        const erroCPF = document.getElementById("erroCPF");
+        const botaoEditar = document.getElementById("BEditar");
+        const botaoSalvar = document.getElementById("BSalvar");
+
+        let cpfVerificado = "";
+        let tentativaVerificacao = 0;
+
+        function mostrarResultadoCPF(mensagem, valido) {
+            erroCPF.textContent = mensagem;
+            erroCPF.hidden = false;
+
+            erroCPF.classList.toggle("text-success", valido);
+            erroCPF.classList.toggle("text-danger", !valido);
+
+            campoCPF.setAttribute("aria-invalid", String(!valido));
+        }
+
+        async function verificarCPFNoBanco() {
+            const cpf = campoCPF.value.replace(/\D/g, "");
+            const tentativaAtual = ++tentativaVerificacao;
+
+            cpfVerificado = "";
+
+            if (!cpf) {
+                mostrarResultadoCPF("Digite o CPF.", false);
+                return false;
+            }
+
+            mostrarResultadoCPF("Verificando CPF...", false);
+
+            try {
+                const resposta = await fetch("VerificarCPF.php", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/x-www-form-urlencoded"
+                    },
+                    body: new URLSearchParams({ CPF: cpf })
+                });
+
+                const dados = await resposta.json();
+
+                // Ignora respostas de verificações anteriores
+                if (tentativaAtual !== tentativaVerificacao) {
+                    return false;
+                }
+
+                if (!resposta.ok || dados.erro) {
+                    mostrarResultadoCPF(
+                        dados.erro || "Não foi possível verificar o CPF.",
+                        false
+                    );
+                    return false;
+                }
+
+                if (!dados.valido || dados.cadastrado) {
+                    mostrarResultadoCPF(
+                        dados.mensagem || "CPF inválido ou já cadastrado.",
+                        false
+                    );
+                    return false;
+                }
+
+                cpfVerificado = cpf;
+
+                mostrarResultadoCPF(
+                    dados.mensagem || "CPF válido e disponível!",
+                    true
+                );
+
+                return true;
+
+            } catch (erro) {
+                if (tentativaAtual === tentativaVerificacao) {
+                    mostrarResultadoCPF(
+                        "Erro de conexão ao verificar o CPF.",
+                        false
+                    );
+                }
+
+                return false;
+            }
+        }
+
+        // Verifica quando o usuário sai do campo CPF
+        campoCPF.addEventListener("blur", verificarCPFNoBanco);
+
+        // Se o CPF mudar, invalida a verificação anterior
+        campoCPF.addEventListener("input", function () {
+            tentativaVerificacao++;
+            cpfVerificado = "";
+            erroCPF.hidden = true;
+            campoCPF.removeAttribute("aria-invalid");
+        });
+
+        // Confere novamente antes de salvar
+        document.getElementById("formUsuario").addEventListener(
+            "submit",
+            async function (evento) {
+                const cpf = campoCPF.value.replace(/\D/g, "");
+
+                if (cpfVerificado !== cpf) {
+                    evento.preventDefault();
+
+                    const valido = await verificarCPFNoBanco();
+
+                    if (valido) {
+                        this.submit();
+                    }
+                }
+            }
+        );
+
+
+        function mostrarErro(mensagem) {
+            erroCPF.textContent = mensagem;
+            erroCPF.hidden = false;
+            erroCPF.classList.remove("text-success");
+            erroCPF.classList.add("text-danger");
+            campoCPF.setAttribute("aria-invalid", "true");
+        }
+
+        campoCPF.addEventListener("blur", async function () {
+            erroCPF.classList.remove("text-success");
+            erroCPF.classList.add("text-danger");
+            await verificarCPFNoBanco();
+        });
+
+        campoCPF.addEventListener("input", function () {
+            // Obriga a verificar novamente se o CPF for alterado
+            cpfVerificado = "";
+            tentativaVerificacao++;
+            cpfEmVerificacao = false;
+
+            erroCPF.hidden = true;
+            campoCPF.removeAttribute("aria-invalid");
+            erroCPF.classList.remove("text-success");
+            erroCPF.classList.add("text-danger");
+        });
+
+        campoData.addEventListener("focus", async function (evento) {
+            const cpf = campoCPF.value.replace(/\D/g, "");
+
+            if (cpfEmVerificacao) {
+                evento.preventDefault();
+                campoCPF.focus();
+                return;
+            }
+
+            if (cpfVerificado !== cpf) {
+                evento.preventDefault();
+
+                const valido = await verificarCPFNoBanco();
+
+                if (valido && document.activeElement === campoCPF) {
+                    campoData.focus();
+                } else {
+                    campoCPF.focus();
+                }
+            }
+        });
+    </script>
+    <script>
+        const campoEmail = document.getElementById("EMAIL");
+        const erroEmail = document.getElementById("erroEmail");
+
+        function validarFormatoEmail() {
+            const email = campoEmail.value.trim();
+
+            if (
+                email === "" ||
+                !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
+            ) {
+                erroEmail.textContent =
+                    "Digite um endereço de e-mail válido.";
+                erroEmail.hidden = false;
+                campoEmail.setAttribute("aria-invalid", "true");
+                return false;
+            }
+
+            erroEmail.hidden = true;
+            campoEmail.removeAttribute("aria-invalid");
+            return true;
+        }
+
+        campoEmail.addEventListener("blur", validarFormatoEmail);
     </script>
 
 

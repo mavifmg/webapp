@@ -1,86 +1,100 @@
 <?php
 
-function obterCoordenadas($enderecoUsuario)
+function obterCoordenadas($CEP, $NumCasa)
 {
-    /*
-     * OpenStreetMap / Nominatim
-     *
-     * O endereço recebido deve ser algo como:
-     * Rua Afonso Sardinha, 90, Ouro Branco, Minas Gerais, Brasil
-     */
+    // Remove pontos, espaços e traços do CEP.
+    $CEP = preg_replace('/\D/', '', $CEP);
+    $NumCasa = trim($NumCasa);
 
-    $endereco = urlencode($enderecoUsuario);
+    if (strlen($CEP) !== 8 || $NumCasa === '') {
+        return false;
+    }
 
-    $url = "https://nominatim.openstreetmap.org/search?"
-         . "q=" . $endereco
-         . "&format=json"
-         . "&limit=1"
-         . "&countrycodes=br";
+    // 1. Consulta o ViaCEP para descobrir o endereço.
+    $urlViaCEP = "https://viacep.com.br/ws/" . $CEP . "/json/";
 
-    /*
-     * Nominatim exige um User-Agent.
-     */
     $opcoes = [
         "http" => [
             "method" => "GET",
-            "header" => "User-Agent: AquiVacina/1.0\r\n"
+            "header" => "User-Agent: AquiVacina/1.0\r\n",
+            "timeout" => 10
         ]
     ];
 
     $contexto = stream_context_create($opcoes);
+    $respostaCEP = @file_get_contents(
+        $urlViaCEP,
+        false,
+        $contexto
+    );
 
-    /*
-     * Faz a requisição.
-     */
-    $resposta = @file_get_contents($url, false, $contexto);
-
-    /*
-     * Verifica se conseguiu acessar o Nominatim.
-     */
-    if ($resposta === false) {
+    if ($respostaCEP === false) {
         return false;
     }
 
-    /*
-     * Converte o JSON.
-     */
-    $dados = json_decode($resposta, true);
+    $dadosCEP = json_decode($respostaCEP, true);
 
-    /*
-     * Verifica se encontrou algum resultado.
-     */
     if (
-        !is_array($dados) ||
-        empty($dados)
+        !is_array($dadosCEP) ||
+        isset($dadosCEP["erro"]) ||
+        empty($dadosCEP["localidade"]) ||
+        empty($dadosCEP["uf"])
     ) {
         return false;
     }
 
-    /*
-     * Verifica latitude e longitude.
-     */
+    // 2. Monta o endereço completo.
+    $partes = [];
+
+    if (!empty($dadosCEP["logradouro"])) {
+        $partes[] = $dadosCEP["logradouro"];
+    }
+
+    $partes[] = $NumCasa;
+
+    if (!empty($dadosCEP["bairro"])) {
+        $partes[] = $dadosCEP["bairro"];
+    }
+
+    $partes[] = $dadosCEP["localidade"];
+    $partes[] = $dadosCEP["uf"];
+    $partes[] = "Brasil";
+
+    $enderecoCompleto = implode(", ", $partes);
+
+    // 3. Envia o endereço para o OpenStreetMap / Nominatim.
+    $urlNominatim =
+        "https://nominatim.openstreetmap.org/search?" .
+        http_build_query([
+            "q" => $enderecoCompleto,
+            "format" => "jsonv2",
+            "limit" => 1,
+            "countrycodes" => "br"
+        ]);
+
+    $respostaMapa = @file_get_contents(
+        $urlNominatim,
+        false,
+        $contexto
+    );
+
+    if ($respostaMapa === false) {
+        return false;
+    }
+
+    $dadosMapa = json_decode($respostaMapa, true);
+
     if (
-        !isset($dados[0]["lat"]) ||
-        !isset($dados[0]["lon"])
+        !is_array($dadosMapa) ||
+        empty($dadosMapa[0]["lat"]) ||
+        empty($dadosMapa[0]["lon"])
     ) {
         return false;
     }
 
-    /*
-     * Pega latitude.
-     */
-    $latitude = $dados[0]["lat"];
-
-    /*
-     * Pega longitude.
-     */
-    $longitude = $dados[0]["lon"];
-
-    /*
-     * Retorna as coordenadas.
-     */
     return [
-        "latitude" => $latitude,
-        "longitude" => $longitude
+        "latitude" => (float) $dadosMapa[0]["lat"],
+        "longitude" => (float) $dadosMapa[0]["lon"],
+        "endereco" => $enderecoCompleto
     ];
 }
