@@ -77,7 +77,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
                     <br>
 
-                    <a class="LetraLogin" href="EsqueciSenha.html">
+                    <a class="LetraLogin" href="EsqueciSenha.php">
                         Esqueci a senha
                     </a>
 
