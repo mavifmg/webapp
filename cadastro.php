@@ -59,12 +59,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $Celular = $_POST["Celular"];
     $CEP = $_POST["CEP"];
     $NumCasa = $_POST["NumCasa"];
-    //$EnderecoUsuario = $_POST["EnderecoUsuario"];
     $Indigena = isset($_POST["Indigena"]) ? 'true' : 'false';
     $Comorbidades = $_POST["Comorbidades"];
     $Autorizacao_Loc = isset($_POST["Autorizacao_Loc"]) ? 'true' : 'false';
-
-    //    $EnderecoUsuario = $CEP . ", " . $NumCasa . ", " . $EnderecoUsuario;
 
     $coordenadas = obterCoordenadas($CEP, $NumCasa);
 
@@ -74,7 +71,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         empty($DataNascimento) ||
         empty($EMAIL) ||
         empty($Celular) ||
-        //empty($EnderecoUsuario) ||
         empty($CEP) ||
         empty($NumCasa) ||
         empty($Comorbidades) ||
@@ -374,111 +370,31 @@ pg_close($conn);
             }
         });
     </script>
-</body>
+    <script>
+        const campoEmail = document.getElementById("EMAIL");
+        const erroEmail = document.getElementById("erroEmail");
 
-</html>
+        function validarFormatoEmail() {
+            const email = campoEmail.value.trim();
 
+            if (
+                email === "" ||
+                !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
+            ) {
+                erroEmail.textContent =
+                    "Digite um endereço de e-mail válido.";
+                erroEmail.hidden = false;
+                campoEmail.setAttribute("aria-invalid", "true");
+                return false;
+            }
 
-<script>
-    const campoCPF = document.getElementById("CPF");
-    const campoData = document.getElementById("DataNascimento");
-    const erroCPF = document.getElementById("erroCPF");
-
-    function validarCPF(cpf) {
-        cpf = cpf.replace(/\D/g, "");
-
-        if (cpf.length !== 11 || /^(\d)\1{10}$/.test(cpf)) {
-            return false;
+            erroEmail.hidden = true;
+            campoEmail.removeAttribute("aria-invalid");
+            return true;
         }
 
-        let soma = 0;
-
-        for (let i = 0; i < 9; i++) {
-            soma += Number(cpf[i]) * (10 - i);
-        }
-
-        let resto = (soma * 10) % 11;
-        if (resto === 10) resto = 0;
-
-        if (resto !== Number(cpf[9])) {
-            return false;
-        }
-
-        soma = 0;
-
-        for (let i = 0; i < 10; i++) {
-            soma += Number(cpf[i]) * (11 - i);
-        }
-
-        resto = (soma * 10) % 11;
-        if (resto === 10) resto = 0;
-
-        return resto === Number(cpf[10]);
-    }
-
-    function verificarCPF() {
-        const cpf = campoCPF.value;
-
-        if (!validarCPF(cpf)) {
-            erroCPF.textContent =
-                "CPF inválido. Verifique os números digitados.";
-            erroCPF.hidden = false;
-            campoCPF.setAttribute("aria-invalid", "true");
-            campoCPF.focus();
-            return false;
-        }
-
-        erroCPF.hidden = true;
-        erroCPF.textContent = "";
-        campoCPF.removeAttribute("aria-invalid");
-
-        return true;
-    }
-
-    // Verifica quando o usuário sai do campo CPF
-    campoCPF.addEventListener("blur", function () {
-        if (campoCPF.value.trim() !== "") {
-            verificarCPF();
-        }
-    });
-
-    // Impede a passagem para a data se o CPF estiver inválido
-    campoData.addEventListener("focus", function () {
-        if (!validarCPF(campoCPF.value)) {
-            erroCPF.textContent =
-                "Digite um CPF válido antes de informar a data de nascimento.";
-            erroCPF.hidden = false;
-            campoCPF.setAttribute("aria-invalid", "true");
-
-            campoCPF.focus();
-        }
-    });
-</script>
-<script>
-    const campoEmail = document.getElementById("EMAIL");
-    const erroEmail = document.getElementById("erroEmail");
-
-    function validarFormatoEmail() {
-        const email = campoEmail.value.trim();
-
-        if (
-            email === "" ||
-            !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
-        ) {
-            erroEmail.textContent =
-                "Digite um endereço de e-mail válido.";
-            erroEmail.hidden = false;
-            campoEmail.setAttribute("aria-invalid", "true");
-            return false;
-        }
-
-        erroEmail.hidden = true;
-        campoEmail.removeAttribute("aria-invalid");
-        return true;
-    }
-
-    campoEmail.addEventListener("blur", validarFormatoEmail);
-</script>
+        campoEmail.addEventListener("blur", validarFormatoEmail);
+    </script>
 </body>
 
 </html>

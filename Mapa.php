@@ -92,10 +92,11 @@ $ubsJson = json_encode(
 
     <title>AquiVacina | Mapa das UBS</title>
 
-    <link
-        rel="stylesheet"
-        href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 
+    <a href="javascript:history.back()" class="Voltar">
+        ←
+    </a>
     <style>
         #mapa {
             width: 100%;
@@ -118,11 +119,9 @@ $ubsJson = json_encode(
     </style>
 </head>
 
+
 <body>
 
-    <a href="Menu.php">
-        <button type="button">Voltar</button>
-    </a>
 
     <h2>UBS próximas de você</h2>
 
@@ -181,9 +180,9 @@ $ubsJson = json_encode(
                         fillOpacity: 1
                     }
                 )
-                .addTo(map)
-                .bindPopup("<strong>Sua localização cadastrada</strong>")
-                .openPopup();
+                    .addTo(map)
+                    .bindPopup("<strong>Sua localização cadastrada</strong>")
+                    .openPopup();
             }
         }
 
@@ -248,4 +247,5 @@ $ubsJson = json_encode(
     </script>
 
 </body>
+
 </html>
