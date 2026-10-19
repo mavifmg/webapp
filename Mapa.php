@@ -228,7 +228,6 @@ $ubsJson = json_encode(
 
             adicionarTexto(unidade.nomeubs || "UBS", true);
             adicionarTexto("Endereço: " + (unidade.endereco || "Não informado"));
-            adicionarTexto("Número: " + (unidade.NumUBS || "Não informado"));
             adicionarTexto("Horário: " + (unidade.horariofuncio || "Não informado"));
             adicionarTexto("Informações: " + (unidade.infoextra || "Não informado"));
 
