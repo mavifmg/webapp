@@ -473,7 +473,7 @@ $indigenaSim = in_array($valorIndigena, ["t", "true", true, 1, "1"], true);
             </div>
         <?php endif; ?>
 
-        <form method="POST" action="CadastroCriancas.php">
+        <form method="POST" action="cadastrocrian%C3%A7as.php">
 
             <input
                 type="hidden"
@@ -550,7 +550,7 @@ $indigenaSim = in_array($valorIndigena, ["t", "true", true, 1, "1"], true);
             </button>
 
             <?php if ($criancaEditar): ?>
-                <a href="CadastroCriancas.php"
+                <a href="cadastrocrian%C3%A7as.php"
                    style="text-align:center; margin-top:8px; color:#287cae;">
                     Cancelar edição
                 </a>
@@ -601,14 +601,14 @@ $indigenaSim = in_array($valorIndigena, ["t", "true", true, 1, "1"], true);
                     <div class="Acoes">
                         <a
                             class="Editar"
-                            href="CadastroCriancas.php?editar=<?php echo (int) $crianca["id"]; ?>"
+                            href="cadastrocrian%C3%A7as.php?editar=<?php echo (int) $crianca["id"]; ?>"
                         >
                             Editar
                         </a>
 
                         <a
                             class="Remover"
-                            href="CadastroCriancas.php?acao=remover&id=<?php echo (int) $crianca["id"]; ?>"
+                            href="cadastrocrian%C3%A7as.php?acao=remover&id=<?php echo (int) $crianca["id"]; ?>"
                             onclick="return confirm('Tem certeza que deseja remover esta criança?');"
                         >
                             Remover
