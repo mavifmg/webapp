@@ -24,6 +24,9 @@ label {
     margin-top: 8px;
     color: #36596d;
 }
+h1 {
+    text-align: center;
+}
 
 
 /* =========================================================
@@ -136,18 +139,24 @@ label:has(input[type="checkbox"]) {
 
 
 /* =========================================================
-   LOGO - UNIVERSAL
+   LOGO DO AQUIVACINA - UNIVERSAL
    ========================================================= */
 
 .Logo {
-    text-align: center;
-    margin-bottom: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    margin: 0 auto 20px;
 }
 
 .Logo img {
-    width: 150px;
-    max-width: 100%;
-    height: auto;
+    display: block;
+    width: 250px;
+    max-width: 70%;
+    height: 110px;
+    
+    object-position: center;
 }
 
 
@@ -392,6 +401,18 @@ label:has(input[type="checkbox"]) {
     width: auto;
     margin: 0;
 }
+/*radio genero*/
+.CampoGenero {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 10px;
+}
+.CampoGenero input[type="radio"] {
+    width: auto;
+    margin: 0;
+}  
+
 
 
 /* =========================================================

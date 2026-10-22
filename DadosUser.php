@@ -79,6 +79,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["editar"])) {
     $CEP = $_POST["CEP"] ?? "";
     $NumCasa = $_POST["NumCasa"] ?? "";
     $Comorbidades = $_POST["Comorbidades"] ?? "";
+    $Genero = $_POST["Genero"] ?? "";
     $Indigena = isset($_POST["Indigena"]) ? 'true' : 'false';
 
     $coordenadas = obterCoordenadas($CEP, $NumCasa);
@@ -95,7 +96,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["editar"])) {
         empty($Celular) ||
         empty($CEP) ||
         empty($NumCasa) ||
-        empty($Comorbidades)
+        empty($Comorbidades) ||
+        empty($Genero)
     ) {
 
         $_SESSION["erro_editar"] =
@@ -143,9 +145,10 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["editar"])) {
                 "NumCasa" = $6,
                 "Indigena" = $7,
                 "Comorbidades" = $8,
-                "LatitudeUser" = $9,
-                "LongitudeUser" = $10
-            WHERE "CPF" = $11
+                "Genero" = $9,
+                "LatitudeUser" = $10,
+                "LongitudeUser" = $11
+            WHERE "CPF" = $12
               AND "DataNascimento" = $2';
 
 
@@ -162,6 +165,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["editar"])) {
             $NumCasa,
             $Indigena,
             $Comorbidades,
+            $Genero,
             $LatitudeUser,
             $LongitudeUser,
             $CPF_antigo
@@ -269,6 +273,7 @@ $sql = 'SELECT
             "NumCasa",
             "Indigena",
             "Comorbidades",
+            "Genero",
             "Autorizacao_Loc",
             "LatitudeUser",
             "LongitudeUser"
@@ -319,235 +324,282 @@ if (!$usuario) {
 </head>
 
 
-<body class="DadosUser">
+<body class="Menu">
 
 
     <div class="LocDadosUser">
 
-        <div class="FundoDadosUser">
+        <div class="LocMenu">
 
-            <div class="LocInformacoesUbs">
+            <div class="FundoLog">
+                <?php include "Logo.php"; ?>
+                <br>
+                <div class="DadosUser">
 
-                <a href="Menu.php">
+                    <a href="Menu.php">
 
-                    <a href="javascript:history.back()" class="Voltar">
-                        ←
+                        <a href="Menu.php" class="Voltar">
+                            ←
+                        </a>
+
                     </a>
 
-                </a>
 
+                    <h1>
 
-                <h1>
-
-                    Dados do CPF:
-
-                    <?php
-                    echo htmlspecialchars($usuario["CPF"]);
-                    ?>
-
-                </h1>
-
-
-                <div class="Dados">
-
-                    <p>
-
-                        <strong>
-                            Data de Nascimento:
-                        </strong>
+                        Dados do CPF:
 
                         <?php
-                        echo htmlspecialchars(
-                            $usuario["DataNascimento"]
-                        );
+                        echo htmlspecialchars($usuario["CPF"]);
                         ?>
 
-                    </p>
+                    </h1>
 
 
-                    <p>
+                    <div class="Dados">
 
-                        <strong>
-                            Email:
-                        </strong>
+                        <p>
 
-                        <?php
-                        echo htmlspecialchars(
-                            $usuario["EMAIL"]
-                        );
-                        ?>
+                            <strong>
+                                Data de Nascimento:
+                            </strong>
 
-                    </p>
+                            <?php
+                            echo htmlspecialchars(
+                                $usuario["DataNascimento"]
+                            );
+                            ?>
 
-
-                    <p>
-
-                        <strong>
-                            Celular:
-                        </strong>
-
-                        <?php
-                        echo htmlspecialchars(
-                            $usuario["Celular"]
-                        );
-                        ?>
-
-                    </p>
+                        </p>
 
 
-                    <p>
+                        <p>
 
-                        <strong>
-                            Endereço:
-                        </strong>
+                            <strong>
+                                Email:
+                            </strong>
 
-                        CEP:
-                        <?= htmlspecialchars($usuario['CEP'] ?? '') ?>
+                            <?php
+                            echo htmlspecialchars(
+                                $usuario["EMAIL"]
+                            );
+                            ?>
 
-                        Num:
-                        <?= htmlspecialchars($usuario['NumCasa'] ?? '') ?>
-                    </p>
-
-                    </p>
-
+                        </p>
 
 
+                        <p>
+
+                            <strong>
+                                Celular:
+                            </strong>
+
+                            <?php
+                            echo htmlspecialchars(
+                                $usuario["Celular"]
+                            );
+                            ?>
+
+                        </p>
 
 
-                    <p>
+                        <p>
 
-                        <strong>
-                            Indígena:
-                        </strong>
+                            <strong>
+                                Endereço:
+                            </strong>
 
+                            CEP:
+                            <?= htmlspecialchars($usuario['CEP'] ?? '') ?>
 
-                        <?php
+                            Num:
+                            <?= htmlspecialchars($usuario['NumCasa'] ?? '') ?>
+                        </p>
 
-                        echo $usuario["Indigena"] === "t"
-                            ? "Sim"
-                            : "Não";
-
-                        ?>
-
-                    </p>
+                        </p>
 
 
-                    <p>
+                        <p>
 
-                        <strong>
-                            Comorbidades:
-                        </strong>
+                            <strong>
+                                Gênero:
+                            </strong>
 
-                        <?php
-                        echo htmlspecialchars(
-                            $usuario["Comorbidades"]
-                        );
-                        ?>
+                            <?php
+                            echo htmlspecialchars(
+                                $usuario["Genero"]
+                            );
+                            ?>
+                        <p>
 
-                    </p>
+                            <strong>
+                                Comorbidades:
+                            </strong>
+
+                            <?php
+                            echo htmlspecialchars(
+                                $usuario["Comorbidades"]
+                            );
+                            ?>
+
+                        </p>
+
+                        <p>
+
+                            <strong>
+                                Indígena:
+                            </strong>
 
 
-                    <p>
+                            <?php
 
-                        <strong>
-                            Autorização Local:
-                        </strong>
+                            echo $usuario["Indigena"] === "t"
+                                ? "Sim"
+                                : "Não";
+
+                            ?>
+
+                        </p>
 
 
-                        <?php
+                        <p>
 
-                        echo $usuario["Autorizacao_Loc"] === "t"
-                            ? "Sim"
-                            : "Não";
+                            <strong>
+                                Autorização Local:
+                            </strong>
 
-                        ?>
 
-                    </p>
+                            <?php
+
+                            echo $usuario["Autorizacao_Loc"] === "t"
+                                ? "Sim"
+                                : "Não";
+
+                            ?>
+
+                        </p>
+
+                    </div>
 
                 </div>
 
-            </div>
-
-        </div>
 
 
-        <!-- ==================================================
+
+                <!-- ==================================================
              FORMULÁRIO DE EDIÇÃO
         =================================================== -->
 
-        <div class="DadosUsuario">
+                <div class="DadosUsuario">
 
-            <h1>
-                Dados do Usuário
-            </h1>
-
-
-            <form action="DadosUser.php" method="POST" id="formUsuario">
+                    <h1>
+                        Dados do Usuário
+                    </h1>
 
 
-                <!-- CPF -->
-
-                <label for="CPF">
-                    CPF
-                </label>
-
-                <input type="text" name="CPF" id="CPF" value="<?php echo htmlspecialchars($usuario["CPF"]); ?>"
-                    readonly>
+                    <form action="DadosUser.php" method="POST" id="formUsuario">
 
 
-                <!-- DATA DE NASCIMENTO -->
+                        <!-- CPF -->
 
-                <label for="DataNascimento">
-                    Data de Nascimento
-                </label>
+                        <label for="CPF">
+                            CPF
+                        </label>
 
-                <input type="date" name="DataNascimento" id="DataNascimento"
-                    value="<?php echo htmlspecialchars($usuario["DataNascimento"]); ?>" readonly>
-
-
-                <!-- EMAIL -->
-
-                <label for="EMAIL">
-                    Email
-                </label>
-
-                <input type="email" name="EMAIL" id="EMAIL" value="<?php echo htmlspecialchars($usuario["EMAIL"]); ?>"
-                    readonly>
+                        <input type="text" name="CPF" id="CPF" value="<?php echo htmlspecialchars($usuario["CPF"]); ?>"
+                            readonly>
 
 
-                <!-- CELULAR -->
+                        <!-- DATA DE NASCIMENTO -->
 
-                <label for="Celular">
-                    Celular
-                </label>
+                        <label for="DataNascimento">
+                            Data de Nascimento
+                        </label>
 
-                <input type="text" name="Celular" id="Celular"
-                    value="<?php echo htmlspecialchars($usuario["Celular"]); ?>" readonly>
-
-
-                <!-- ENDEREÇO -->
+                        <input type="date" name="DataNascimento" id="DataNascimento"
+                            value="<?php echo htmlspecialchars($usuario["DataNascimento"]); ?>" readonly>
 
 
-                <label for="CEP">
-                    CEP
-                </label>
+                        <!-- EMAIL -->
 
-                <input type="text" name="CEP" id="CEP" value="<?php echo htmlspecialchars($usuario["CEP"]); ?>"
-                    readonly>
+                        <label for="EMAIL">
+                            Email
+                        </label>
 
-                <label for="numcasa">Número da Casa</label>
-                <input type="text" name="NumCasa" id="NumCasa"
-                    value="<?php echo htmlspecialchars($usuario["NumCasa"]); ?>" readonly>
+                        <input type="email" name="EMAIL" id="EMAIL"
+                            value="<?php echo htmlspecialchars($usuario["EMAIL"]); ?>" readonly>
 
 
-                <!-- COMORBIDADES -->
+                        <!-- CELULAR -->
 
-                <label for="Comorbidades">
-                    Comorbidades
-                </label>
+                        <label for="Celular">
+                            Celular
+                        </label>
 
-                <input type="text" name="Comorbidades" id="Comorbidades"
-                    value="<?php echo htmlspecialchars($usuario["Comorbidades"]); ?>" readonly>
+                        <input type="text" name="Celular" id="Celular"
+                            value="<?php echo htmlspecialchars($usuario["Celular"]); ?>" readonly>
+
+
+                        <!-- ENDEREÇO -->
+
+
+                        <label for="CEP">
+                            CEP
+                        </label>
+
+                        <input type="text" name="CEP" id="CEP" value="<?php echo htmlspecialchars($usuario["CEP"]); ?>"
+                            readonly>
+
+                        <label for="numcasa">Número da Casa</label>
+                        <input type="text" name="NumCasa" id="NumCasa"
+                            value="<?php echo htmlspecialchars($usuario["NumCasa"]); ?>" readonly>
+
+
+                        <!-- COMORBIDADES -->
+
+                        <label for="Comorbidades">
+                            Comorbidades
+                        </label>
+
+                        <input type="text" name="Comorbidades" id="Comorbidades"
+                            value="<?php echo htmlspecialchars($usuario["Comorbidades"]); ?>" readonly>
+
+                        <!-- GÊNERO -->
+<div class="CampoGenero">
+
+    <label id="genero">Gênero:</label><br>
+
+    <label>Masculino
+        <input
+            type="radio"
+            name="Genero"
+            value="Masculino"
+            <?php echo ($usuario["Genero"] === "Masculino") ? "checked" : ""; ?>
+        >
+    </label>
+
+    <label>Feminino
+        <input
+            type="radio"
+            name="Genero"
+            value="Feminino"
+            <?php echo ($usuario["Genero"] === "Feminino") ? "checked" : ""; ?>
+        >
+    </label>
+
+    <label>Outro
+        <input
+            type="radio"
+            name="Genero"
+            value="Outro"
+            <?php echo ($usuario["Genero"] === "Outro") ? "checked" : ""; ?>
+        >
+    </label>
+
+</div>
+
+                </div>
+
 
 
                 <!-- INDÍGENA -->
@@ -625,28 +677,30 @@ if (!$usuario) {
                 </button>
 
 
-            </form>
+                </form>
 
 
-            <!-- ==================================================
+                <!-- ==================================================
                  FORMULÁRIO DE EXCLUSÃO
             =================================================== -->
 
-            <form action="DadosUser.php" method="POST"
-                onsubmit="return confirm('Tem certeza que deseja excluir sua conta?');">
+                <form action="DadosUser.php" method="POST"
+                    onsubmit="return confirm('Tem certeza que deseja excluir sua conta?');">
 
-                <button class="BotaoCadastrar" type="submit" name="excluir">
+                    <button class="BotaoCadastrar" type="submit" name="excluir">
 
-                    Excluir conta
+                        Excluir conta
 
-                </button>
+                    </button>
 
-            </form>
+                </form>
+
+
+            </div>
 
 
         </div>
-
-
+    </div>
     </div>
 
 
@@ -687,6 +741,10 @@ if (!$usuario) {
 
             ];
 
+            const camposGenero = document.querySelectorAll(
+        'input[name="Genero"]'
+    );
+
 
             botaoEditar.addEventListener("click", function () {
 
@@ -724,17 +782,14 @@ if (!$usuario) {
     </script>
 
     <script>
-        const campoCPF = document.getElementById("CPF");
-        const campoData = document.getElementById("DataNascimento");
-        const erroCPF = document.getElementById("erroCPF");
-
         let cpfVerificado = "";
         let cpfEmVerificacao = false;
         let tentativaVerificacao = 0;
 
 
-        const campoCPF = document.getElementById("CPF");
+        /*const campoCPF = document.getElementById("CPF");
         const erroCPF = document.getElementById("erroCPF");
+        const campoData = document.getElementById("DataNascimento");*/
         const botaoEditar = document.getElementById("BEditar");
         const botaoSalvar = document.getElementById("BSalvar");
 

@@ -61,6 +61,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $NumCasa = $_POST["NumCasa"];
     $Indigena = isset($_POST["Indigena"]) ? 'true' : 'false';
     $Comorbidades = $_POST["Comorbidades"];
+    $Genero = isset($_POST["Genero"]) ? $_POST["Genero"] : null;
     $Autorizacao_Loc = isset($_POST["Autorizacao_Loc"]) ? 'true' : 'false';
 
     $coordenadas = obterCoordenadas($CEP, $NumCasa);
@@ -74,6 +75,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         empty($CEP) ||
         empty($NumCasa) ||
         empty($Comorbidades) ||
+        empty($Genero) ||
+
         !isset($_POST["Autorizacao_Loc"])
     ) {
         $_SESSION['erro_cadastro'] = "Preencha todos os campos obrigatórios e aceite a autorização local para prosseguir com o cadastro.";
@@ -106,13 +109,13 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     //exit();
 
     //,/*\"EnderecoUsuario\"*/
-    $sql = "INSERT INTO cadastro (\"CPF\", \"DataNascimento\", \"EMAIL\", \"Celular\",\"CEP\",\"NumCasa\", \"Indigena\", \"Comorbidades\", \"Autorizacao_Loc\", \"LatitudeUser\", \"LongitudeUser\")
-                VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)";
+    $sql = "INSERT INTO cadastro (\"CPF\", \"DataNascimento\", \"EMAIL\", \"Celular\",\"CEP\",\"NumCasa\", \"Indigena\", \"Comorbidades\", \"Autorizacao_Loc\", \"LatitudeUser\", \"LongitudeUser\", \"Genero\")
+                VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)";
 
     $resultado = pg_query_params(
         $conn,
         $sql,
-        [$CPF, $DataNascimento, $EMAIL, $Celular, $CEP, $NumCasa, $Indigena, $Comorbidades, $Autorizacao_Loc, $LatitudeUser, $LongitudeUser]
+        [$CPF, $DataNascimento, $EMAIL, $Celular, $CEP, $NumCasa, $Indigena, $Comorbidades, $Autorizacao_Loc, $LatitudeUser, $LongitudeUser, $Genero]
     );
 
     if ($resultado !== false) {
@@ -159,242 +162,263 @@ pg_close($conn);
         <button id="Posicao"><i class="fa-solid fa-arrow-left"></i></button>
     </a>
 
-    <h2> Usuário não cadastrado</h2>
 
+    <div class="LocCadastro">
+        <div class="LocMenu">
+            <div class="FundoLog">
+                <?php include "Logo.php"; ?>
 
-    <div class="LocCad">
-        <div class="CadastroCard">
+                <h1>Bem-vindo ao AquiVacina!</h1>
+                <h2>Tela de Cadastro</h2>
 
-            <br>
-            <form action="Cadastro.php" method="POST">
+                <br>
+                <form action="Cadastro.php" method="POST">
 
-                <label id="cpf">CPF</label>
-                <input id="CPF" placeholder="Digite seu CPF" type="text" name="CPF" maxlength="14" inputmode="numeric"
-                    autocomplete="off" required>
+                    <label id="cpf">CPF</label>
+                    <input id="CPF" placeholder="Digite seu CPF" type="text" name="CPF" maxlength="14"
+                        inputmode="numeric" autocomplete="off" required>
 
-                <p id="erroCPF" class="text-danger" hidden></p>
+                    <p id="erroCPF" class="text-danger" hidden></p>
 
-                <label id="senha">Data de Nascimento</label>
-                <input placeholder="Digite sua data de nascimento" type="date" name="DataNascimento">
+                    <label id="senha">Data de Nascimento</label>
+                    <input placeholder="Digite sua data de nascimento" type="date" name="DataNascimento">
 
-                <p id="erroEmail" class="text-danger" hidden></p>
+                    <p id="erroEmail" class="text-danger" hidden></p>
 
-                <label id="email">Email</label>
-                <input id="EMAIL" placeholder="Digite seu e-mail" type="email" name="EMAIL" autocomplete="email"
-                    required>
+                    <label id="email">Email</label>
+                    <input id="EMAIL" placeholder="Digite seu e-mail" type="email" name="EMAIL" autocomplete="email"
+                        required>
 
-                <label id="celular">Celular</label>
-                <input placeholder="Digite seu celular" type="text" name="Celular">
+                    <label id="celular">Celular</label>
+                    <input placeholder="Digite seu celular" type="text" name="Celular">
 
-                <div class="CepNumero">
+                    <div class="CepNumero">
 
-                    <div>
-                        <label id="cep">CEP</label>
-                        <input placeholder="Digite seu CEP" type="text" name="CEP">
+                        <div>
+                            <label id="cep">CEP</label>
+                            <input placeholder="Digite seu CEP" type="text" name="CEP">
 
-                        <label id="numcasa">Número da Casa</label>
-                        <input placeholder="Digite o número da casa" type="text" name="NumCasa">
+                            <label id="numcasa">Número da Casa</label>
+                            <input placeholder="Digite o número da casa" type="text" name="NumCasa">
+
+                        </div>
 
                     </div>
-
-                </div>
-
-                <label id="comorbidades">Comorbidades</label>
-                <input placeholder="Digite suas comorbidades" type="text" name="Comorbidades">
-
-                <label id="indigena">
-                    <input type="checkbox" name="Indigena" value="true">
-                    Sou indígena
-                </label>
-
-                <label id="autorizacao">
-                    <input type="checkbox" name="Autorizacao_Loc" value="true">
-                    Autorizo meu local atual
-                </label>
-                <br>
+                    //checkbox de comorbidades
 
 
-                <?php
-                if (isset($_SESSION['erro_cadastro'])) {
-                    echo "<p class='text-danger'>" . $_SESSION['erro_cadastro'] . "</p>";
-                    unset($_SESSION['erro_cadastro']);
-                }
-                ?>
+                    <label id="comorbidades">Comorbidades</label>
+                    <input placeholder="Digite suas comorbidades" type="text" name="Comorbidades">
 
-                <?php
-                if (isset($_SESSION['cadastro'])) {
-                    echo "<p class='text-sucess'>" . $_SESSION['cadastro'] . "</p>";
-                    unset($_SESSION['cadastro']);
-                }
-                ?>
+                    <div class="CampoGenero">
+                        <label id="genero">Gêneros:</label>
 
-                <button type="submit" class="BotaoCadastrar">Completar cadastro</button>
+                        <label>Masculino
+                            <input type="radio" name="Genero" value="Masculino">
+                        </label>
 
-            </form>
+                        <label>Feminino
+                            <input type="radio" name="Genero" value="Feminino">
+                        </label>
+
+                        <label>Outro
+                            <input type="radio" name="Genero" value="Outro">
+                        </label>
+                    </div>
+
+                    <label id="autorizacao">
+                        <input type="checkbox" name="Autorizacao_Loc" value="true">
+                        Autorizo meu local atual
+                    </label>
+
+                    <label id="indigena">
+                        <input type="checkbox" name="Indigena" value="true">
+                        Sou indígena
+                    </label>
+                    <br>
 
 
+                    <?php
+                    if (isset($_SESSION['erro_cadastro'])) {
+                        echo "<p class='text-danger'>" . $_SESSION['erro_cadastro'] . "</p>";
+                        unset($_SESSION['erro_cadastro']);
+                    }
+                    ?>
+
+                    <?php
+                    if (isset($_SESSION['cadastro'])) {
+                        echo "<p class='text-sucess'>" . $_SESSION['cadastro'] . "</p>";
+                        unset($_SESSION['cadastro']);
+                    }
+                    ?>
+
+                    <button type="submit" class="BotaoCadastrar">Completar cadastro</button>
+
+                </form>
+
+
+            </div>
         </div>
-    </div>
 
 
-    <script>
-        const campoCPF = document.getElementById("CPF");
-        const campoData = document.getElementById("DataNascimento");
-        const erroCPF = document.getElementById("erroCPF");
+        <script>
+            const campoCPF = document.getElementById("CPF");
+            const campoData = document.getElementById("DataNascimento");
+            const erroCPF = document.getElementById("erroCPF");
 
-        let cpfVerificado = "";
-        let cpfEmVerificacao = false;
-        let tentativaVerificacao = 0;
+            let cpfVerificado = "";
+            let cpfEmVerificacao = false;
+            let tentativaVerificacao = 0;
 
-        async function verificarCPFNoBanco() {
-            const cpf = campoCPF.value.replace(/\D/g, "");
+            async function verificarCPFNoBanco() {
+                const cpf = campoCPF.value.replace(/\D/g, "");
 
-            // Não consulta se o campo estiver vazio
-            if (cpf === "") {
-                erroCPF.hidden = true;
+                // Não consulta se o campo estiver vazio
+                if (cpf === "") {
+                    erroCPF.hidden = true;
+                    cpfVerificado = "";
+                    return false;
+                }
+
+                tentativaVerificacao++;
+                const tentativaAtual = tentativaVerificacao;
+
+                cpfEmVerificacao = true;
                 cpfVerificado = "";
-                return false;
-            }
+                campoCPF.setAttribute("aria-invalid", "true");
 
-            tentativaVerificacao++;
-            const tentativaAtual = tentativaVerificacao;
+                erroCPF.textContent = "Verificando CPF...";
+                erroCPF.hidden = false;
 
-            cpfEmVerificacao = true;
-            cpfVerificado = "";
-            campoCPF.setAttribute("aria-invalid", "true");
+                try {
+                    const resposta = await fetch("VerificarCPF.php", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type":
+                                "application/x-www-form-urlencoded"
+                        },
+                        body: new URLSearchParams({ CPF: cpf })
+                    });
 
-            erroCPF.textContent = "Verificando CPF...";
-            erroCPF.hidden = false;
+                    const dados = await resposta.json();
 
-            try {
-                const resposta = await fetch("VerificarCPF.php", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type":
-                            "application/x-www-form-urlencoded"
-                    },
-                    body: new URLSearchParams({ CPF: cpf })
-                });
+                    // Ignora respostas antigas se o usuário alterou o CPF
+                    if (tentativaAtual !== tentativaVerificacao) {
+                        return false;
+                    }
 
-                const dados = await resposta.json();
+                    if (!resposta.ok || dados.erro) {
+                        erroCPF.textContent =
+                            dados.erro || "Não foi possível verificar o CPF.";
+                        erroCPF.hidden = false;
+                        return false;
+                    }
 
-                // Ignora respostas antigas se o usuário alterou o CPF
-                if (tentativaAtual !== tentativaVerificacao) {
-                    return false;
-                }
+                    if (!dados.valido || dados.cadastrado) {
+                        erroCPF.textContent = dados.mensagem;
+                        erroCPF.hidden = false;
+                        return false;
+                    }
 
-                if (!resposta.ok || dados.erro) {
-                    erroCPF.textContent =
-                        dados.erro || "Não foi possível verificar o CPF.";
-                    erroCPF.hidden = false;
-                    return false;
-                }
-
-                if (!dados.valido || dados.cadastrado) {
                     erroCPF.textContent = dados.mensagem;
                     erroCPF.hidden = false;
+                    erroCPF.classList.remove("text-danger");
+                    erroCPF.classList.add("text-success");
+
+                    campoCPF.removeAttribute("aria-invalid");
+                    cpfVerificado = cpf;
+
+                    return true;
+
+                } catch (erro) {
+                    if (tentativaAtual === tentativaVerificacao) {
+                        erroCPF.textContent =
+                            "Erro de conexão ao verificar o CPF. Tente novamente.";
+                        erroCPF.hidden = false;
+                    }
+
+                    return false;
+
+                } finally {
+                    if (tentativaAtual === tentativaVerificacao) {
+                        cpfEmVerificacao = false;
+                    }
+                }
+            }
+
+            function mostrarErro(mensagem) {
+                erroCPF.textContent = mensagem;
+                erroCPF.hidden = false;
+                erroCPF.classList.remove("text-success");
+                erroCPF.classList.add("text-danger");
+                campoCPF.setAttribute("aria-invalid", "true");
+            }
+
+            campoCPF.addEventListener("blur", async function () {
+                erroCPF.classList.remove("text-success");
+                erroCPF.classList.add("text-danger");
+                await verificarCPFNoBanco();
+            });
+
+            campoCPF.addEventListener("input", function () {
+                // Obriga a verificar novamente se o CPF for alterado
+                cpfVerificado = "";
+                tentativaVerificacao++;
+                cpfEmVerificacao = false;
+
+                erroCPF.hidden = true;
+                campoCPF.removeAttribute("aria-invalid");
+                erroCPF.classList.remove("text-success");
+                erroCPF.classList.add("text-danger");
+            });
+
+            campoData.addEventListener("focus", async function (evento) {
+                const cpf = campoCPF.value.replace(/\D/g, "");
+
+                if (cpfEmVerificacao) {
+                    evento.preventDefault();
+                    campoCPF.focus();
+                    return;
+                }
+
+                if (cpfVerificado !== cpf) {
+                    evento.preventDefault();
+
+                    const valido = await verificarCPFNoBanco();
+
+                    if (valido && document.activeElement === campoCPF) {
+                        campoData.focus();
+                    } else {
+                        campoCPF.focus();
+                    }
+                }
+            });
+        </script>
+        <script>
+            const campoEmail = document.getElementById("EMAIL");
+            const erroEmail = document.getElementById("erroEmail");
+
+            function validarFormatoEmail() {
+                const email = campoEmail.value.trim();
+
+                if (
+                    email === "" ||
+                    !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
+                ) {
+                    erroEmail.textContent =
+                        "Digite um endereço de e-mail válido.";
+                    erroEmail.hidden = false;
+                    campoEmail.setAttribute("aria-invalid", "true");
                     return false;
                 }
 
-                erroCPF.textContent = dados.mensagem;
-                erroCPF.hidden = false;
-                erroCPF.classList.remove("text-danger");
-                erroCPF.classList.add("text-success");
-
-                campoCPF.removeAttribute("aria-invalid");
-                cpfVerificado = cpf;
-
+                erroEmail.hidden = true;
+                campoEmail.removeAttribute("aria-invalid");
                 return true;
-
-            } catch (erro) {
-                if (tentativaAtual === tentativaVerificacao) {
-                    erroCPF.textContent =
-                        "Erro de conexão ao verificar o CPF. Tente novamente.";
-                    erroCPF.hidden = false;
-                }
-
-                return false;
-
-            } finally {
-                if (tentativaAtual === tentativaVerificacao) {
-                    cpfEmVerificacao = false;
-                }
-            }
-        }
-
-        function mostrarErro(mensagem) {
-            erroCPF.textContent = mensagem;
-            erroCPF.hidden = false;
-            erroCPF.classList.remove("text-success");
-            erroCPF.classList.add("text-danger");
-            campoCPF.setAttribute("aria-invalid", "true");
-        }
-
-        campoCPF.addEventListener("blur", async function () {
-            erroCPF.classList.remove("text-success");
-            erroCPF.classList.add("text-danger");
-            await verificarCPFNoBanco();
-        });
-
-        campoCPF.addEventListener("input", function () {
-            // Obriga a verificar novamente se o CPF for alterado
-            cpfVerificado = "";
-            tentativaVerificacao++;
-            cpfEmVerificacao = false;
-
-            erroCPF.hidden = true;
-            campoCPF.removeAttribute("aria-invalid");
-            erroCPF.classList.remove("text-success");
-            erroCPF.classList.add("text-danger");
-        });
-
-        campoData.addEventListener("focus", async function (evento) {
-            const cpf = campoCPF.value.replace(/\D/g, "");
-
-            if (cpfEmVerificacao) {
-                evento.preventDefault();
-                campoCPF.focus();
-                return;
             }
 
-            if (cpfVerificado !== cpf) {
-                evento.preventDefault();
-
-                const valido = await verificarCPFNoBanco();
-
-                if (valido && document.activeElement === campoCPF) {
-                    campoData.focus();
-                } else {
-                    campoCPF.focus();
-                }
-            }
-        });
-    </script>
-    <script>
-        const campoEmail = document.getElementById("EMAIL");
-        const erroEmail = document.getElementById("erroEmail");
-
-        function validarFormatoEmail() {
-            const email = campoEmail.value.trim();
-
-            if (
-                email === "" ||
-                !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
-            ) {
-                erroEmail.textContent =
-                    "Digite um endereço de e-mail válido.";
-                erroEmail.hidden = false;
-                campoEmail.setAttribute("aria-invalid", "true");
-                return false;
-            }
-
-            erroEmail.hidden = true;
-            campoEmail.removeAttribute("aria-invalid");
-            return true;
-        }
-
-        campoEmail.addEventListener("blur", validarFormatoEmail);
-    </script>
+            campoEmail.addEventListener("blur", validarFormatoEmail);
+        </script>
 </body>
 
 </html>

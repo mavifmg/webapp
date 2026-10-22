@@ -55,6 +55,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     <div class="LocLogin">
         <div class="FundoLog">
+            <?php include "Logo.php"; ?>
 
             <br>
 
