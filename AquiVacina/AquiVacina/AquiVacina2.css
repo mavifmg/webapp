@@ -1,0 +1,1222 @@
+
+* {
+    box-sizing: border-box;
+}
+
+
+/* ============================= */
+/* CONFIGURAÇÕES GERAIS */
+/* ============================= */
+
+html,
+body {
+    margin: 0;
+    padding: 0;
+
+    width: 100%;
+    min-height: 100%;
+}
+
+
+body {
+    font-family:
+        "Franklin Gothic Medium",
+        "Arial Narrow",
+        Arial,
+        sans-serif;
+}
+
+
+/* ============================= */
+/* FUNDO DA PÁGINA */
+/* ============================= */
+
+body.EstoqueUbs {
+    min-height: 100vh;
+
+    background-color: #0656af;
+
+    background-image: none;
+
+    overflow-x: hidden;
+}
+
+
+/* ============================= */
+/* CABEÇALHO */
+/* ============================= */
+
+.CabecalhoEstoque {
+    width: 100%;
+    height: 240px;
+
+    background-color: white;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    position: relative;
+
+    z-index: 100;
+}
+
+
+.LogoEstoque {
+    height: 420px;
+
+    width: auto;
+
+    max-width: 200px;
+
+    object-fit: contain;
+}
+
+
+.LogoTexto {
+    color: #0656af;
+
+    font-size: 32px;
+
+    font-weight: bold;
+
+    margin-left: 10px;
+}
+
+
+/* ============================= */
+/* ÍCONES */
+/* ============================= */
+
+.IconEstUbs {
+    position: absolute;
+
+    top: 30px;
+
+    left: 25px;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 5px;
+
+    z-index: 1000;
+}
+
+
+#Home,
+#Burger,
+#Perfil {
+    cursor: pointer;
+
+    color: #0656af;
+
+    position: relative;
+
+    top: 40px;
+
+    left: 50px;
+
+    transition:
+        background-color 0.25s ease,
+        color 0.25s ease,
+        transform 0.2s ease;
+}
+
+
+#Home {
+    background: transparent;
+
+    border: none;
+
+    font-size: 25px;
+
+    padding: 6px 9px;
+
+    border-radius: 8px;
+}
+
+
+#Burger {
+    border: none;
+
+    background: transparent;
+
+    font-size: 25px;
+
+    padding: 6px 9px;
+
+    border-radius: 8px;
+}
+
+
+#Perfil {
+    background: transparent;
+
+    border: none;
+
+    font-size: 25px;
+
+    padding: 6px 9px;
+
+    border-radius: 8px;
+}
+
+
+#Home:hover,
+#Burger:hover,
+#Perfil:hover {
+    background-color: #2c88d5;
+
+    color: white;
+
+    transform: translateY(-2px);
+}
+
+
+/* ============================= */
+/* BARRA DE MENU */
+/* ============================= */
+
+menu {
+    display: none;
+
+    position: absolute;
+
+    top: 100px;
+
+    left: 140px;
+
+    transform: translateX(-50%);
+
+    margin: 0;
+
+    padding: 0;
+
+    z-index: 99999;
+}
+
+
+menu > ul {
+    display: flex;
+
+    flex-direction: column;
+
+    margin: 0;
+
+    padding: 0;
+
+    width: 300px;
+
+    overflow: hidden;
+
+    border-radius: 12px;
+
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.25);
+}
+
+
+menu > ul > a {
+    display: flex;
+
+    align-items: center;
+
+    width: 100%;
+
+    min-height: 48px;
+
+    padding: 12px 18px;
+
+    background-color: #0656af;
+
+    color: white;
+
+    text-decoration: none;
+
+    position: relative;
+
+    right: auto;
+
+    box-sizing: border-box;
+
+    border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+
+    transition:
+        background-color 0.25s ease,
+        padding-left 0.25s ease,
+        color 0.25s ease;
+}
+
+
+menu > ul > a:last-child {
+    border-bottom: none;
+}
+
+
+menu > ul > a:hover {
+    background-color: #2c88d5;
+
+    color: white;
+
+    padding-left: 25px;
+}
+
+
+/* ============================= */
+/* LINKS */
+/* ============================= */
+
+a {
+    color: white;
+
+    text-decoration: none;
+}
+
+
+/* ============================= */
+/* CONTAINER PRINCIPAL */
+/* ============================= */
+
+.estoque-container {
+    width: 100%;
+
+    max-width: 1350px;
+
+    margin: 0 auto;
+
+    padding: 50px 30px 40px 30px;
+
+    display: grid;
+
+    grid-template-columns: 420px minmax(0, 1fr);
+
+    column-gap: 80px;
+
+    align-items: start;
+}
+
+.estoque-quadro {
+    width: 100%;
+
+    min-width: 0;
+}
+
+.quadro-cadastro {
+    position: relative;
+
+    top: 100px;
+
+    width: 100%;
+}
+
+.quadro-cadastro .LocEstUbs {
+    position: static;
+
+    width: 100%;
+}
+
+
+.quadro-cadastro .FundoTipo1 {
+    width: 100%;
+
+    max-width: 420px;
+
+    min-height: 450px;
+
+    margin: 0 auto;
+
+    padding: 25px;
+
+    background-color: #2c88d5;
+
+    color: white;
+
+    border-radius: 40px;
+
+    text-align: center;
+}
+
+
+/* ============================= */
+/* TÍTULOS DOS CAMPOS */
+/* ============================= */
+
+#titulo1,
+#titulo2,
+#titulo3,
+#titulo4 {
+    position: static;
+
+    width: calc(100% - 40px);
+
+    max-width: 350px;
+
+    margin: 10px auto 0 auto;
+
+    text-align: left;
+
+    color: white;
+}
+
+
+/* ============================= */
+/* INPUTS */
+/* ============================= */
+
+.quadro-cadastro input {
+    display: block;
+
+    width: calc(100% - 40px);
+
+    max-width: 350px;
+
+    height: 40px;
+
+    margin: 8px auto 18px auto;
+
+    padding: 0 12px;
+
+    color: #0656af;
+
+    background-color: white;
+
+    border: 2px solid transparent;
+
+    border-radius: 10px;
+
+    outline: none;
+}
+
+
+.quadro-cadastro input:focus {
+    border: 2px solid #0656af;
+
+    outline: none;
+}
+
+
+/* ============================= */
+/* SELECTS */
+/* ============================= */
+
+/*
+   O Público e o Nome UBS
+   usam exatamente o mesmo estilo.
+*/
+
+.quadro-cadastro select {
+    display: block;
+
+    width: calc(100% - 40px);
+
+    max-width: 350px;
+
+    height: 40px;
+
+    margin: 8px auto 18px auto;
+
+    padding: 0 12px;
+
+    color: #0656af;
+
+    background-color: white;
+
+    border: 2px solid transparent;
+
+    border-radius: 10px;
+
+    outline: none;
+
+    cursor: pointer;
+}
+
+
+.quadro-cadastro select:focus {
+    border: 2px solid #0656af;
+
+    outline: none;
+}
+
+
+/*
+   Os dois selects ficam iguais.
+*/
+
+#NomeUBS,
+#TipoPessoa {
+    width: calc(100% - 40px);
+
+    max-width: 350px;
+
+    height: 40px;
+
+    margin: 8px auto 18px auto;
+}
+
+
+/* ============================= */
+/* BOTÃO ENVIAR */
+/* ============================= */
+
+.quadro-cadastro button {
+    display: block;
+
+    width: 70%;
+
+    max-width: 250px;
+
+    height: 40px;
+
+    margin: 20px auto 10px auto;
+
+    border-radius: 10px;
+
+    color: white;
+
+    background-color: #0656af;
+
+    cursor: pointer;
+
+    border: none;
+}
+
+
+.quadro-cadastro button:hover {
+    background-color: #174f91;
+}
+
+.text-danger {
+    color: red;
+    position: relative;
+    top: 30px;
+    text-align: center;
+}
+
+.text-sucess {
+    color: greenyellow;
+
+    text-align: center;
+
+    margin: 15px auto;
+}
+
+.quadro-tabela {
+    width: 100%;
+
+    min-width: 0;
+
+    position: relative;
+
+    top: 100px;
+
+    left: 0;
+}
+
+/* ============================= */
+/* TABELA */
+/* ============================= */
+
+.TabelaEstoque {
+    position: relative;
+
+    width: 100%;
+
+    height: 450px;
+
+    padding: 15px;
+
+    background-color: #2c88d5;
+
+    color: white;
+
+    border-radius: 20px;
+
+    overflow-x: hidden;
+
+    overflow-y: auto;
+
+    top: 0;
+
+    left: 0;
+}
+
+
+.TabelaEstoque table {
+    width: 100%;
+
+    max-width: 100%;
+
+    table-layout: fixed;
+
+    border-collapse: collapse;
+}
+
+
+/* ============================= */
+/* CABEÇALHO DA TABELA */
+/* ============================= */
+
+.TabelaEstoque th {
+    color: white;
+
+    background-color: #2c88d5;
+
+    border: 2px solid white;
+
+    padding: 10px 6px;
+
+    text-align: center;
+
+    vertical-align: middle;
+
+    white-space: normal;
+
+    overflow-wrap: anywhere;
+
+    word-break: normal;
+}
+
+
+/* ============================= */
+/* CÉLULAS DA TABELA */
+/* ============================= */
+
+.TabelaEstoque td {
+    color: white;
+
+    border: 1px solid white;
+
+    padding: 10px 6px;
+
+    text-align: center;
+
+    vertical-align: middle;
+
+    white-space: normal;
+
+    overflow-wrap: anywhere;
+
+    word-break: normal;
+
+    hyphens: auto;
+
+    line-height: 1.2;
+
+    white-space: normal;
+    overflow: visible;
+    overflow-wrap: anywhere;
+    height: auto;
+    vertical-align: middle;
+}
+
+
+/* ============================= */
+/* LARGURA DAS COLUNAS */
+/* ============================= */
+
+.TabelaEstoque th:nth-child(1),
+.TabelaEstoque td:nth-child(1) {
+    width: 35%;
+}
+
+
+.TabelaEstoque th:nth-child(2),
+.TabelaEstoque td:nth-child(2) {
+    width: 45%;
+}
+
+
+.TabelaEstoque th:nth-child(3),
+.TabelaEstoque td:nth-child(3) {
+    width: 20%;
+}
+
+
+/* ============================= */
+/* TEXTOS DA TABELA */
+/* ============================= */
+
+.TabelaEstoque .LetraCad1,
+.TabelaEstoque .LetraCad2,
+.TabelaEstoque .LetraCad3 {
+    position: static;
+
+    left: auto;
+
+    right: auto;
+
+    top: auto;
+
+    bottom: auto;
+
+    transform: none;
+}
+
+
+.TabelaEstoque #InfoEst1,
+.TabelaEstoque #InfoEst2,
+.TabelaEstoque #InfoEst3 {
+    position: static;
+
+    left: auto;
+
+    right: auto;
+
+    top: auto;
+
+    bottom: auto;
+
+    transform: none;
+}
+
+
+/* ============================= */
+/* LINHAS */
+/* ============================= */
+
+.linhaEstoque {
+    cursor: pointer;
+
+    transition:
+        background-color 0.15s ease;
+}
+
+
+.linhaEstoque:hover {
+    background-color: rgba(255, 255, 255, 0.18);
+}
+
+
+.linhaEstoque.selecionada {
+    background-color: rgba(255, 255, 255, 0.30);
+}
+
+
+/* ============================= */
+/* BOTÕES DA TABELA */
+/* ============================= */
+
+.quadro-tabela > form:first-of-type {
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    width: 100%;
+}
+
+
+.quadro-tabela #BEst1 {
+    position: static;
+
+    width: 340px;
+
+    height: 40px;
+
+    margin: 15px auto 10px auto;
+}
+
+
+.quadro-tabela > form:nth-of-type(2) {
+    width: 100%;
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    gap: 10px;
+}
+
+
+#inputexcluir {
+    position: static;
+
+    width: 180px;
+
+    height: 40px;
+
+    margin: 10px 0;
+
+    padding: 0 10px;
+
+    color: #0656af;
+
+    background-color: white;
+
+    border: none;
+
+    border-radius: 10px;
+}
+
+
+.quadro-tabela #BEst2 {
+    position: static;
+
+    width: 150px;
+
+    height: 40px;
+
+    margin: 10px 0;
+}
+
+
+/* ============================= */
+/* QUADRO DE EDIÇÃO */
+/* ============================= */
+
+.quadro-edicao {
+    display: flex;
+
+    justify-content: center;
+}
+
+
+.quadro-edicao > form {
+    width: 100%;
+
+    max-width: 420px;
+
+    min-height: 430px;
+
+    padding: 30px;
+
+    background-color: #2c88d5;
+
+    border-radius: 40px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    justify-content: center;
+
+    align-items: center;
+}
+
+
+.quadro-edicao .inputEst {
+    position: static;
+
+    width: 80%;
+
+    max-width: 300px;
+
+    height: 40px;
+
+    margin: 15px auto;
+
+    padding: 0 12px;
+
+    color: #0656af;
+
+    background-color: white;
+
+    border: none;
+
+    border-radius: 10px;
+}
+
+
+#inputnome,
+#inputubs,
+#inputestoque,
+#nomeantigo {
+    position: static;
+}
+
+
+.quadro-edicao #BEst3,
+.quadro-edicao #BEst4 {
+    position: static;
+
+    width: 150px;
+
+    height: 40px;
+
+    margin: 8px auto;
+}
+
+
+.quadro-edicao #BEst3:hover,
+.quadro-edicao #BEst4:hover {
+    background-color: #174f91;
+}
+
+
+/* ============================= */
+/* BOTÕES GERAIS */
+/* ============================= */
+
+button {
+    border: none;
+
+    cursor: pointer;
+
+    color: white;
+
+    background-color: #0656af;
+
+    border-radius: 10px;
+}
+
+
+button:hover {
+    background-color: #174f91;
+
+    color: white;
+}
+
+
+/* ============================= */
+/* BOTÃO EXCLUIR DA TABELA */
+/* ============================= */
+
+.BotaoExcluirEstoque {
+
+    width: 25px;
+
+    height: 25px;
+
+    padding: 0;
+
+    margin-left: 8px;
+
+    border: none;
+
+    border-radius: 5px;
+
+    background-color: #0656af;
+
+    color: white;
+
+    font-weight: bold;
+
+    cursor: pointer;
+
+    position: relative;
+
+    top: 0px;
+
+    left: 30px;
+}
+
+
+.BotaoExcluirEstoque:hover {
+    background-color: #174f91;
+}
+
+
+/* ============================= */
+/* BOTÕES ESTOQUE */
+/* ============================= */
+
+#BEst1 {
+    background-color: #2c88d5;
+}
+
+
+#BEst1:hover {
+    background-color: #174f91;
+}
+
+
+#BEst2 {
+    background-color: #2c88d5;
+}
+
+
+#BEst2:hover {
+    background-color: #174f91;
+}
+
+
+/* ============================= */
+/* TABLET */
+/* ============================= */
+
+@media (max-width: 1200px) {
+
+    .estoque-container {
+        grid-template-columns: 400px minmax(0, 1fr);
+
+        column-gap: 40px;
+
+        padding-left: 20px;
+
+        padding-right: 20px;
+    }
+
+
+    .quadro-cadastro {
+        left: 0;
+    }
+
+
+    .quadro-tabela {
+        left: 0;
+    }
+}
+
+
+/* ============================= */
+/* CELULAR / TELA MENOR */
+/* ============================= */
+
+@media (max-width: 900px) {
+
+    body.EstoqueUbs {
+        display: block;
+
+        min-height: 100vh;
+    }
+
+
+    .CabecalhoEstoque {
+        height: 80px;
+    }
+
+
+    .LogoEstoque {
+        height: 65px;
+
+        max-width: 230px;
+    }
+
+
+    .IconEstUbs {
+        position: absolute;
+
+        top: 20px;
+
+        left: 10px;
+    }
+
+
+    .estoque-container {
+        display: flex;
+
+        flex-direction: column;
+
+        width: 100%;
+
+        min-height: auto;
+
+        padding: 30px 20px;
+
+        gap: 30px;
+    }
+
+
+    .estoque-quadro {
+        width: 100%;
+    }
+
+
+    .quadro-cadastro {
+        position: static;
+
+        width: 100%;
+    }
+
+
+    .quadro-cadastro .FundoTipo1,
+    .quadro-edicao > form {
+        max-width: 550px;
+
+        margin: 0 auto;
+    }
+
+
+    .quadro-tabela {
+        position: static;
+
+        width: 100%;
+    }
+
+
+    .TabelaEstoque {
+        max-width: 550px;
+
+        margin: 0 auto;
+    }
+
+
+    .quadro-tabela > form:nth-of-type(2) {
+        flex-direction: column;
+    }
+
+
+    #inputexcluir {
+        width: 80%;
+
+        max-width: 300px;
+    }
+}
+
+
+/* ============================= */
+/* CELULAR PEQUENO */
+/* ============================= */
+
+@media (max-width: 480px) {
+
+    .CabecalhoEstoque {
+        height: 70px;
+    }
+
+
+    .LogoEstoque {
+        height: 55px;
+
+        max-width: 170px;
+    }
+
+
+    .estoque-container {
+        padding-left: 10px;
+
+        padding-right: 10px;
+    }
+
+
+    .TabelaEstoque {
+        height: auto;
+
+        min-height: 300px;
+
+        padding: 8px;
+    }
+
+
+    .TabelaEstoque th,
+    .TabelaEstoque td {
+        font-size: 13px;
+
+        padding: 6px 4px;
+    }
+
+
+    .quadro-cadastro .FundoTipo1,
+    .quadro-edicao > form {
+        min-height: auto;
+
+        border-radius: 25px;
+
+        padding: 15px;
+    }
+
+    #titulo1,
+    #titulo2,
+    #titulo3,
+    #titulo4 {
+        width: calc(100% - 30px);
+    }
+
+
+    .quadro-cadastro input,
+    .quadro-cadastro select {
+        width: calc(100% - 30px);
+    }
+}
+
+#BEnviar {
+    position: relative;
+    top: 40px;
+}
+
+.text-sucess {
+    position: relative;
+    top: 30px;
+}
+
+.LetraCad4 {
+    text-align: center;
+    padding: 5px;
+    min-width: 180px;
+}
+
+.TabelaEstoque td:last-child {
+    text-align: center;
+    padding: 10px;
+    min-width: 180px;
+    overflow-wrap: break-word;
+}
+
+.estoque-container {
+    width: 100%;
+    max-width: 1600px;
+    margin: 0 auto;
+    padding: 50px 25px 40px 25px;
+
+    display: grid;
+    grid-template-columns: minmax(320px, 0.8fr) minmax(0, 1.5fr);
+    column-gap: 35px;
+    align-items: start;
+}
+
+.estoque-quadro {
+    width: 100%;
+    min-width: 0;
+}
+
+.quadro-cadastro {
+    width: 100%;
+    left: 120px;
+}
+
+.quadro-cadastro .FundoTipo1 {
+    width: 100%;
+    max-width: 420px;
+    margin: 0 auto;
+}
+
+.quadro-tabela {
+    width: 100%;
+    min-width: 0;
+    left: 0;
+}
+
+.TabelaEstoque {
+    width: 70%;
+    min-width: 0;
+    overflow-x: auto;
+    position: relative;
+    left: 120px;
+}
+
+.TabelaEstoque table {
+    width: 100%;
+    min-width: 580px;
+    table-layout: fixed;
+}
+
+.TabelaEstoque th:nth-child(1),
+.TabelaEstoque td:nth-child(1) {
+    width: 22%;
+}
+
+.TabelaEstoque th:nth-child(2),
+.TabelaEstoque td:nth-child(2) {
+    width: 25%;
+}
+
+.TabelaEstoque th:nth-child(3),
+.TabelaEstoque td:nth-child(3) {
+    width: 13%;
+}
+
+.TabelaEstoque th:nth-child(4),
+.TabelaEstoque td:nth-child(4) {
+    width: 40%;
+    white-space: normal;
+    overflow-wrap: anywhere;
+    word-break: normal;
+    height: auto;
+}
+

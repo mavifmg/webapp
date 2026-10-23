@@ -4,6 +4,20 @@ require_once "Conexao.php";
 require_once "Geocodificacao.php";
 
 
+// BUSCAR AS COMORBIDADES CADASTRADAS NO BANCO
+$listaComorbidades = [];
+
+$sqlComorbidades = 'SELECT "comorbidade" FROM comorbidade ORDER BY "comorbidade"';
+
+$resultadoComorbidades = pg_query($conn, $sqlComorbidades);
+
+if ($resultadoComorbidades !== false) {
+    while ($linha = pg_fetch_assoc($resultadoComorbidades)) {
+        $listaComorbidades[] = $linha["comorbidade"];
+    }
+}
+
+
 function validarCPF($cpf)
 {
     $cpf = preg_replace('/\D/', '', $cpf);
@@ -60,7 +74,24 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $CEP = $_POST["CEP"];
     $NumCasa = $_POST["NumCasa"];
     $Indigena = isset($_POST["Indigena"]) ? 'true' : 'false';
-    $Comorbidades = $_POST["Comorbidades"];
+    // RECEBER AS COMORBIDADES SELECIONADAS
+    $ComorbidadesSelecionadas = $_POST["Comorbidades"] ?? [];
+
+    // Garantir que o valor recebido seja um array
+    if (!is_array($ComorbidadesSelecionadas)) {
+        $ComorbidadesSelecionadas = [];
+    }
+
+    // Aceitar somente comorbidades existentes no banco de dados
+    $ComorbidadesSelecionadas = array_values(
+        array_intersect(
+            $ComorbidadesSelecionadas,
+            $listaComorbidades
+        )
+    );
+
+    // Transformar as opções selecionadas em uma única string
+    $Comorbidades = implode(", ", $ComorbidadesSelecionadas);
     $Genero = isset($_POST["Genero"]) ? $_POST["Genero"] : null;
     $Autorizacao_Loc = isset($_POST["Autorizacao_Loc"]) ? 'true' : 'false';
 
@@ -101,14 +132,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $LatitudeUser = $coordenadas["latitude"];
     $LongitudeUser = $coordenadas["longitude"];
 
-    // PARTE 4: MOSTRAR AS COORDENADAS OBTIDAS PELA API
-    // echo "Endereço: " . htmlspecialchars($CEP) . ", " . htmlspecialchars($NumCasa) . "<br>";
-    //echo "Latitude: " . htmlspecialchars($LatitudeUser) . "<br>";
-    //echo "Longitude: " . htmlspecialchars($LongitudeUser) . "<br>";
 
-    //exit();
-
-    //,/*\"EnderecoUsuario\"*/
     $sql = "INSERT INTO cadastro (\"CPF\", \"DataNascimento\", \"EMAIL\", \"Celular\",\"CEP\",\"NumCasa\", \"Indigena\", \"Comorbidades\", \"Autorizacao_Loc\", \"LatitudeUser\", \"LongitudeUser\", \"Genero\")
                 VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)";
 
@@ -151,27 +175,33 @@ pg_close($conn);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AquiVacina | Cadastro</title>
-    <link rel="stylesheet" href="AquiVacina.css">
+    <link rel="stylesheet" href="AquiVacina.css?v=<?php echo time(); ?>">
     <script src="https://kit.fontawesome.com/cc9bf1d657.js" crossorigin="anonymous"></script>
 
 </head>
 
 <body class="Cadastro">
 
-    <a href="Login.php">
-        <button id="Posicao"><i class="fa-solid fa-arrow-left"></i></button>
-    </a>
-
-
-    <div class="LocCadastro">
+    <div class="LocDadosUser">
         <div class="LocMenu">
             <div class="FundoLog">
                 <?php include "Logo.php"; ?>
+                <?php
+                if (isset($_SESSION['erro_cadastro'])) {
+                    echo '<p class="MensagemTopo">'
+                        . htmlspecialchars($_SESSION['erro_cadastro'])
+                        . '</p>';
 
-                <h1>Bem-vindo ao AquiVacina!</h1>
-                <h2>Tela de Cadastro</h2>
+                    unset($_SESSION['erro_cadastro']);
+                }
+                ?>
 
                 <br>
+
+                <h1>Bem-vindo ao AquiVacina!</h1>
+                <br>
+                <h2>Tela de Cadastro</h2>
+
                 <form action="Cadastro.php" method="POST">
 
                     <label id="cpf">CPF</label>
@@ -204,12 +234,8 @@ pg_close($conn);
                         </div>
 
                     </div>
-                    //checkbox de comorbidades
-
-
-                    <label id="comorbidades">Comorbidades</label>
-                    <input placeholder="Digite suas comorbidades" type="text" name="Comorbidades">
-
+                    
+                   
                     <div class="CampoGenero">
                         <label id="genero">Gêneros:</label>
 
@@ -256,169 +282,171 @@ pg_close($conn);
 
                 </form>
 
-
             </div>
+
         </div>
-
-
-        <script>
-            const campoCPF = document.getElementById("CPF");
-            const campoData = document.getElementById("DataNascimento");
-            const erroCPF = document.getElementById("erroCPF");
-
-            let cpfVerificado = "";
-            let cpfEmVerificacao = false;
-            let tentativaVerificacao = 0;
-
-            async function verificarCPFNoBanco() {
-                const cpf = campoCPF.value.replace(/\D/g, "");
-
-                // Não consulta se o campo estiver vazio
-                if (cpf === "") {
-                    erroCPF.hidden = true;
-                    cpfVerificado = "";
-                    return false;
-                }
-
-                tentativaVerificacao++;
-                const tentativaAtual = tentativaVerificacao;
-
-                cpfEmVerificacao = true;
-                cpfVerificado = "";
-                campoCPF.setAttribute("aria-invalid", "true");
-
-                erroCPF.textContent = "Verificando CPF...";
-                erroCPF.hidden = false;
-
-                try {
-                    const resposta = await fetch("VerificarCPF.php", {
-                        method: "POST",
-                        headers: {
-                            "Content-Type":
-                                "application/x-www-form-urlencoded"
-                        },
-                        body: new URLSearchParams({ CPF: cpf })
-                    });
-
-                    const dados = await resposta.json();
-
-                    // Ignora respostas antigas se o usuário alterou o CPF
-                    if (tentativaAtual !== tentativaVerificacao) {
-                        return false;
-                    }
-
-                    if (!resposta.ok || dados.erro) {
-                        erroCPF.textContent =
-                            dados.erro || "Não foi possível verificar o CPF.";
-                        erroCPF.hidden = false;
-                        return false;
-                    }
-
-                    if (!dados.valido || dados.cadastrado) {
-                        erroCPF.textContent = dados.mensagem;
-                        erroCPF.hidden = false;
-                        return false;
-                    }
-
-                    erroCPF.textContent = dados.mensagem;
-                    erroCPF.hidden = false;
-                    erroCPF.classList.remove("text-danger");
-                    erroCPF.classList.add("text-success");
-
-                    campoCPF.removeAttribute("aria-invalid");
-                    cpfVerificado = cpf;
-
-                    return true;
-
-                } catch (erro) {
-                    if (tentativaAtual === tentativaVerificacao) {
-                        erroCPF.textContent =
-                            "Erro de conexão ao verificar o CPF. Tente novamente.";
-                        erroCPF.hidden = false;
-                    }
-
-                    return false;
-
-                } finally {
-                    if (tentativaAtual === tentativaVerificacao) {
-                        cpfEmVerificacao = false;
-                    }
-                }
-            }
-
-            function mostrarErro(mensagem) {
-                erroCPF.textContent = mensagem;
-                erroCPF.hidden = false;
-                erroCPF.classList.remove("text-success");
-                erroCPF.classList.add("text-danger");
-                campoCPF.setAttribute("aria-invalid", "true");
-            }
-
-            campoCPF.addEventListener("blur", async function () {
-                erroCPF.classList.remove("text-success");
-                erroCPF.classList.add("text-danger");
-                await verificarCPFNoBanco();
-            });
-
-            campoCPF.addEventListener("input", function () {
-                // Obriga a verificar novamente se o CPF for alterado
-                cpfVerificado = "";
-                tentativaVerificacao++;
-                cpfEmVerificacao = false;
-
-                erroCPF.hidden = true;
-                campoCPF.removeAttribute("aria-invalid");
-                erroCPF.classList.remove("text-success");
-                erroCPF.classList.add("text-danger");
-            });
-
-            campoData.addEventListener("focus", async function (evento) {
-                const cpf = campoCPF.value.replace(/\D/g, "");
-
-                if (cpfEmVerificacao) {
-                    evento.preventDefault();
-                    campoCPF.focus();
-                    return;
-                }
-
-                if (cpfVerificado !== cpf) {
-                    evento.preventDefault();
-
-                    const valido = await verificarCPFNoBanco();
-
-                    if (valido && document.activeElement === campoCPF) {
-                        campoData.focus();
-                    } else {
-                        campoCPF.focus();
-                    }
-                }
-            });
-        </script>
-        <script>
-            const campoEmail = document.getElementById("EMAIL");
-            const erroEmail = document.getElementById("erroEmail");
-
-            function validarFormatoEmail() {
-                const email = campoEmail.value.trim();
-
-                if (
-                    email === "" ||
-                    !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
-                ) {
-                    erroEmail.textContent =
-                        "Digite um endereço de e-mail válido.";
-                    erroEmail.hidden = false;
-                    campoEmail.setAttribute("aria-invalid", "true");
-                    return false;
-                }
-
-                erroEmail.hidden = true;
-                campoEmail.removeAttribute("aria-invalid");
-                return true;
-            }
-
-            campoEmail.addEventListener("blur", validarFormatoEmail);
-        </script>
+    </div>
 </body>
+
+
+<script>
+    const campoCPF = document.getElementById("CPF");
+    const campoData = document.getElementById("DataNascimento");
+    const erroCPF = document.getElementById("erroCPF");
+
+    let cpfVerificado = "";
+    let cpfEmVerificacao = false;
+    let tentativaVerificacao = 0;
+
+    async function verificarCPFNoBanco() {
+        const cpf = campoCPF.value.replace(/\D/g, "");
+
+        // Não consulta se o campo estiver vazio
+        if (cpf === "") {
+            erroCPF.hidden = true;
+            cpfVerificado = "";
+            return false;
+        }
+
+        tentativaVerificacao++;
+        const tentativaAtual = tentativaVerificacao;
+
+        cpfEmVerificacao = true;
+        cpfVerificado = "";
+        campoCPF.setAttribute("aria-invalid", "true");
+
+        erroCPF.textContent = "Verificando CPF...";
+        erroCPF.hidden = false;
+
+        try {
+            const resposta = await fetch("VerificarCPF.php", {
+                method: "POST",
+                headers: {
+                    "Content-Type":
+                        "application/x-www-form-urlencoded"
+                },
+                body: new URLSearchParams({ CPF: cpf })
+            });
+
+            const dados = await resposta.json();
+
+            // Ignora respostas antigas se o usuário alterou o CPF
+            if (tentativaAtual !== tentativaVerificacao) {
+                return false;
+            }
+
+            if (!resposta.ok || dados.erro) {
+                erroCPF.textContent =
+                    dados.erro || "Não foi possível verificar o CPF.";
+                erroCPF.hidden = false;
+                return false;
+            }
+
+            if (!dados.valido || dados.cadastrado) {
+                erroCPF.textContent = dados.mensagem;
+                erroCPF.hidden = false;
+                return false;
+            }
+
+            erroCPF.textContent = dados.mensagem;
+            erroCPF.hidden = false;
+            erroCPF.classList.remove("text-danger");
+            erroCPF.classList.add("text-success");
+
+            campoCPF.removeAttribute("aria-invalid");
+            cpfVerificado = cpf;
+
+            return true;
+
+        } catch (erro) {
+            if (tentativaAtual === tentativaVerificacao) {
+                erroCPF.textContent =
+                    "Erro de conexão ao verificar o CPF. Tente novamente.";
+                erroCPF.hidden = false;
+            }
+
+            return false;
+
+        } finally {
+            if (tentativaAtual === tentativaVerificacao) {
+                cpfEmVerificacao = false;
+            }
+        }
+    }
+
+    function mostrarErro(mensagem) {
+        erroCPF.textContent = mensagem;
+        erroCPF.hidden = false;
+        erroCPF.classList.remove("text-success");
+        erroCPF.classList.add("text-danger");
+        campoCPF.setAttribute("aria-invalid", "true");
+    }
+
+    campoCPF.addEventListener("blur", async function () {
+        erroCPF.classList.remove("text-success");
+        erroCPF.classList.add("text-danger");
+        await verificarCPFNoBanco();
+    });
+
+    campoCPF.addEventListener("input", function () {
+        // Obriga a verificar novamente se o CPF for alterado
+        cpfVerificado = "";
+        tentativaVerificacao++;
+        cpfEmVerificacao = false;
+
+        erroCPF.hidden = true;
+        campoCPF.removeAttribute("aria-invalid");
+        erroCPF.classList.remove("text-success");
+        erroCPF.classList.add("text-danger");
+    });
+
+    campoData.addEventListener("focus", async function (evento) {
+        const cpf = campoCPF.value.replace(/\D/g, "");
+
+        if (cpfEmVerificacao) {
+            evento.preventDefault();
+            campoCPF.focus();
+            return;
+        }
+
+        if (cpfVerificado !== cpf) {
+            evento.preventDefault();
+
+            const valido = await verificarCPFNoBanco();
+
+            if (valido && document.activeElement === campoCPF) {
+                campoData.focus();
+            } else {
+                campoCPF.focus();
+            }
+        }
+    });
+</script>
+<script>
+    const campoEmail = document.getElementById("EMAIL");
+    const erroEmail = document.getElementById("erroEmail");
+
+    function validarFormatoEmail() {
+        const email = campoEmail.value.trim();
+
+        if (
+            email === "" ||
+            !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
+        ) {
+            erroEmail.textContent =
+                "Digite um endereço de e-mail válido.";
+            erroEmail.hidden = false;
+            campoEmail.setAttribute("aria-invalid", "true");
+            return false;
+        }
+
+        erroEmail.hidden = true;
+        campoEmail.removeAttribute("aria-invalid");
+        return true;
+    }
+
+    campoEmail.addEventListener("blur", validarFormatoEmail);
+</script>
+
 
 </html>

@@ -1,0 +1,1627 @@
+/* ==================================================
+   CONFIGURAÇÕES GERAIS
+   ================================================== */
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+}
+
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  min-height: 107vh;
+
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+
+  font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
+}
+
+main {
+  min-width: 320px;
+  max-width: 800px;
+  margin: auto;
+}
+
+/* ==================================================
+   FUNDOS
+   ================================================== */
+
+body.Menu {
+  background-image: url(Imagens/tela\ principal\ \(2\).png);
+}
+
+body.Login {
+  background-image: url(Imagens/Tela\ login.png);
+}
+
+body.Cadastro {
+  background-image: url(Imagens/Tela\ cadastro\ usuário.png);
+  background-color: #0656af;
+}
+
+body.Informacao {
+  background-image: url(Imagens/Tela\ informações\ \(2\).png);
+}
+
+body.Comousar {
+  background-image: url(Imagens/Tela\ informações.png);
+}
+
+body.CadUbs {
+  background-image: url(Imagens/Tela\ de\ registro\ de\ aplicações.png);
+}
+
+body.EstoqueUbs {
+  background-image: url(Imagens/Tela\ de\ registro\ de\ aplicações.png);
+}
+
+body.Alertas {
+  background-image: url(Imagens/Tela\ de\ registro\ de\ aplicações.png);
+}
+
+body.Registrar {
+  background-image: url(Imagens/Tela\ de\ registro\ de\ aplicações.png);
+}
+
+body.HistoricoVacinal {
+  background-image: url(Imagens/Tela\ de\ registro\ de\ aplicações.png);
+}
+
+/* ==================================================
+   BOTÕES GERAIS
+   ================================================== */
+
+.Botao {
+  background-color: white;
+
+  color: #0656af;
+
+  padding: 40px 50px;
+
+  border-radius: 10px;
+
+  border: 2px solid #0656af;
+
+  cursor: pointer;
+
+  width: 300px;
+
+  transition:
+    background-color 0.25s ease,
+    color 0.25s ease,
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+.Botao:hover {
+  background-color: #478edf;
+
+  color: white;
+
+  transform: translateY(-3px);
+
+  box-shadow: 0 8px 18px rgba(6, 86, 175, 0.25);
+}
+
+#buttonCad {
+  width: 100%;
+
+  height: 42px;
+
+  position: relative;
+  right: 10px;
+
+  border-radius: 10px;
+
+  border: none;
+
+  color: white;
+
+  background: #067aff;
+
+  margin: 10px;
+
+  cursor: pointer;
+
+  font-family: inherit;
+
+  font-size: 15px;
+
+  transition:
+    background-color 0.25s ease,
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+#buttonCad:hover {
+  background-color: #478edf;
+
+  color: white;
+
+  transform: translateY(-3px);
+
+  box-shadow: 0 8px 18px rgba(6, 86, 175, 0.25);
+}
+
+.BotaoMenu {
+  position: relative;
+
+  display: flex;
+
+  right: 60px;
+
+  top: 270px;
+}
+
+button {
+  width: 70%;
+
+  height: 42px;
+
+  border-radius: 10px;
+
+  border: none;
+
+  color: white;
+
+  background: #0656af;
+
+  margin: 10px;
+
+  cursor: pointer;
+
+  font-family: inherit;
+
+  font-size: 15px;
+
+  transition:
+    background-color 0.25s ease,
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+button:hover {
+  background-color: #2c88d5;
+
+  color: white;
+
+  transform: translateY(-2px);
+
+  box-shadow: 0 5px 12px rgba(6, 86, 175, 0.25);
+}
+
+button:active {
+  transform: translateY(0);
+}
+
+/* ==================================================
+   INPUTS GERAIS
+   ================================================== */
+
+input {
+  width: 80%;
+
+  height: 40px;
+
+  color: #0656af;
+
+  margin: 30px;
+
+  border-radius: 10px;
+
+  border: none;
+
+  padding: 0 12px;
+
+  box-sizing: border-box;
+
+  outline: none;
+
+  transition:
+    border 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+input:focus {
+  outline: none;
+}
+
+/* ==================================================
+   MENU / ÍCONES
+   ================================================== */
+
+#Home,
+#Burger,
+#Perfil {
+  cursor: pointer;
+
+  color: #0656af;
+  position: relative;
+  top: 40px;
+  left: 50px;
+  transition:
+    background-color 0.25s ease,
+    color 0.25s ease,
+    transform 0.2s ease;
+}
+
+#Home {
+  background: transparent;
+
+  border: none;
+
+  font-size: 25px;
+
+  padding: 6px 9px;
+
+  border-radius: 8px;
+}
+
+#Burger {
+  border: none;
+
+  background: transparent;
+
+  font-size: 25px;
+
+  padding: 6px 9px;
+
+  border-radius: 8px;
+}
+
+#Perfil {
+  background: transparent;
+
+  border: none;
+
+  font-size: 25px;
+
+  padding: 6px 9px;
+
+  border-radius: 8px;
+}
+
+/* HOVER IGUAL PARA OS TRÊS */
+
+#Home:hover,
+#Burger:hover,
+#Perfil:hover {
+  background-color: #2c88d5;
+
+  color: white;
+
+  transform: translateY(-2px);
+}
+
+/* ==================================================
+   BARRA DE MENU
+   ================================================== */
+
+menu {
+  display: none;
+
+  position: absolute;
+
+  top: 100px;
+
+  left: 140px;
+
+  transform: translateX(-50%);
+
+  margin: 0;
+
+  padding: 0;
+
+  z-index: 99999;
+}
+
+menu > ul {
+  display: flex;
+
+  flex-direction: column;
+
+  margin: 0;
+
+  padding: 0;
+
+  width: 300px;
+
+  overflow: hidden;
+
+  border-radius: 12px;
+
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.25);
+}
+
+menu > ul > a {
+  display: flex;
+
+  align-items: center;
+
+  width: 100%;
+
+  min-height: 48px;
+
+  padding: 12px 18px;
+
+  background-color: #0656af;
+
+  color: white;
+
+  text-decoration: none;
+
+  position: relative;
+
+  right: auto;
+
+  box-sizing: border-box;
+
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+
+  transition:
+    background-color 0.25s ease,
+    padding-left 0.25s ease,
+    color 0.25s ease;
+}
+
+/* ÚLTIMO ITEM */
+
+menu > ul > a:last-child {
+  border-bottom: none;
+}
+
+/* HOVER DA MENU BAR */
+
+menu > ul > a:hover {
+  background-color: #2c88d5;
+
+  color: white;
+
+  padding-left: 25px;
+}
+
+/* ==================================================
+   LINKS
+   ================================================== */
+
+a {
+  color: white;
+
+  text-decoration: none;
+}
+
+.LetraLogin {
+  color: #0656af;
+
+  text-decoration: none;
+
+  font-weight: bold;
+
+  transition: color 0.2s ease;
+}
+
+.LetraLogin:hover {
+  color: #2c88d5;
+
+  text-decoration: underline;
+}
+
+/* ==================================================
+   TEXTOS
+   ================================================== */
+
+.nome {
+  text-align: left;
+}
+
+th {
+  color: white;
+
+  border: 2px solid white;
+}
+
+/* ==================================================
+   LOGIN - NOVO POSICIONAMENTO
+   ================================================== */
+
+.LocLogin {
+  position: relative;
+
+  top: 60px;
+  left: 410px;
+
+  width: 100%;
+
+  display: flex;
+
+  justify-content: center;
+
+  align-items: center;
+}
+
+/* Caixa do login */
+
+body.Login .FundoLog {
+  width: 600px;
+
+  min-height: 480px;
+
+  height: auto;
+
+  padding: 40px 50px;
+
+  background: rgba(255, 255, 255, 0.94);
+
+  color: #0656af;
+
+  border-radius: 30px;
+
+  box-shadow: 0 10px 35px rgba(0, 0, 0, 0.25);
+
+  text-align: center;
+}
+
+/* Títulos do login */
+
+body.Login .FundoLog h1,
+body.Login .FundoLog h2,
+body.Login .FundoLog h3 {
+  color: #0656af;
+
+  text-align: center;
+
+  margin-top: 5px;
+
+  margin-bottom: 30px;
+}
+
+/* Textos/labels do login */
+
+body.Login .FundoLog label {
+  display: block;
+
+  width: 100%;
+
+  margin: 0 0 5px 0;
+
+  padding-left: 2px;
+
+  color: #0656af;
+
+  font-size: 16px;
+
+  font-weight: bold;
+
+  text-align: left;
+}
+
+/* Campos do login */
+
+body.Login #Logcorem,
+body.Login #Logsenha {
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: flex-start;
+
+  width: 100%;
+
+  margin: 0 0 18px 0;
+}
+
+/* Foco login */
+
+body.Login #Logcorem input:focus,
+body.Login #Logsenha input:focus {
+  border-color: #2c88d5;
+
+  box-shadow: 0 0 0 3px rgba(44, 136, 213, 0.15);
+}
+
+/* Botão login */
+
+body.Login .FundoLog button {
+  width: 100%;
+
+  margin: 12px 0 15px 0;
+}
+
+/* =========================================================
+   AJUSTES EXCLUSIVOS DA PÁGINA DE CADASTRO
+   Não altera Login, Menu, Estoque ou outras páginas
+   ========================================================= */
+
+/* Área geral do cadastro */
+body.Cadastro .LocCad {
+    position: relative;
+    left: 0;
+
+    width: 100%;
+    height: auto;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+/* Caixa principal do cadastro */
+body.Cadastro .FundoCad {
+    width: 650px;
+    max-width: 94%;
+
+    background: rgba(255, 255, 255, 0.94);
+    border-radius: 24px;
+
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.25);
+
+    text-align: center;
+}
+
+
+/* Título principal */
+body.Cadastro .FundoCad h1 {
+    margin-top: 0;
+
+    font-size: 26px;
+    line-height: 1.1;
+}
+
+
+/* Texto abaixo do título */
+body.Cadastro .FundoCad p {
+    margin-top: 0;
+
+    font-size: 14px;
+    line-height: 1.2;
+}
+
+
+/* Formulário */
+body.Cadastro .FundoCad form {
+    width: 100%;
+
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: flex-start;
+
+}
+
+/* Campos do formulário */
+body.Cadastro #corem,
+body.Cadastro #email,
+body.Cadastro #telefone,
+body.Cadastro #cpf,
+body.Cadastro #senha,
+body.Cadastro #Csenha {
+    width: calc(50% - 8px);
+
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+
+    margin: 0 0 5px 0;
+}
+
+
+/* Textos dos campos */
+body.Cadastro .FundoCad label {
+    display: block;
+
+    width: 100%;
+
+    margin: 0 0 3px 0;
+
+    color:#0656af;
+
+    font-family:
+        "Franklin Gothic Medium",
+        "Arial Narrow",
+        Arial,
+        sans-serif;
+
+    font-size: 13px;
+    font-weight: bold;
+
+    line-height: 1.1;
+    text-align: left;
+}
+
+
+/* Campos de entrada */
+body.Cadastro .FundoCad input {
+    width: 100%;
+    height: 36px;
+
+    margin: 0;
+    padding: 0 10px;
+
+    border: 2px solid #0656af;
+    border-radius: 9px;
+
+    outline: none;
+
+    background: #ffffff;
+
+    font-family:
+        "Franklin Gothic Medium",
+        "Arial Narrow",
+        Arial,
+        sans-serif;
+
+    font-size: 13px;
+    color: #222;
+}
+
+
+/* Efeito ao clicar nos campos */
+body.Cadastro .FundoCad input:focus {
+    border-color: #2c88d5;
+
+    box-shadow: 0 0 4px rgba(44, 136, 213, 0.45);
+}
+
+
+/* Placeholder dos campos */
+body.Cadastro .FundoCad input::placeholder {
+    color: #777;
+    font-size: 12px;
+}
+
+
+/* Botão de cadastrar */
+body.Cadastro .FundoCad button,
+body.Cadastro .FundoCad input[type="submit"] {
+    width: 100%;
+    height: 38px;
+
+    margin: 5px 0 3px 0;
+    padding: 0 12px;
+
+    border: none;
+    border-radius: 9px;
+
+    background: #0656af;
+    color: white;
+
+    font-family:
+        "Franklin Gothic Medium",
+        "Arial Narrow",
+        Arial,
+        sans-serif;
+
+    font-size: 15px;
+    font-weight: bold;
+
+    cursor: pointer;
+
+    transition: background 0.2s ease;
+}
+
+
+/* Efeito do botão */
+body.Cadastro .FundoCad button:hover,
+body.Cadastro .FundoCad input[type="submit"]:hover {
+    background: #2c88d5;
+}
+
+
+/* Mensagem de erro do cadastro */
+body.Cadastro .erro_login {
+    width: 100%;
+
+    margin: 4px 0 5px 0;
+
+    color: red;
+
+    font-size: 13px;
+    font-weight: bold;
+
+    text-align: center;
+}
+
+
+/* Links dentro do cadastro */
+body.Cadastro .FundoCad a {
+    font-size: 13px;
+    line-height: 1.1;
+}
+
+
+/* =========================================================
+   TELAS MENORES
+   ========================================================= */
+
+
+/* Tablets e telas médias */
+@media screen and (max-width: 700px) {
+
+    body.Cadastro .FundoCad {
+        width: 94%;
+        max-width: 94%;
+
+        padding: 20px 22px;
+    }
+
+    body.Cadastro .FundoCad h1 {
+        font-size: 24px;
+        margin-bottom: 7px;
+    }
+
+    body.Cadastro .FundoCad p {
+        font-size: 13px;
+        margin-bottom: 12px;
+    }
+
+    body.Cadastro #corem,
+    body.Cadastro #email,
+    body.Cadastro #telefone,
+    body.Cadastro #cpf,
+    body.Cadastro #senha,
+    body.Cadastro #Csenha {
+        width: 100%;
+        margin-bottom: 6px;
+    }
+
+    body.Cadastro .FundoCad input {
+        height: 35px;
+    }
+
+    body.Cadastro .FundoCad button,
+    body.Cadastro .FundoCad input[type="submit"] {
+        height: 37px;
+    }
+}
+
+
+/* Celulares */
+@media screen and (max-width: 450px) {
+
+    body.Cadastro .FundoCad {
+        width: 96%;
+        max-width: 96%;
+
+        padding: 17px 16px;
+
+        border-radius: 18px;
+    }
+
+    body.Cadastro .FundoCad h1 {
+        font-size: 21px;
+    }
+
+    body.Cadastro .FundoCad p {
+        font-size: 12px;
+        margin-bottom: 10px;
+    }
+
+    body.Cadastro .FundoCad label {
+        font-size: 12px;
+    }
+
+    body.Cadastro .FundoCad input {
+        height: 34px;
+
+        font-size: 12px;
+    }
+
+    body.Cadastro .FundoCad input::placeholder {
+        font-size: 11px;
+    }
+
+    body.Cadastro .FundoCad button,
+    body.Cadastro .FundoCad input[type="submit"] {
+        height: 35px;
+        font-size: 14px;
+    }
+}
+
+/* ==================================================
+   MENSAGENS
+   ================================================== */
+
+.text-danger {
+  color: #d93025;
+}
+
+.text-sucess {
+  color: #159447;
+}
+
+body.Cadastro .text-danger,
+body.Cadastro .text-sucess {
+  display: block;
+
+  font-size: 13px;
+
+  margin-top: 4px;
+
+  text-align: left;
+}
+
+/* ==================================================
+   CADASTRO UBS
+   ================================================== */
+
+.LocCadUbs1 {
+  position: absolute;
+
+  right: 1000px;
+
+  top: 350px;
+}
+
+/* ==================================================
+   POSIÇÕES
+   ================================================== */
+
+.relative {
+  position: relative;
+
+  left: 320px;
+
+  height: 140mm;
+}
+
+.LocEstUbs {
+  position: relative;
+
+  right: 470px;
+
+  top: 30px;
+}
+
+#Posicao {
+  position: relative;
+
+  left: 30px;
+
+  bottom: 430px;
+
+  font-size: 30px;
+}
+
+/* ==================================================
+   CAIXAS
+   ================================================== */
+
+.FundoTipo1 {
+  text-align: center;
+
+  width: 520px;
+
+  background-color: #2c88d5;
+
+  color: white;
+
+  border-radius: 40px;
+}
+
+.FundoLog {
+  text-align: center;
+
+  width: 720px;
+
+  min-height: 500px;
+
+  background-color: ghostwhite;
+
+  color: #0656af;
+
+  border-radius: 40px;
+}
+
+/* ==================================================
+   ÍCONES DAS PÁGINAS
+   ================================================== */
+
+.IconCadUbs {
+  position: relative;
+
+  display: flex;
+
+  right: 850px;
+
+  bottom: 450px;
+
+  align-items: center;
+}
+
+.IconComousar {
+  position: relative;
+
+  right: 850px;
+
+  bottom: 450px;
+
+  display: flex;
+
+  align-items: center;
+}
+
+.IconInfo {
+  position: relative;
+
+  right: 850px;
+
+  bottom: 450px;
+
+  display: flex;
+
+  align-items: center;
+}
+
+.IconMenu {
+  position: relative;
+
+  right: 50px;
+
+  bottom: 450px;
+
+  display: flex;
+
+  align-items: center;
+}
+
+/* ==================================================
+   ESTOQUE UBS - MENU
+   ================================================== */
+
+.IconEstUbs {
+  position: fixed !important;
+
+  top: 20px !important;
+
+  left: 25px !important;
+
+  right: auto !important;
+
+  bottom: auto !important;
+
+  display: flex !important;
+
+  align-items: center;
+
+  gap: 5px;
+
+  z-index: 99999 !important;
+}
+
+body.EstoqueUbs .IconEstUbs #Home,
+body.EstoqueUbs .IconEstUbs #Burger,
+body.EstoqueUbs .IconEstUbs #Perfil {
+  margin: 0 !important;
+
+  padding: 6px 9px;
+
+  width: auto;
+
+  height: auto;
+}
+
+body.EstoqueUbs .IconEstUbs #Burger {
+  position: relative !important;
+
+  z-index: 100000 !important;
+}
+
+body.EstoqueUbs .IconEstUbs menu {
+  z-index: 100001 !important;
+}
+
+/* ==================================================
+   ESTOQUE UBS
+   ================================================== */
+
+.TabelaEstoque {
+  color: white;
+
+  border-radius: 20px;
+
+  right: 680px;
+
+  bottom: 220px;
+
+  padding: 15px;
+
+  font-style: inherit;
+
+  width: 400px;
+
+  background-color: #2c88d5;
+
+  height: 350px;
+
+  position: absolute;
+
+  overflow: auto;
+}
+
+/* ==================================================
+   CAMPOS ESTOQUE
+   ================================================== */
+
+body.EstoqueUbs .campoEstoque {
+  width: 80%;
+
+  margin: 0 auto 8px auto;
+}
+
+body.EstoqueUbs .campoEstoque label {
+  display: block;
+
+  width: 100%;
+
+  margin-bottom: 2px;
+
+  text-align: left;
+
+  color: white;
+
+  font-size: 16px;
+}
+
+body.EstoqueUbs .campoEstoque input {
+  width: 100%;
+
+  height: 40px;
+
+  margin: 0;
+
+  padding: 0 12px;
+
+  border-radius: 10px;
+
+  border: none;
+
+  color: #0656af;
+
+  font-size: 16px;
+}
+
+body.EstoqueUbs .campoEstoque input:focus {
+  outline: 2px solid #0656af;
+}
+
+/* ==================================================
+   LETRAS ESTOQUE
+   ================================================== */
+
+.LetraCad1 {
+  border: 1px solid #2c88d5;
+
+  position: absolute;
+
+  left: 30px;
+}
+
+.LetraCad2 {
+  border: 1px solid #2c88d5;
+
+  position: absolute;
+
+  left: 165px;
+}
+
+.LetraCad3 {
+  border: 1px solid #2c88d5;
+
+  position: absolute;
+
+  left: 340px;
+}
+
+/* ==================================================
+   INFORMAÇÕES ESTOQUE
+   ================================================== */
+
+#InfoEst1 {
+  border: 1px solid red;
+
+  transform: translate(10px, 30px);
+}
+
+#InfoEst2 {
+  border: 1px solid #2c88d5;
+
+  transform: translate(130px, 30px);
+}
+
+#InfoEst3 {
+  border: 1px solid #2c88d5;
+
+  transform: translate(300px, 30px);
+}
+
+/* ==================================================
+   BOTÕES ESTOQUE
+   ================================================== */
+
+#BEst1,
+#BEst2,
+#BEst3,
+#BEst4 {
+  position: absolute;
+
+  right: 60px;
+
+  width: 150px;
+
+  height: 40px;
+}
+
+#BEst1 {
+  top: 400px;
+}
+
+#BEst2 {
+  top: 450px;
+}
+
+#BEst3 {
+  top: 500px;
+}
+
+#BEst4 {
+  top: 550px;
+}
+
+#BEst1:hover,
+#BEst2:hover,
+#BEst3:hover,
+#BEst4:hover {
+  background-color: #2c88d5;
+
+  color: white;
+
+  transform: translateY(-2px);
+}
+
+/* ==================================================
+   INPUTS ESTOQUE ANTIGOS
+   ================================================== */
+
+.inputEst {
+  position: absolute;
+
+  width: 180px;
+
+  height: 40px;
+}
+
+#inputexcluir {
+  position: absolute;
+
+  right: 230px;
+
+  top: 430px;
+
+  width: 180px;
+
+  height: 40px;
+}
+
+#inputnome {
+  position: absolute;
+
+  right: 230px;
+
+  top: 550px;
+}
+
+#inputubs {
+  position: absolute;
+
+  right: 230px;
+
+  top: 490px;
+}
+
+#inputestoque {
+  position: absolute;
+
+  right: 230px;
+
+  top: 610px;
+}
+
+#nomeantigo {
+  position: absolute;
+
+  right: 230px;
+
+  top: 730px;
+}
+
+/* ==================================================
+   MOLDE
+   ================================================== */
+
+#MoldeEst {
+  position: absolute;
+
+  right: 100px;
+
+  bottom: 960px;
+
+  width: 30px;
+
+  height: 30px;
+
+  background-color: #2c88d5;
+}
+
+/* ==================================================
+   RESPONSIVIDADE - 1680PX
+   ================================================== */
+
+@media (max-width: 1680px) {
+  body {
+    min-height: 100vh;
+  }
+
+  .BotaoMenu {
+    top: 370px;
+  }
+
+  .IconMenu {
+    left: 80px;
+
+    bottom: 290px;
+  }
+
+  .LocLogin {
+    top: 0;
+
+    left: 0;
+  }
+
+  .IconInfo {
+    right: 720px;
+
+    bottom: 260px;
+  }
+
+  .IconComousar {
+    right: 720px;
+
+    bottom: 260px;
+  }
+
+  .LocCadUbs1 {
+    right: 10px;
+
+    height: 10mm;
+  }
+
+  .LocCadUbs2 {
+    left: 110px;
+
+    height: 10mm;
+  }
+
+  .LocEstUbs {
+    right: 310px;
+
+    height: 20mm;
+  }
+
+  .IconCadUbs {
+    right: 1230px;
+
+    bottom: 290px;
+  }
+
+  #Posicao {
+    right: 320px;
+
+    bottom: 310px;
+  }
+}
+
+/* ==================================================
+   TABLET
+   ================================================== */
+
+@media (max-width: 768px) {
+  body.Cadastro .FundoCad {
+    width: 90%;
+
+    padding: 30px;
+  }
+
+  body.Login .FundoLog {
+    width: 90%;
+
+    padding: 30px;
+  }
+
+  body.EstoqueUbs .campoEstoque {
+    width: 85%;
+  }
+
+  body.EstoqueUbs .TabelaEstoque {
+    width: 90%;
+
+    right: auto;
+
+    left: 5%;
+  }
+
+  menu > ul {
+    width: 270px;
+  }
+}
+
+/* ==================================================
+   CELULAR
+   ================================================== */
+
+@media (max-width: 600px) {
+  body {
+    min-height: 100vh;
+
+    padding: 15px;
+  }
+
+  /* Cadastro */
+
+  body.Cadastro .FundoCad {
+    width: 96%;
+
+    padding: 25px 20px;
+
+    border-radius: 25px;
+  }
+
+  /* Campos passam para uma coluna */
+
+  body.Cadastro #corem,
+  body.Cadastro #email,
+  body.Cadastro #telefone,
+  body.Cadastro #cpf,
+  body.Cadastro #senha,
+  body.Cadastro #Csenha {
+    width: 100%;
+
+    margin-bottom: 14px;
+  }
+
+  /* Login */
+
+  body.Login .FundoLog {
+    width: 96%;
+
+    min-height: auto;
+
+    padding: 30px 25px;
+
+    border-radius: 25px;
+  }
+
+  /* Menu */
+
+  .IconEstUbs {
+    top: 15px !important;
+
+    left: 15px !important;
+  }
+
+  menu {
+    top: 45px;
+
+    left: 0;
+
+    transform: none;
+
+    width: 270px;
+  }
+
+  menu > ul {
+    width: 270px;
+  }
+
+  /* Estoque */
+
+  body.EstoqueUbs .TabelaEstoque {
+    width: 90%;
+
+    right: auto;
+
+    left: 5%;
+  }
+
+  body.EstoqueUbs .campoEstoque {
+    width: 85%;
+  }
+}
+
+/* ==================================================
+   1440PX
+   ================================================== */
+
+@media (max-width: 1440px) {
+  body {
+    min-height: 100vh;
+  }
+
+  .BotaoMenu {
+    top: 330px;
+  }
+
+  .Botao {
+    padding: 50px 0;
+
+    width: 200px;
+  }
+
+  .IconMenu {
+    left: 0;
+
+    bottom: 230px;
+  }
+
+  .LocLogin {
+    top: 0;
+
+    left: 0;
+  }
+
+  .IconInfo {
+    right: 610px;
+
+    bottom: 230px;
+  }
+
+  .IconComousar {
+    right: 610px;
+
+    bottom: 230px;
+  }
+
+  .LocCadUbs1 {
+    right: 10px;
+
+    height: 10mm;
+  }
+
+  .LocCadUbs2 {
+    left: 130px;
+
+    height: 10mm;
+  }
+
+  .IconCadUbs {
+    right: 1130px;
+
+    bottom: 250px;
+  }
+
+  #Posicao {
+    right: 210px;
+
+    bottom: 270px;
+
+    font-size: 30px;
+  }
+}
+
+/* ==================================================
+   GARANTIA FINAL - MENU ESTOQUE UBS
+   ================================================== */
+
+body.EstoqueUbs .IconEstUbs {
+  position: fixed !important;
+
+  top: 20px !important;
+
+  left: 25px !important;
+
+  right: auto !important;
+
+  bottom: auto !important;
+
+  display: flex !important;
+
+  align-items: center;
+
+  gap: 5px;
+
+  z-index: 99999 !important;
+}
+
+body.EstoqueUbs .IconEstUbs #Home,
+body.EstoqueUbs .IconEstUbs #Burger,
+body.EstoqueUbs .IconEstUbs #Perfil {
+  margin: 0 !important;
+
+  width: auto !important;
+
+  height: auto !important;
+}
+
+body.EstoqueUbs .IconEstUbs #Burger {
+  position: relative !important;
+
+  z-index: 100000 !important;
+}
+
+body.EstoqueUbs .IconEstUbs menu {
+  z-index: 100001 !important;
+}
+
+/* Ajuste leve no espaçamento do cadastro */
+body.Cadastro .FundoCad {
+    padding: 28px 35px;
+    position: relative;
+    top: 90px;
+    left: 290px;
+    
+}
+
+body.Cadastro .FundoCad h1 {
+    margin-bottom: 14px;
+}
+
+body.Cadastro .FundoCad p {
+    margin-bottom: 18px;
+}
+
+body.Cadastro .FundoCad form {
+    column-gap: 18px;
+    row-gap: 13px;
+}
+
+body.Cadastro #corem,
+body.Cadastro #email,
+body.Cadastro #telefone,
+body.Cadastro #cpf,
+body.Cadastro #senha,
+body.Cadastro #Csenha {
+    margin-bottom: 8px;
+}
+
+body.Cadastro .FundoCad label {
+    margin-bottom: 5px;
+    font-size: 14px;
+}
+
+.LoginInput {
+  width: 100%;
+
+  height: 45px;
+
+  color: #0656af;
+
+  margin: 30px;
+
+  border: 2px solid ;
+  border-radius: 10px;
+
+  padding: 0 12px;
+
+  box-sizing: border-box;
+
+  position: relative;
+  right: 30px;
+  outline: none;
+
+  transition:
+    border 0.2s ease,
+    box-shadow 0.2s ease;
+
+}
+
