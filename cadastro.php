@@ -234,8 +234,41 @@ pg_close($conn);
                         </div>
 
                     </div>
-                    
-                   
+
+                    <!-- COMORBIDADES -->
+                    <div class="CampoComorbidades">
+
+                        <label id="comorbidades">Comorbidades:</label>
+
+                        <div class="ListaComorbidades">
+
+                            <?php if (!empty($listaComorbidades)): ?>
+
+                                <?php foreach ($listaComorbidades as $comorbidade): ?>
+
+                                    <label class="CheckboxComorbidade">
+
+                                        <input type="checkbox" name="Comorbidades[]"
+                                            value="<?php echo htmlspecialchars($comorbidade, ENT_QUOTES, 'UTF-8'); ?>">
+
+                                        <span>
+                                            <?php echo htmlspecialchars($comorbidade, ENT_QUOTES, 'UTF-8'); ?>
+                                        </span>
+
+                                    </label>
+
+                                <?php endforeach; ?>
+
+                            <?php else: ?>
+
+                                <p>Nenhuma comorbidade cadastrada no momento.</p>
+
+                            <?php endif; ?>
+
+                        </div>
+
+                    </div>
+
                     <div class="CampoGenero">
                         <label id="genero">Gêneros:</label>
 
