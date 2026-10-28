@@ -91,14 +91,6 @@ pg_close($conn);
 
                 <div style="text-align: center;">
 
-                    <br>
-
-                    <a class="LetraLogin" href="EsqueciSenha.php">
-                        Esqueci a senha
-                    </a>
-
-                    <br>
-
                     <?php
                     if (isset($_SESSION['erro_login'])) {
                         echo "<p class='text-danger'>"

@@ -11,6 +11,7 @@ if (
     exit();
 }
 
+
 $CPF = $_SESSION["CPF"];
 $DataNascimento = $_SESSION["DataNascimento"];
 
@@ -44,7 +45,6 @@ $sqlUBS = '
         "endereco",
         "horariofuncio",
         "infoextra",
-        "NumUBS",
         "latitudeubs",
         "longitudeubs"
     FROM cadastroubs
@@ -81,6 +81,7 @@ $ubsJson = json_encode(
     JSON_HEX_QUOT |
     JSON_HEX_AMP
 );
+
 ?>
 
 <!DOCTYPE html>

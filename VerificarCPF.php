@@ -88,13 +88,15 @@ if ($resultado === false) {
 }
 
 $cadastrado = pg_num_rows($resultado) > 0;
-
+// apos identificar que o cpf está cadastrado ir para o login, caso contrario continuar o cadastro
 echo json_encode([
     "valido" => true,
     "cadastrado" => $cadastrado,
     "mensagem" => $cadastrado
         ? "Este CPF já está cadastrado."
+
         : "CPF válido e ainda não cadastrado."
+        
 ]);
 
 pg_close($conn);
