@@ -11,6 +11,12 @@ if (
     exit();
 }
 
+// Executa a geocodificação das UBS antes de carregar o mapa.
+ob_start();
+
+require_once __DIR__ . "/Geocodificacao2.php";
+
+ob_end_clean();
 
 $CPF = $_SESSION["CPF"];
 $DataNascimento = $_SESSION["DataNascimento"];

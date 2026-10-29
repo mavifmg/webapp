@@ -375,11 +375,24 @@ pg_close($conn);
                 return false;
             }
 
-            if (!dados.valido || dados.cadastrado) {
+
+            if (!dados.valido) {
                 erroCPF.textContent = dados.mensagem;
                 erroCPF.hidden = false;
                 return false;
             }
+
+            if (dados.cadastrado) {
+                erroCPF.textContent = "Este CPF já está cadastrado. Redirecionando para o login...";
+                erroCPF.hidden = false;
+
+                setTimeout(function () {
+                    window.location.href = "Login.php";
+                }, 2000);
+
+                return false;
+            }
+
 
             erroCPF.textContent = dados.mensagem;
             erroCPF.hidden = false;

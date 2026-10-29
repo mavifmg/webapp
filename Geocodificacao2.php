@@ -1,5 +1,8 @@
 <?php
-session_start();
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
 require_once "Conexao.php";
 
 /*
@@ -15,56 +18,75 @@ function obterCoordenadasUBS($endereco)
         return false;
     }
 
-    // Acrescenta a cidade e o estado ao endereço da UBS.
-    $enderecoCompleto =
-        $endereco . ", Ouro Branco, Minas Gerais, Brasil";
+    $enderecoCompleto = $endereco . ", Ouro Branco, Minas Gerais, Brasil";
 
-    $url = "https://nominatim.openstreetmap.org/search?" .
-        http_build_query([
-            "q" => $endereco,
-            "format" => "jsonv2",
-            "limit" => 1,
-            "countrycodes" => "br"
-        ]);
+    // Primeira tentativa: endereço completo.
+    $consultas = [
+        $enderecoCompleto,
 
-    $opcoes = [
-        "http" => [
-            "method" => "GET",
-            "header" =>
-                "User-Agent: AquiVacina/1.0 (projeto educacional)\r\n" .
-                "Accept: application/json\r\n",
-            "timeout" => 15,
-            "ignore_errors" => true
-        ]
+        // Segunda tentativa: rua, bairro e cidade, sem número.
+        preg_replace(
+            '/,\s*\d+\s*(?=-|,)/',
+            '',
+            $endereco
+        ) . ", Ouro Branco, Minas Gerais, Brasil"
     ];
 
-    $contexto = stream_context_create($opcoes);
+    foreach ($consultas as $indice => $consulta) {
 
-    $resposta = @file_get_contents(
-        $url,
-        false,
-        $contexto
-    );
+        // Aguarda antes da segunda requisição.
+        if ($indice > 0) {
+            sleep(1);
+        }
 
-    if ($resposta === false) {
-        return false;
+        $url = "https://nominatim.openstreetmap.org/search?" .
+            http_build_query([
+                "q" => $consulta,
+                "format" => "jsonv2",
+                "limit" => 1,
+                "countrycodes" => "br"
+            ]);
+
+        $opcoes = [
+            "http" => [
+                "method" => "GET",
+                "header" =>
+                    "User-Agent: AquiVacina/1.0 (projeto educacional)\r\n" .
+                    "Accept: application/json\r\n",
+                "timeout" => 15,
+                "ignore_errors" => true
+            ]
+        ];
+
+        $contexto = stream_context_create($opcoes);
+
+        $resposta = @file_get_contents(
+            $url,
+            false,
+            $contexto
+        );
+
+        if ($resposta === false) {
+            continue;
+        }
+
+        $dados = json_decode($resposta, true);
+
+        // Se encontrar coordenadas, retorna imediatamente.
+        if (
+            is_array($dados) &&
+            isset($dados[0]['lat'], $dados[0]['lon'])
+        ) {
+            return [
+                'latitude' => (float) $dados[0]['lat'],
+                'longitude' => (float) $dados[0]['lon']
+            ];
+        }
     }
 
-    $dados = json_decode($resposta, true);
-
-    if (
-        !is_array($dados) ||
-        empty($dados[0]['lat']) ||
-        empty($dados[0]['lon'])
-    ) {
-        return false;
-    }
-
-    return [
-        'latitude' => (float) $dados[0]['lat'],
-        'longitude' => (float) $dados[0]['lon']
-    ];
+    return false;
 }
+
 
 
 // Verifica a conexão com o banco.
@@ -96,7 +118,7 @@ $totalIgnoradas = 0;
 echo "<h1>Geocodificação das UBS</h1>";
 
 while ($ubs = pg_fetch_assoc($resultado)) {
-    
+
     $nomeUBS = $ubs['nomeubs'];
     $endereco = trim($ubs['endereco'] ?? '');
 
