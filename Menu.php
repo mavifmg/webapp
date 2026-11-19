@@ -39,13 +39,13 @@ $DataNascimento = $_SESSION['DataNascimento'];
 
         <div class="FundoLog">
 
+            <h1>Bem-vindo ao AquiVacina!</h1>
+
+            <?php include "Logo.php"; ?>
+
             <br>
 
             <div class="InformacoesUbs">
-
-                <a href="javascript:history.back()" class="Voltar">
-                    ←
-                </a>
 
                 <form action="Menu.php">
 
