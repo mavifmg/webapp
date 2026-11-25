@@ -747,7 +747,7 @@ if (!$usuario) {
                 radio.disabled = false;
             });
 
-            botaoSalvar.style.display = "inline-block";
+            botaoSalvar.style.display = "block";
             botaoEditar.style.display = "none";
 
         });

@@ -3,6 +3,7 @@
 session_start();
 
 require_once "Conexao.php";
+require_once __DIR__ . "/../../GeocodificacaoUBS.php";
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
@@ -32,13 +33,66 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
         if ($Modo === "editar" && !empty($NomeAntigo)) {
 
+            $sqlAtual = "
+                SELECT endereco, latitudeubs, longitudeubs
+                FROM cadastroubs
+                WHERE nomeubs = $1
+            ";
+
+            $resultadoAtual = pg_query_params(
+                $conn,
+                $sqlAtual,
+                [$NomeAntigo]
+            );
+
+            if ($resultadoAtual === false) {
+                $_SESSION["erro_cadastro_ubs"] =
+                    "Erro ao consultar a UBS: " . pg_last_error($conn);
+
+                header("Location: CadastroUBS.php");
+                exit();
+            }
+
+            $ubsAtual = pg_fetch_assoc($resultadoAtual);
+
+            if (!$ubsAtual) {
+                $_SESSION["erro_cadastro_ubs"] =
+                    "A UBS selecionada não foi encontrada.";
+
+                header("Location: CadastroUBS.php");
+                exit();
+            }
+
+            $enderecoMudou =
+                trim((string) ($ubsAtual["endereco"] ?? "")) !==
+                trim($Endereco);
+
+            $latitudeUBS = $ubsAtual["latitudeubs"];
+            $longitudeUBS = $ubsAtual["longitudeubs"];
+            $falhaGeocodificacao = false;
+
+            if ($enderecoMudou) {
+                $coordenadas = obterCoordenadasUBS($Endereco);
+
+                if ($coordenadas === false) {
+                    $latitudeUBS = null;
+                    $longitudeUBS = null;
+                    $falhaGeocodificacao = true;
+                } else {
+                    $latitudeUBS = $coordenadas["latitude"];
+                    $longitudeUBS = $coordenadas["longitude"];
+                }
+            }
+
             $sql = "
                 UPDATE cadastroubs
                 SET nomeubs = $1,
                     endereco = $2,
                     horariofuncio = $3,
-                    infoextra = $4
-                WHERE nomeubs = $5
+                    infoextra = $4,
+                    latitudeubs = $5,
+                    longitudeubs = $6
+                WHERE nomeubs = $7
             ";
 
             $resultado = pg_query_params(
@@ -49,6 +103,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                     $Endereco,
                     $HorarioFuncio,
                     $InfoExtra,
+                    $latitudeUBS,
+                    $longitudeUBS,
                     $NomeAntigo
                 ]
             );
@@ -56,13 +112,19 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
             if ($resultado) {
 
-                $_SESSION["cadastro_ubs"] =
-                    "Cadastro da UBS editado";
+                if ($falhaGeocodificacao) {
+                    $_SESSION["erro_cadastro_ubs"] =
+                        "Endereço atualizado, mas não foi possível localizar as coordenadas. O mapa tentará novamente ao ser aberto.";
+                } else {
+                    $_SESSION["cadastro_ubs"] =
+                        "Cadastro da UBS editado";
+                }
 
             } else {
 
                 $_SESSION["erro_cadastro_ubs"] =
-                    "Erro ao editar cadastro da UBS";
+                    "Erro ao editar cadastro da UBS: " .
+                    pg_last_error($conn);
             }
 
         }
