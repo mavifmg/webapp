@@ -50,7 +50,7 @@ $DataNascimento = $_SESSION['DataNascimento'];
                 <form action="Menu.php">
 
                     <div>
-                        <a href="Cadastrocriancas.php">
+                        <a href="cadastrocrianças.html">
                             <button type="button" class="BotaoCadastrar">Cadastro de Crianças</button>
                         </a>
                         <a href="Alertas.php">
