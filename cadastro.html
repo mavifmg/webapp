@@ -1,0 +1,64 @@
+
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AquiVacina | Site para pais</title>
+    <link rel="stylesheet" href="AquiVacina.css">
+</head>
+<body class="Cadastro">
+
+    <div class="LocLogin">
+    <div class="FundoLog">
+                                        
+        <br>
+
+    <form action="Cadastro.php" method="POST">
+            <label id="LogCPF"> CPF </label>
+
+            <input placeholder="CPF" type="text" name="CPF">
+        
+            <label id="LogDataNascimento"> Data de Nascimento </label>
+            <input placeholder="Data de nascimento" type="date" name="DataNascimento">
+
+            <label id="LogEmail"> E-mail </label>
+            <input placeholder="E-mail" type="email" name="EMAIL">
+
+            <label id="LogCelular"> Celular </label>
+            <input placeholder="Celular" type="text" name="Celular">    
+
+            <label id="LogCEP"> CEP </label>
+            <input placeholder="CEP" type="text" name="CEP">
+
+            <label id="LogComorbidades"> Comorbidades </label>
+            <input placeholder="Comorbidades" type="text" name="Comorbidades"> 
+
+            <label id="LogIndigena"> Indígena </label>
+            <input type="checkbox" name="Indigena" value="true">
+
+            <label id="LogAutorizacao_Loc"> Autorização para Local de Vacinação </label>
+            <input type="checkbox" name="Autorizacao_Loc" value="true">
+
+    
+        <div style="text-align: center;">
+            
+            <label id="LogCadastro"> Já possui cadastro? </label>
+            <button type="submit">Login</button>
+           
+        </div>
+    </form>
+        
+        <div style="text-align: center;"></div>
+            <a href="Menu.html">
+                <button type="button">Cadastro</button>
+            </a>
+        </div>
+        
+    </div>
+    </div>
+
+</body>
+</html>
+

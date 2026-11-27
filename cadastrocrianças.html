@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>AquiVacina | Cadastro de Crianças</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #eef8ff;
+            color: #24445c;
+            padding: 20px;
+        }
+
+        .ContainerCadastro {
+            max-width: 700px;
+            margin: auto;
+        }
+
+        .Voltar {
+            display: inline-block;
+            margin-bottom: 15px;
+            text-decoration: none;
+            color: #287cae;
+            font-size: 28px;
+        }
+
+        .CadastroCard {
+            background: white;
+            padding: 25px;
+            border-radius: 25px;
+            box-shadow: 0 5px 20px rgba(70, 130, 160, 0.15);
+        }
+
+        /* LOGO */
+
+        .Logo {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .Logo img {
+            width: 150px;
+            height: auto;
+        }
+
+        /* TÍTULO */
+
+        .TituloArea {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .TituloTexto h2 {
+            color: #245b78;
+            margin-bottom: 8px;
+        }
+
+        .TituloTexto p {
+            color: #6b8291;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .Ilustracao img {
+            width: 130px;
+            height: 110px;
+            object-fit: contain;
+        }
+
+        /* FORMULÁRIO */
+
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        label {
+            font-weight: bold;
+            margin-top: 8px;
+            color: #36596d;
+        }
+
+        input,
+        select,
+        textarea {
+            width: 100%;
+            padding: 13px;
+            border: 1px solid #c8dfe9;
+            border-radius: 12px;
+            outline: none;
+            font-size: 15px;
+            background: white;
+        }
+
+        textarea {
+            min-height: 90px;
+            resize: vertical;
+        }
+
+        input:focus,
+        select:focus,
+        textarea:focus {
+            border-color: #5baed3;
+        }
+
+        .BotaoCadastrar {
+            margin-top: 20px;
+            padding: 14px;
+            border: none;
+            border-radius: 14px;
+            background: #4da8d1;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .BotaoCadastrar:hover {
+            background: #378fb8;
+        }
+
+        /* LISTA */
+
+        .ListaCriancas {
+            margin-top: 35px;
+        }
+
+        .ListaCriancas h2 {
+            color: #245b78;
+            margin-bottom: 5px;
+        }
+
+        .DescricaoLista {
+            color: #718693;
+            margin-bottom: 15px;
+            font-size: 14px;
+        }
+
+        .CriancaCard {
+            background: #f4fbff;
+            border: 1px solid #d6ebf4;
+            border-radius: 18px;
+            padding: 18px;
+            margin-top: 15px;
+        }
+
+        .CriancaCard h3 {
+            color: #286985;
+            margin-bottom: 10px;
+        }
+
+        .CriancaCard p {
+            margin: 6px 0;
+            font-size: 14px;
+        }
+
+        .AcoesCrianca {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .BotaoEditar,
+        .BotaoRemover {
+            padding: 9px 15px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .BotaoEditar {
+            background: #d8f0fc;
+            color: #287cae;
+        }
+
+        .BotaoRemover {
+            background: #ffe1e1;
+            color: #c34f4f;
+        }
+
+        .BotaoEditar:hover {
+            background: #c5e8f8;
+        }
+
+        .BotaoRemover:hover {
+            background: #ffd0d0;
+        }
+
+        .Mensagem {
+            padding: 12px;
+            margin-bottom: 20px;
+            border-radius: 12px;
+            background: #e4f7e9;
+            color: #287044;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        @media (max-width: 600px) {
+
+            body {
+                padding: 12px;
+            }
+
+            .CadastroCard {
+                padding: 20px;
+            }
+
+            .TituloArea {
+                align-items: flex-start;
+            }
+
+            .Ilustracao img {
+                width: 90px;
+                height: 80px;
+            }
+        }
+    </style>
+</head>
+
+
+<body>
+
+    <div class="ContainerCadastro">
+
+        <a href="Menu.html" class="Voltar">←</a>
+
+        <div class="CadastroCard">
+
+            <!-- LOGO -->
+
+            <div class="Logo">
+                <img
+                    src="imagens/logo.png"
+                    alt="Logo AquiVacina">
+            </div>
+
+
+            <!-- TÍTULO -->
+
+            <div class="TituloArea">
+
+                <div class="TituloTexto">
+
+                    <h2>Cadastro de Crianças</h2>
+
+                    <p>
+                        Cadastre uma criança para acompanhar
+                        suas informações de vacinação.
+                    </p>
+
+                </div>
+
+
+                <div class="Ilustracao">
+
+                    <img
+                        src="imagens/criancas.png"
+                        alt="Ilustração de criança">
+
+                </div>
+
+            </div>
+
+
+            <!-- FORMULÁRIO -->
+
+            <form
+                method="POST"
+                action="CadastroCriancas.php"
+            >
+
+                <!-- PACIENTE ID -->
+
+                <label for="paciente_id">
+                    ID do paciente responsável
+                </label>
+
+                <input
+                    type="number"
+                    id="paciente_id"
+                    name="paciente_id"
+                    placeholder="Digite o ID do paciente"
+                    required
+                >
+
+
+                <!-- NOME -->
+
+                <label for="nomeCrianca">
+                    Nome da criança
+                </label>
+
+                <input
+                    type="text"
+                    id="nomeCrianca"
+                    name="nomeCrianca"
+                    placeholder="Digite o nome da criança"
+                    maxlength="150"
+                    required
+                >
+
+
+                <!-- CPF -->
+
+                <label for="cpf">
+                    CPF da criança
+                </label>
+
+                <input
+                    type="text"
+                    id="cpf"
+                    name="cpf"
+                    placeholder="Digite o CPF"
+                    maxlength="11"
+                >
+
+
+                <!-- DATA DE NASCIMENTO -->
+
+                <label for="dataNascimento">
+                    Data de nascimento
+                </label>
+
+                <input
+                    type="date"
+                    id="dataNascimento"
+                    name="dataNascimento"
+                    required
+                >
+
+
+                <!-- INDÍGENA / QUILOMBOLA -->
+
+                <label for="indigena">
+                    Indígena ou quilombola
+                </label>
+
+                <select
+                    id="indigena"
+                    name="indigena"
+                    required
+                >
+
+                    <option value="">
+                        Selecione
+                    </option>
+
+                    <option value="true">
+                        Sim
+                    </option>
+
+                    <option value="false">
+                        Não
+                    </option>
+
+                </select>
+
+
+                <!-- COMORBIDADES -->
+
+                <label for="comorbidades">
+                    Comorbidades
+                </label>
+
+                <textarea
+                    id="comorbidades"
+                    name="comorbidades"
+                    placeholder="Digite as comorbidades, caso existam"
+                ></textarea>
+
+
+                <!-- BOTÃO -->
+
+                <button
+                    type="submit"
+                    class="BotaoCadastrar"
+                >
+                    Cadastrar criança
+                </button>
+
+            </form>
+
+
+            <!-- LISTA -->
+
+            <div class="ListaCriancas">
+
+                <h2>
+                    Crianças cadastradas
+                </h2>
+
+                <p class="DescricaoLista">
+                    Consulte e gerencie os dependentes cadastrados.
+                </p>
+
+
+                <div class="CriancaCard">
+
+                    <h3>
+                        Os dados cadastrados aparecerão aqui.
+                    </h3>
+
+                    <p>
+                        Após cadastrar uma criança,
+                        ela será exibida nesta área.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</body>
+
+</html>
